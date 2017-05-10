@@ -1,0 +1,1 @@
+{"version":3,"sources":["_references.ts"],"names":[],"mappings":"AAAA,QAAQ;AACR,yCAAyC;AAEzC,kBAAkB;AAClB,iCAAiC","file":"../_references.js","sourcesContent":["//global\r\n/// <reference path=\"typings/tsd.d.ts\" />\r\n\r\n//app declarations\r\n/// <reference path=\"app.d.ts\" />"]}
