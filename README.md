@@ -1,7 +1,7 @@
-# Cube (Server)
+# Cube (API)
 
 ## Angular2 with Typescript, NodeJs with ExpressJs and Sequalize ORM with PostgreSQL
-This is the server-side part of the Cube Application, which manages the datgabase functionality of the project and works alongside the Cube API, c-proj.
+This is the API/postgres part of the Cube Application, which manages the database functionality of the project and works alongside the Cube Server.
 
 ## Environment setup
 1. Install NodeJs from https://nodejs.org/
