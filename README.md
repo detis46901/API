@@ -37,4 +37,13 @@ Learn more about [Sequalize](http://docs.sequelizejs.com/)
 
 ### PostgreSQL
 PostgreSQL, often simply Postgres, is an object-relational database management system (ORDBMS) with an emphasis on extensibility and on standards-compliance. As a database server, its primary function is to store data securely, supporting best practices, and to allow for retrieval at the request of other software applications. It can handle workloads ranging from small single-machine applications to large Internet-facing applications with many concurrent users. <br/>
+<<<<<<< HEAD
 Learn more about [PostgreSQL](http://www.postgresql.org/)
+=======
+Learn more about [PostgreSQL](http://www.postgresql.org/)
+
+## Image
+![Image of App](https://github.com/Anjmao/angular2-dogeapp/blob/master/app-img.png)
+
+git test
+>>>>>>> 2661d4b4d8a4a4dc744fcb9e97ccfee6d9adfc30
