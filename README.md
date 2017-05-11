@@ -1,5 +1,7 @@
-# Angular2 with Typescript, NodeJs with ExpressJs and Sequalize ORM with PostgreSQL
-In this example I created Demo application to show how to implement server and client side application to do CRUD operations for one DB table called DogeFriends.
+# Cube (Server)
+
+## Angular2 with Typescript, NodeJs with ExpressJs and Sequalize ORM with PostgreSQL
+This is the server-side part of the Cube Application, which manages the datgabase functionality of the project and works alongside the Cube API, c-proj.
 
 ## Environment setup
 1. Install NodeJs from https://nodejs.org/
@@ -36,7 +38,3 @@ Learn more about [Sequalize](http://docs.sequelizejs.com/)
 ### PostgreSQL
 PostgreSQL, often simply Postgres, is an object-relational database management system (ORDBMS) with an emphasis on extensibility and on standards-compliance. As a database server, its primary function is to store data securely, supporting best practices, and to allow for retrieval at the request of other software applications. It can handle workloads ranging from small single-machine applications to large Internet-facing applications with many concurrent users. <br/>
 Learn more about [PostgreSQL](http://www.postgresql.org/)
-
-## Image
-![Image of App](https://github.com/Anjmao/angular2-dogeapp/blob/master/app-img.png)
-
