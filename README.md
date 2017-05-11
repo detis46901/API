@@ -40,3 +40,4 @@ Learn more about [PostgreSQL](http://www.postgresql.org/)
 ## Image
 ![Image of App](https://github.com/Anjmao/angular2-dogeapp/blob/master/app-img.png)
 
+git test
