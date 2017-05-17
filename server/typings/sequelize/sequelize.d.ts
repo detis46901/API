@@ -5039,7 +5039,7 @@ declare module "sequelize" {
             /**
              * The host of the relational database.
              *
-             * Defaults to 'localhost'
+             * Defaults to 'foster2.cityofkokomo.org'
              */
             host?: string;
 
@@ -5305,7 +5305,7 @@ declare module "sequelize" {
              * var sequelize = new Sequelize('my_database', 'john', 'doe', {})
              *
              * // with uri (see below)
-             * var sequelize = new Sequelize('mysql://localhost:3306/database', {})
+             * var sequelize = new Sequelize('mysql://foster2.cityofkokomo.org:3306/database', {})
              * ```
              *
              * @param database The name of the database
