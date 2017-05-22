@@ -1,6 +1,8 @@
 import Sequelize = require('sequelize');
 import UserModel = require('../models/users-model');
-
+import bcrypt = require('bcrypt');
+//import Md5 = require('ts-md5/dist/md5');
+import { Md5 } from 'ts-md5/dist/md5';
 
 class UserService {
 
@@ -30,6 +32,9 @@ class UserService {
     }
 
     create(request: App.User): Promise<UserModel.UserInstance> {
+        //let plain_password = request.password
+        //put the hash in here, then set request.password to hash result, have the code written in the js of this file
+        request.password = (Md5.hashStr("Monday01")).toString()
         return UserModel.Model.create(request);
     }
 
