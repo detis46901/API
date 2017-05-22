@@ -30,7 +30,7 @@ router.get('/one', (req, res) => {
 router.post('/create', (req, res) => {
     
     var request = <App.User>req.body;
-    
+    console.log(request)
     service.create(request).then((result) => {
         res.send(result);
     }).catch((error) => {

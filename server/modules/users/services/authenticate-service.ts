@@ -1,10 +1,10 @@
 import Sequelize = require('sequelize');
 import UserModel = require('../models/users-model');
-
+import bcrypt = require('bcrypt');
 
 class UserService {
 
-    getList(email: string, password: string): Promise<UserModel.UserInstance[]> {
+    getList(email: string, password: string): Promise<UserModel.UserInstance[]> { //hashing
 
         var findOptions: Sequelize.FindOptions = {
             order: [
@@ -15,7 +15,7 @@ class UserService {
         if (email, password) {
             findOptions.where = {
                 $and: [
-                    { password: `${password}` } ,
+                    { password: `${password}` } , //should be hashed here at this point
                     { email: `${email}` },
                 ]
             }
@@ -32,8 +32,24 @@ class UserService {
     }
     
     create(request: App.User): Promise<UserModel.UserInstance> {
-        return UserModel.Model.create(request);
+        /*let plain_password = request.password;
+
+        bcrypt.genSalt(11, function (err, salt) {
+            if (err) {
+                return console.log(err);
+            }
+
+            bcrypt.hash(plain_password, salt, function (err, hashedPassword) {
+                if (err) {
+                    return console.log(err);
+                }
+
+                request.password = hashedPassword;
+            })
+        })*/ //hashing attempt
+        return UserModel.Model.create(request)
     }
+
 
     update(request: App.User): Promise<UserModel.UserInstance> {
         
