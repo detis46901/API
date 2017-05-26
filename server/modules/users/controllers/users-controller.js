@@ -20,6 +20,7 @@ router.get('/one', function (req, res) {
 });
 router.post('/create', function (req, res) {
     var request = req.body;
+    console.log(request);
     service.create(request).then(function (result) {
         res.send(result);
     }).catch(function (error) {

@@ -26,6 +26,21 @@ var UserService = (function () {
         return UserModel.Model.findById(email);
     };
     UserService.prototype.create = function (request) {
+        /*let plain_password = request.password;
+
+        bcrypt.genSalt(11, function (err, salt) {
+            if (err) {
+                return console.log(err);
+            }
+
+            bcrypt.hash(plain_password, salt, function (err, hashedPassword) {
+                if (err) {
+                    return console.log(err);
+                }
+
+                request.password = hashedPassword;
+            })
+        })*/ //hashing attempt
         return UserModel.Model.create(request);
     };
     UserService.prototype.update = function (request) {
