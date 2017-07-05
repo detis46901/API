@@ -43,6 +43,7 @@ class LayerAdminService {
             LayerAdminInstance.layerIdent = request.layerIdent;
             LayerAdminInstance.layerFormat = request.layerFormat;
             LayerAdminInstance.layerDescription = request.layerDescription;
+            LayerAdminInstance.layerGeom = request.layerGeom;
 
             return LayerAdminInstance.save();
         }));

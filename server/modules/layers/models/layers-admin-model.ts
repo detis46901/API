@@ -47,7 +47,14 @@ var sequalizeModel = db.define<LayerAdminInstance, App.LayerAdmin>('layer_admin'
     },
     layerDescription: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
+        validate: {
+            len: [1, 200]
+        }
+    },
+    layerGeom: {
+        type: Sequelize.STRING,
+        allowNull: true,
         validate: {
             len: [1, 200]
         }

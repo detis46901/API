@@ -33,6 +33,7 @@ declare module App {
         layerIdent?: string;
         layerFormat?: string;
         layerDescription?: string;
+        layerGeom?: string;
     }
 
     interface LayerPermission extends IModelBase {
