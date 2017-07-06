@@ -44,6 +44,7 @@ class LayerAdminService {
             LayerAdminInstance.layerFormat = request.layerFormat;
             LayerAdminInstance.layerDescription = request.layerDescription;
             LayerAdminInstance.layerGeom = request.layerGeom;
+            console.log("API layeradmin service")
 
             return LayerAdminInstance.save();
         }));
