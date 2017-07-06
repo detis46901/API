@@ -14,7 +14,7 @@ function getDbConfig() {
     var config: IDbConfig = {
         host: process.env.DB_HOST || '127.0.0.1',
         database: process.env.DB_NAME || 'postgres_test',
-        username: process.env.DB_USERNAME || 'postgres',
+        username: process.env.DB_USERNAME || 'postgres', //7/6/17 - db password
         password: process.env.DB_PASSWORD || 'G30s3rv3r',
         port: process.env.DB_PORT || 5432,
         ssl: process.env.DB_PORT || false
