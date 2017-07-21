@@ -39,7 +39,7 @@ class LayerAdminService {
 
             LayerAdminInstance.layerName = request.layerName;
             LayerAdminInstance.layerType = request.layerType;
-            LayerAdminInstance.layerURL = request.layerURL;
+            LayerAdminInstance.serverID = request.serverID;
             LayerAdminInstance.layerIdent = request.layerIdent;
             LayerAdminInstance.layerFormat = request.layerFormat;
             LayerAdminInstance.layerDescription = request.layerDescription;

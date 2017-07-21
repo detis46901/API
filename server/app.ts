@@ -13,12 +13,12 @@ import LayerAdminController = require('./modules/layers/controllers/layers-admin
 import PageController = require('./modules/users/controllers/page-controller');
 import UserPageLayerController = require('./modules/layers/controllers/user-page-layer-controller');
 import LayerPermissionController = require('./modules/layers/controllers/layers-permission-controller');
+import ServerController = require('./modules/layers/controllers/servers-controller');
 
 
 var app = express();
 
 // Configuration
-
 app.set('port', 5000);
 app.set('views', join( __dirname, '/views') ); // critical to use path.join on windows
 app.set('view engine', 'vash');
@@ -39,7 +39,7 @@ app.use('/api/layeradmin', LayerAdminController);
 app.use('/api/layerpermission', LayerPermissionController);
 app.use('/api/userpagelayer', UserPageLayerController);
 app.use('/api/userpage', PageController);
-
+app.use('/api/server', ServerController)
 
 
 app.listen(app.get('port'), function() {

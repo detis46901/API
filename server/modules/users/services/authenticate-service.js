@@ -9,7 +9,7 @@ var UserService = (function () {
                 'ID'
             ]
         };
-        if (email, password) {
+        if (email != null && password != null) {
             findOptions.where = {
                 $and: [
                     { password: "" + password },
