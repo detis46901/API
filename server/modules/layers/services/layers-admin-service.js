@@ -30,7 +30,7 @@ var LayerAdminService = (function () {
         return (LayerAdminModel.Model.findById(request.ID).then(function (LayerAdminInstance) {
             LayerAdminInstance.layerName = request.layerName;
             LayerAdminInstance.layerType = request.layerType;
-            LayerAdminInstance.layerURL = request.layerURL;
+            LayerAdminInstance.serverID = request.serverID;
             LayerAdminInstance.layerIdent = request.layerIdent;
             LayerAdminInstance.layerFormat = request.layerFormat;
             LayerAdminInstance.layerDescription = request.layerDescription;

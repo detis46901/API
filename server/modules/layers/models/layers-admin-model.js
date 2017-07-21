@@ -1,6 +1,7 @@
 "use strict";
 var dbConnection = require('../../../core/db-connection');
 var Sequelize = require('sequelize');
+var ServerModel = require('./servers-model');
 var db = dbConnection();
 var sequalizeModel = db.define('layer_admin', {
     ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
@@ -18,11 +19,11 @@ var sequalizeModel = db.define('layer_admin', {
             len: [2, 30]
         }
     },
-    layerURL: {
-        type: Sequelize.STRING,
+    serverID: {
+        type: Sequelize.INTEGER,
         allowNull: false,
         validate: {
-            len: [1, 200]
+            len: [1, 30]
         }
     },
     layerIdent: {
@@ -54,6 +55,7 @@ var sequalizeModel = db.define('layer_admin', {
         }
     }
 });
+sequalizeModel.belongsTo(ServerModel.Model);
 sequalizeModel.sync();
 exports.Model = sequalizeModel;
 

@@ -1,6 +1,5 @@
 import Sequelize = require('sequelize');
 import UserModel = require('../models/users-model');
-import bcrypt = require('bcrypt');
 
 class UserService {
 
@@ -12,7 +11,7 @@ class UserService {
             ]
         };
 
-        if (email, password) {
+        if (email != null && password != null) {
             findOptions.where = {
                 $and: [
                     { password: `${password}` } , //should be hashed here at this point

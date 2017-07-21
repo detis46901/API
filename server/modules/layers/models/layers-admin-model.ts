@@ -1,9 +1,8 @@
 import dbConnection = require('../../../core/db-connection');
 import Sequelize = require('sequelize');
+var ServerModel = require('./servers-model');
 
 var db = dbConnection();
-
-
 export interface LayerAdminInstance extends Sequelize.Instance<LayerAdminInstance, App.LayerAdmin>, App.LayerAdmin { }
 export interface LayerAdminModel extends Sequelize.Model<LayerAdminInstance, App.LayerAdmin> { }
 
@@ -24,11 +23,11 @@ var sequalizeModel = db.define<LayerAdminInstance, App.LayerAdmin>('layer_admin'
             len: [2, 30]
         }
     },
-    layerURL: {
-        type: Sequelize.STRING,
+    serverID: {
+        type: Sequelize.INTEGER,
         allowNull: false,
         validate: {
-            len: [1, 200]
+            len: [1, 30]
         }
     },
      layerIdent: {
@@ -61,6 +60,7 @@ var sequalizeModel = db.define<LayerAdminInstance, App.LayerAdmin>('layer_admin'
     }
 });
 
+sequalizeModel.belongsTo(ServerModel.Model);
 sequalizeModel.sync(); 
 
 export var Model = sequalizeModel;

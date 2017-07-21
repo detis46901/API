@@ -29,7 +29,7 @@ declare module App {
         ID?: number;
         layerName?: string;
         layerType?: string;
-        layerURL?: string;
+        serverID?: string;
         layerIdent?: string;
         layerFormat?: string;
         layerDescription?: string;
@@ -79,8 +79,14 @@ interface UserPage extends IModelBase {
         default: boolean;
         active?: boolean;
     }
-}
 
+interface Server extends IModelBase {
+    ID?: number;
+    serverName?: string;
+    serverType?: string;
+    serverURL?: string;
+    }
+}
 
 declare module 'app' {
 

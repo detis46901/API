@@ -74,7 +74,7 @@ class UserPageLayerService {
         
         return <any>(UserPageLayerModel.Model.findById(request.ID).then((UserPageLayerInstance) => {
 
-            UserPageLayerInstance.layerID = request.layerID;
+            UserPageLayerInstance.layerAdminID = request.layerAdminID;
             UserPageLayerInstance.userID = request.userID;
             UserPageLayerInstance.layerON = request.layerON;
 

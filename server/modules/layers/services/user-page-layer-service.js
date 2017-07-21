@@ -59,7 +59,7 @@ var UserPageLayerService = (function () {
     };
     UserPageLayerService.prototype.update = function (request) {
         return (UserPageLayerModel.Model.findById(request.ID).then(function (UserPageLayerInstance) {
-            UserPageLayerInstance.layerID = request.layerID;
+            UserPageLayerInstance.layerAdminID = request.layerAdminID;
             UserPageLayerInstance.userID = request.userID;
             UserPageLayerInstance.layerON = request.layerON;
             return UserPageLayerInstance.save();
