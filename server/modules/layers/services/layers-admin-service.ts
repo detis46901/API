@@ -1,5 +1,6 @@
 import Sequelize = require('sequelize');
 import LayerAdminModel = require('../models/layers-admin-model');
+import ServerModel = require ('../models/servers-model')
 
 
 class LayerAdminService {
@@ -22,6 +23,7 @@ class LayerAdminService {
             }
         }
         
+         findOptions.include = [ServerModel.Model]
         return LayerAdminModel.Model.findAll(findOptions);
     }
 
