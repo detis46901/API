@@ -19,13 +19,6 @@ var sequalizeModel = db.define('layer_admin', {
             len: [2, 30]
         }
     },
-    serverID: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        validate: {
-            len: [1, 30]
-        }
-    },
     layerIdent: {
         type: Sequelize.STRING,
         allowNull: false,

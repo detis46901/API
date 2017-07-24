@@ -2,6 +2,7 @@ import Sequelize = require('sequelize');
 import UserPageLayerModel = require('../models/user-page-layer-model');
 import PageModel = require('../../users/models/page-model')
 import LayerModel = require('../models/layers-admin-model')
+import ServerModel = require ('../models/servers-model')
 
 class UserPageLayerService {
 

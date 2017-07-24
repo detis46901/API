@@ -1,5 +1,6 @@
 "use strict";
 var LayerAdminModel = require('../models/layers-admin-model');
+var ServerModel = require('../models/servers-model');
 var LayerAdminService = (function () {
     function LayerAdminService() {
     }
@@ -18,6 +19,7 @@ var LayerAdminService = (function () {
                 ]
             };
         }
+        findOptions.include = [ServerModel.Model];
         return LayerAdminModel.Model.findAll(findOptions);
     };
     LayerAdminService.prototype.get = function (rowID) {
