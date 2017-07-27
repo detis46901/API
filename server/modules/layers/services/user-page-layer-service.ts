@@ -40,10 +40,13 @@ class UserPageLayerService {
             }
         }
 
+
+    
         findOptions.include = [PageModel.Model, LayerModel.Model]
 
-        return UserPageLayerModel.Model.findAll(findOptions)
+        return UserPageLayerModel.Model.findAll({order: ['ID']/*, where: {$and: [{ userPageID: pageID}]}*/, include: [{model: PageModel.Model}, {model: LayerModel.Model, include: [ServerModel.Model]}]})
     }
+
     getUserLayer(userID: number): Promise<UserPageLayerModel.UserPageLayerInstance[]> {
 
         var findOptions: Sequelize.FindOptions = {
