@@ -25,6 +25,7 @@ class UserPageLayerService {
         return UserPageLayerModel.Model.findAll(findOptions);
     }
 
+    
     getPageLayers(pageID: number): any {
         var findOptions: Sequelize.FindOptions = {
             order: [
