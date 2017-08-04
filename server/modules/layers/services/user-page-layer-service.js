@@ -35,7 +35,7 @@ var UserPageLayerService = (function () {
             };
         }
         findOptions.include = [PageModel.Model, LayerModel.Model];
-        return UserPageLayerModel.Model.findAll({ order: ['ID'] /*, where: {$and: [{ userPageID: pageID}]}*/, include: [{ model: PageModel.Model }, { model: LayerModel.Model, include: [ServerModel.Model] }] });
+        return UserPageLayerModel.Model.findAll({ order: ['ID'], where: { $and: [{ userPageID: pageID }] }, include: [{ model: PageModel.Model }, { model: LayerModel.Model, include: [ServerModel.Model] }] });
     };
     UserPageLayerService.prototype.getUserLayer = function (userID) {
         var findOptions = {

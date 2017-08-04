@@ -30,7 +30,7 @@ var UserService = (function () {
         return UserModel.Model.create(request);
     };
     UserService.prototype.update = function (request) {
-        return (UserModel.Model.findById(request.rowID).then(function (UserInstance) {
+        return (UserModel.Model.findById(request.ID).then(function (UserInstance) {
             UserInstance.firstName = request.firstName;
             UserInstance.lastName = request.lastName;
             UserInstance.roleID = request.roleID;
