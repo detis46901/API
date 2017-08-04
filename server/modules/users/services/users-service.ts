@@ -40,7 +40,7 @@ class UserService {
 
     update(request: App.User): Promise<UserModel.UserInstance> {
         
-        return <any>(UserModel.Model.findById(request.rowID).then((UserInstance) => {
+        return <any>(UserModel.Model.findById(request.ID).then((UserInstance) => {
 
             UserInstance.firstName = request.firstName;
             UserInstance.lastName = request.lastName;
