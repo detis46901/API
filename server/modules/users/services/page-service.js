@@ -6,7 +6,7 @@ var PageService = (function () {
     PageService.prototype.getList = function (userID) {
         var findOptions = {
             order: [
-                'userID'
+                'pageOrder'
             ]
         };
         if (userID) {

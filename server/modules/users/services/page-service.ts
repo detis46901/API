@@ -8,7 +8,7 @@ class PageService {
 
         var findOptions: Sequelize.FindOptions = {
             order: [
-                'userID'
+                'pageOrder'
             ]
         };
 
