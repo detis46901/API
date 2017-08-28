@@ -26,7 +26,7 @@ var sequalizeModel = db.define<PageInstance, App.UserPage>('user_page', <any>{
     pageOrder: {
         type: Sequelize.INTEGER,
         validate: {
-            min: 1
+            min: 0
         }
     },
     default: {

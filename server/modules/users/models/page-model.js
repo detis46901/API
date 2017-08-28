@@ -20,7 +20,7 @@ var sequalizeModel = db.define('user_page', {
     pageOrder: {
         type: Sequelize.INTEGER,
         validate: {
-            min: 1
+            min: 0
         }
     },
     default: {

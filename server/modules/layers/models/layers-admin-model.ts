@@ -13,14 +13,14 @@ var sequalizeModel = db.define<LayerAdminInstance, App.LayerAdmin>('layer_admin'
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-            len: [2, 30]
+            len: [1, 30]
         }
     },
     layerType: {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-            len: [2, 30]
+            len: [1, 30]
         }
     },
      layerIdent: {
