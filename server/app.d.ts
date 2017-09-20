@@ -29,6 +29,7 @@ declare module App {
         ID?: number;
         layerName?: string;
         layerType?: string;
+        layerService?: string;
         layerIdent?: string;
         layerFormat?: string;
         layerDescription?: string;
