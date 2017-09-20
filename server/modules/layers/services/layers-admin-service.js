@@ -33,6 +33,7 @@ var LayerAdminService = (function () {
             LayerAdminInstance.layerName = request.layerName;
             LayerAdminInstance.layerType = request.layerType;
             LayerAdminInstance.serverID = request.serverID;
+            LayerAdminInstance.layerService = request.layerService;
             LayerAdminInstance.layerIdent = request.layerIdent;
             LayerAdminInstance.layerFormat = request.layerFormat;
             LayerAdminInstance.layerDescription = request.layerDescription;

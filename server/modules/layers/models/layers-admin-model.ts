@@ -23,13 +23,20 @@ var sequalizeModel = db.define<LayerAdminInstance, App.LayerAdmin>('layer_admin'
             len: [1, 30]
         }
     },
-     layerIdent: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-            len: [1, 200]
-        }
-    },
+    layerService: {
+       type: Sequelize.STRING,
+       allowNull: false,
+       validate: {
+           len: [1, 200]
+       }
+   },
+   layerIdent: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      validate: {
+          len: [1, 200]
+      }
+  },
      layerFormat: {
         type: Sequelize.STRING,
         allowNull: false,
