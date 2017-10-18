@@ -43,8 +43,8 @@ var UserService = (function () {
             return UserInstance.save();
         }));
     };
-    UserService.prototype.delete = function (rowID) {
-        return UserModel.Model.findById(rowID).then(function (UserInstance) {
+    UserService.prototype.delete = function (ID) {
+        return UserModel.Model.findById(ID).then(function (UserInstance) {
             return UserInstance.destroy();
         });
     };

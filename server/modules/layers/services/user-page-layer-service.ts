@@ -88,7 +88,7 @@ class UserPageLayerService {
     }
 
     delete(ID: number) {
-
+        console.log("Deleting user page layer")
         return UserPageLayerModel.Model.findById(ID).then((UserPageLayerInstance) => {
 
             return UserPageLayerInstance.destroy();

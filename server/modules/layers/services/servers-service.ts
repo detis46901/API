@@ -44,9 +44,9 @@ class ServerService {
         }));
     }
 
-    delete(rowID: number) {
+    delete(ID: number) {
 
-        return ServerModel.Model.findById(rowID).then((ServerInstance) => {
+        return ServerModel.Model.findById(ID).then((ServerInstance) => {
 
             return ServerInstance.destroy();
 

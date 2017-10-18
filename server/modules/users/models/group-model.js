@@ -20,6 +20,11 @@ var sequalizeModel = db.define('group', {
     }
 });
 sequalizeModel.belongsTo(DepartmentModel.Model);
+sequalizeModel.create({
+    group: 'Engineering',
+    active: true,
+    departmentID: 1
+});
 sequalizeModel.sync();
 exports.Model = sequalizeModel;
 
