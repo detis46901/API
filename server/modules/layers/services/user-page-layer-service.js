@@ -67,6 +67,7 @@ var UserPageLayerService = (function () {
         }));
     };
     UserPageLayerService.prototype.delete = function (ID) {
+        console.log("Deleting user page layer");
         return UserPageLayerModel.Model.findById(ID).then(function (UserPageLayerInstance) {
             return UserPageLayerInstance.destroy();
         });

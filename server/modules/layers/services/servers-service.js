@@ -33,8 +33,8 @@ var ServerService = (function () {
             return ServerInstance.save();
         }));
     };
-    ServerService.prototype.delete = function (rowID) {
-        return ServerModel.Model.findById(rowID).then(function (ServerInstance) {
+    ServerService.prototype.delete = function (ID) {
+        return ServerModel.Model.findById(ID).then(function (ServerInstance) {
             return ServerInstance.destroy();
         });
     };

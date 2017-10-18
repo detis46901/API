@@ -26,6 +26,7 @@ var LayerAdminService = (function () {
         return LayerAdminModel.Model.findById(rowID);
     };
     LayerAdminService.prototype.create = function (request) {
+        console.log("Creating layer, request= " + request.layerName);
         return LayerAdminModel.Model.create(request);
     };
     LayerAdminService.prototype.update = function (request) {
@@ -42,8 +43,8 @@ var LayerAdminService = (function () {
             return LayerAdminInstance.save();
         }));
     };
-    LayerAdminService.prototype.delete = function (rowID) {
-        return LayerAdminModel.Model.findById(rowID).then(function (LayerAdminInstance) {
+    LayerAdminService.prototype.delete = function (ID) {
+        return LayerAdminModel.Model.findById(ID).then(function (LayerAdminInstance) {
             return LayerAdminInstance.destroy();
         });
     };

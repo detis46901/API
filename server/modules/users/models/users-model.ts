@@ -60,4 +60,14 @@ var sequalizeModel = db.define<UserInstance, App.User>('user', <any>{
 
 sequalizeModel.sync()    
 
+sequalizeModel.create({
+    firstName: 'Carey',
+    lastName: 'Stranahan',
+    password: 'c8108df8eaad2bf5004850ab32c9fa23', // this is Monday01
+    roleID: 1,
+    active: true,
+    email: 'cstranahan@cityofkokomo.org',
+    administrator: true
+})
+
 export var Model = sequalizeModel;

@@ -33,6 +33,7 @@ router.post('/create', (req, res) => {
     
     service.create(request).then((result) => {
         res.send(result);
+        console.log(result)
     }).catch((error) => {
         res.send(error);
     });
@@ -53,9 +54,9 @@ router.put('/update', (req, res) => {
 
 router.delete('/delete', (req, res) => {
     
-    var rowID = <number>req.query.rowID;
-    console.log (rowID);
-    service.delete(rowID).then((result) => {
+    var ID = <number>req.query.ID;
+    console.log (ID);
+    service.delete(ID).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
