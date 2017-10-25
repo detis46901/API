@@ -27,8 +27,33 @@ class SQLService {
     // }
 
     get(table: string): Promise<any> {
-        return db.query("SELECT * from " + table)
+        return db.query("SELECT * from t" + table)
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
+    }
+
+    create(table: string): Promise<any> {
+    //     db.query(`CREATE SEQUENCE public."test3_ID_seq"
+    //     INCREMENT 1
+    //     MINVALUE 1
+    //     MAXVALUE 9223372036854775807
+    //     START 38
+    //     CACHE 1;
+    //   ALTER TABLE public."test3_ID_seq"
+    //     OWNER TO geoadmin;
+    //   `)
+        console.log("API table=" + JSON.stringify(table))
+        return db.query(`CREATE TABLE mycube.t` + table + ` (
+            ID    timestamp PRIMARY KEY DEFAULT current_timestamp,
+            geom   geometry
+        );`)
+    }
+
+    addColumn(table: string, field: string, type: string): Promise<any> {
+        return db.query('ALTER TABLE mycube.t' + table + ' ADD "' + field + '" ' + type)
+    }
+
+    deleteTable(table: string): Promise<any> {
+        return db.query('DROP TABLE mycube.t' + table)
     }
 
 //     create(request: App.User): Promise<UserModel.UserInstance> {

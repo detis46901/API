@@ -18,6 +18,37 @@ router.get('/all', function (req, res) {
         res.send(error);
     });
 });
+router.get('/create', function (req, res) {
+    var table = req.query.table;
+    service.create(table).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
+router.get('/addColumn', function (req, res) {
+    console.log(req);
+    var table = req.query.table;
+    var field = req.query.field;
+    var type = req.query.type;
+    console.log('table=' + table);
+    console.log('field=' + field);
+    console.log('type=' + type);
+    service.addColumn(table, field, type).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
+router.get('/deleteTable', function (req, res) {
+    console.log(req);
+    var table = req.query.table;
+    service.deleteTable(table).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 module.exports = router;
 
 //# sourceMappingURL=../../../source-maps/modules/postGIS_layers/controllers/sql-controller.js.map
