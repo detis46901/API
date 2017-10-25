@@ -18,6 +18,10 @@ var sequalizeModel = db.define('department', {
         }
     }
 });
+sequalizeModel.create({
+    department: 'Engineering',
+    active: true
+});
 sequalizeModel.sync();
 exports.Model = sequalizeModel;
 

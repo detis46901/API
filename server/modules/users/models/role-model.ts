@@ -30,6 +30,12 @@ var sequalizeModel = db.define<RoleInstance, App.Role>('role', <any>{
     }
 });
 
+sequalizeModel.create({
+    groupID: 1,
+    role: 'Engineer',
+    active: true
+})
+
 sequalizeModel.sync()    
 
 export var Model = sequalizeModel;

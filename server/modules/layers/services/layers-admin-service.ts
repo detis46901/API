@@ -32,6 +32,7 @@ class LayerAdminService {
     }
 
     create(request: App.LayerAdmin): Promise<LayerAdminModel.LayerAdminInstance> {
+        console.log("Creating layer, request= " + request.layerName)
         return LayerAdminModel.Model.create(request);
     }
 
@@ -53,9 +54,9 @@ class LayerAdminService {
         }));
     }
 
-    delete(rowID: number) {
+    delete(ID: number) {
 
-        return LayerAdminModel.Model.findById(rowID).then((LayerAdminInstance) => {
+        return LayerAdminModel.Model.findById(ID).then((LayerAdminInstance) => {
 
             return LayerAdminInstance.destroy();
 

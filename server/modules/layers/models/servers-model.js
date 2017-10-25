@@ -30,7 +30,21 @@ var sequalizeModel = db.define('server', {
         }
     }
 });
-sequalizeModel.sync();
+sequalizeModel.sync({ force: true })
+    .then(function () {
+    sequalizeModel.create({
+        serverName: "IndianaMap",
+        serverType: "ArcGIS",
+        serverURL: "http://maps.indiana.edu/arcgis/rest/services"
+    });
+})
+    .then(function () {
+    sequalizeModel.create({
+        serverName: "Kokomo Geoserver",
+        serverType: "Geoserver",
+        serverURL: "http://foster2.cityofkokomo.org:8080/Geoserver"
+    });
+});
 //console.log(temp)
 exports.Model = sequalizeModel;
 
