@@ -14,6 +14,7 @@ import PageController = require('./modules/users/controllers/page-controller');
 import UserPageLayerController = require('./modules/layers/controllers/user-page-layer-controller');
 import LayerPermissionController = require('./modules/layers/controllers/layers-permission-controller');
 import ServerController = require('./modules/layers/controllers/servers-controller');
+import SQLController = require('./modules/postGIS_layers/controllers/sql-controller');
 
 
 var app = express();
@@ -35,11 +36,12 @@ app.use('/api/authenticate', AuthenticateController)
 app.use('/api/department', DepartmentController)
 app.use('/api/group', GroupController)
 app.use('/api/role', RoleController)
-app.use('/api/layeradmin', LayerAdminController);
+app.use('/api/layerAdmin', LayerAdminController);
 app.use('/api/layerpermission', LayerPermissionController);
 app.use('/api/userpagelayer', UserPageLayerController);
 app.use('/api/userpage', PageController);
-app.use('/api/server', ServerController)
+app.use('/api/server', ServerController);
+app.use('/api/sql', SQLController);
 
 
 app.listen(app.get('port'), function() {

@@ -56,9 +56,9 @@ class UserService {
         }));
     }
 
-    delete(rowID: number) {
+    delete(ID: number) {
 
-        return UserModel.Model.findById(rowID).then((UserInstance) => {
+        return UserModel.Model.findById(ID).then((UserInstance) => {
 
             return UserInstance.destroy();
 

@@ -24,6 +24,11 @@ var sequalizeModel = db.define('role', {
         }
     }
 });
+sequalizeModel.create({
+    groupID: 1,
+    role: 'Engineer',
+    active: true
+});
 sequalizeModel.sync();
 exports.Model = sequalizeModel;
 

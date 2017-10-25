@@ -53,7 +53,7 @@ router.put('/update', function (req, res) {
 });
 router.delete('/delete', function (req, res) {
     var ID = req.query.ID;
-    console.log(ID);
+    console.log(req.query.ID);
     service.delete(ID).then(function (result) {
         res.send(result);
     }).catch(function (error) {

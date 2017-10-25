@@ -2,9 +2,9 @@
 var Sequelize = require('sequelize');
 function getDbConfig() {
     var config = {
-        host: process.env.DB_HOST || '127.0.0.1',
+        host: process.env.DB_HOST || 'pgis-kokomo.cdxshbbvmooi.us-east-2.rds.amazonaws.com',
         database: process.env.DB_NAME || 'postgres_test',
-        username: process.env.DB_USERNAME || 'postgres',
+        username: process.env.DB_USERNAME || 'geoadmin',
         password: process.env.DB_PASSWORD || 'G30s3rv3r',
         port: process.env.DB_PORT || 5432,
         ssl: process.env.DB_PORT || false

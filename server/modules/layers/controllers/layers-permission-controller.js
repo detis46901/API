@@ -44,9 +44,9 @@ router.put('/update', function (req, res) {
     });
 });
 router.delete('/delete', function (req, res) {
-    var rowID = req.query.rowID;
-    console.log(rowID);
-    service.delete(rowID).then(function (result) {
+    var ID = req.queryID;
+    console.log(ID);
+    service.delete(ID).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);

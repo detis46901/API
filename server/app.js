@@ -15,6 +15,7 @@ var PageController = require('./modules/users/controllers/page-controller');
 var UserPageLayerController = require('./modules/layers/controllers/user-page-layer-controller');
 var LayerPermissionController = require('./modules/layers/controllers/layers-permission-controller');
 var ServerController = require('./modules/layers/controllers/servers-controller');
+var SQLController = require('./modules/postGIS_layers/controllers/sql-controller');
 var app = express();
 // Configuration
 app.set('port', 5000);
@@ -32,11 +33,12 @@ app.use('/api/authenticate', AuthenticateController);
 app.use('/api/department', DepartmentController);
 app.use('/api/group', GroupController);
 app.use('/api/role', RoleController);
-app.use('/api/layeradmin', LayerAdminController);
+app.use('/api/layerAdmin', LayerAdminController);
 app.use('/api/layerpermission', LayerPermissionController);
 app.use('/api/userpagelayer', UserPageLayerController);
 app.use('/api/userpage', PageController);
 app.use('/api/server', ServerController);
+app.use('/api/sql', SQLController);
 app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
 });

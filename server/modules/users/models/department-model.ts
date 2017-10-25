@@ -24,6 +24,10 @@ var sequalizeModel = db.define<DepartmentInstance, App.Department>('department',
     }
 });
 
+sequalizeModel.create({
+    department: 'Engineering',
+    active: true
+})
 
 sequalizeModel.sync()    
 
