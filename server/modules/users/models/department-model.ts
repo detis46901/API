@@ -24,11 +24,20 @@ var sequalizeModel = db.define<DepartmentInstance, App.Department>('department',
     }
 });
 
-sequalizeModel.create({
-    department: 'Engineering',
-    active: true
-})
+var flag = 0;
+
+sequalizeModel.findAll({
+}).then(function(result) {
+    if(result == null)
+        flag = 1; //Create default department if there isn't one yet
+});
+
+if(flag == 1) {
+    sequalizeModel.create({
+        department: 'Engineering',
+        active: true
+    })
+}
 
 sequalizeModel.sync()    
-
 export var Model = sequalizeModel;

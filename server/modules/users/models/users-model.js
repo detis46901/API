@@ -51,8 +51,6 @@ var sequalizeModel = db.define('user', {
         }
     }
 });
-sequalizeModel.sync();
-var arr;
 var flag = 0;
 sequalizeModel.findAll({}).then(function (result) {
     if (result == null)
@@ -69,6 +67,7 @@ if (flag == 1) {
         administrator: true
     });
 }
+sequalizeModel.sync();
 exports.Model = sequalizeModel;
 
 //# sourceMappingURL=../../../source-maps/modules/users/models/users-model.js.map

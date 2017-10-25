@@ -20,11 +20,18 @@ var sequalizeModel = db.define('group', {
     }
 });
 sequalizeModel.belongsTo(DepartmentModel.Model);
-sequalizeModel.create({
-    group: 'Engineering',
-    active: true,
-    departmentID: 1
+var flag = 0;
+sequalizeModel.findAll({}).then(function (result) {
+    if (result == null)
+        flag = 1; //Create default group if there isn't one yet
 });
+if (flag == 1) {
+    sequalizeModel.create({
+        group: 'Engineering',
+        active: true,
+        departmentID: 1
+    });
+}
 sequalizeModel.sync();
 exports.Model = sequalizeModel;
 

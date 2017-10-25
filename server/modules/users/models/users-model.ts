@@ -58,8 +58,7 @@ var sequalizeModel = db.define<UserInstance, App.User>('user', <any>{
     }
 });
 
-sequalizeModel.sync()    
-var arr: Array<UserInstance>;
+   
 var flag = 0;
 
 sequalizeModel.findAll({
@@ -80,4 +79,5 @@ if(flag == 1) {
     })
 }
 
+sequalizeModel.sync() 
 export var Model = sequalizeModel;

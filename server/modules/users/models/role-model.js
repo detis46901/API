@@ -24,11 +24,18 @@ var sequalizeModel = db.define('role', {
         }
     }
 });
-sequalizeModel.create({
-    groupID: 1,
-    role: 'Engineer',
-    active: true
+var flag = 0;
+sequalizeModel.findAll({}).then(function (result) {
+    if (result == null)
+        flag = 1; //Create default group if there isn't one yet
 });
+if (flag == 1) {
+    sequalizeModel.create({
+        groupID: 1,
+        role: 'Engineer',
+        active: true
+    });
+}
 sequalizeModel.sync();
 exports.Model = sequalizeModel;
 
