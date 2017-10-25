@@ -27,6 +27,48 @@ router.get('/all', (req, res) => {
 
 });
 
+router.get('/create', (req, res) => {
+    
+        var table = <string>req.query.table;
+       
+        
+        service.create(table).then((result) => {
+            res.send(result);
+        }).catch((error) => {
+            res.send(error);
+        });
+    
+    });
+
+router.get('/addColumn', (req, res) => {
+        
+    console.log(req)
+        var table = <string>req.query.table;
+        var field = <string>req.query.field;
+        var type = <string>req.query.type
+        console.log('table=' + table)
+        console.log('field=' + field)
+        console.log('type=' + type)
+        service.addColumn(table,field,type).then((result) => {
+            res.send(result);
+        }).catch((error) => {
+            res.send(error);
+        });
+    
+    });
+
+    router.get('/deleteTable', (req, res) => {
+        
+    console.log(req)
+        var table = <string>req.query.table;
+        
+        service.deleteTable(table).then((result) => {
+            res.send(result);
+        }).catch((error) => {
+            res.send(error);
+        });
+    
+    });
 // router.post('/create', (req, res) => {
     
 //     var request = <App.User>req.body;
