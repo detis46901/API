@@ -54,14 +54,9 @@ var sequalizeModel = db.define('user', {
 sequalizeModel.sync();
 var arr;
 var flag = 0;
-sequalizeModel.findAll({
-    where: {
-        attr1: 1,
-        attr2: 'Carey'
-    }
-}).then(function (result) {
+sequalizeModel.findAll({}).then(function (result) {
     if (result == null)
-        flag = 1;
+        flag = 1; //Create default user if there isn't one yet
 });
 if (flag == 1) {
     sequalizeModel.create({

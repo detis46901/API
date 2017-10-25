@@ -63,10 +63,6 @@ var arr: Array<UserInstance>;
 var flag = 0;
 
 sequalizeModel.findAll({
-    where: {
-        attr1: 1,
-        attr2: 'Carey'
-    }
 }).then(function(result) {
     if(result == null)
         flag = 1; //Create default user if there isn't one yet
