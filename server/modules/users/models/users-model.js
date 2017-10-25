@@ -52,15 +52,28 @@ var sequalizeModel = db.define('user', {
     }
 });
 sequalizeModel.sync();
-sequalizeModel.create({
-    firstName: 'Carey',
-    lastName: 'Stranahan',
-    password: 'c8108df8eaad2bf5004850ab32c9fa23',
-    roleID: 1,
-    active: true,
-    email: 'cstranahan@cityofkokomo.org',
-    administrator: true
+var arr;
+var flag = 0;
+sequalizeModel.findAll({
+    where: {
+        attr1: 1,
+        attr2: 'Carey'
+    }
+}).then(function (result) {
+    if (result == null)
+        flag = 1;
 });
+if (flag == 1) {
+    sequalizeModel.create({
+        firstName: 'Carey',
+        lastName: 'Stranahan',
+        password: 'c8108df8eaad2bf5004850ab32c9fa23',
+        roleID: 1,
+        active: true,
+        email: 'cstranahan@cityofkokomo.org',
+        administrator: true
+    });
+}
 exports.Model = sequalizeModel;
 
 //# sourceMappingURL=../../../source-maps/modules/users/models/users-model.js.map
