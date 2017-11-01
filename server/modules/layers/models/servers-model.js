@@ -42,7 +42,7 @@ sequalizeModel.sync({ force: true })
     sequalizeModel.create({
         serverName: "Kokomo Geoserver",
         serverType: "Geoserver",
-        serverURL: "http://foster2.cityofkokomo.org:8080/Geoserver"
+        serverURL: "http://foster2.cityofkokomo.org:8080/geoserver/wms"
     });
 });
 //console.log(temp)
