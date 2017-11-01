@@ -16,6 +16,7 @@ var UserPageLayerController = require('./modules/layers/controllers/user-page-la
 var LayerPermissionController = require('./modules/layers/controllers/layers-permission-controller');
 var ServerController = require('./modules/layers/controllers/servers-controller');
 var SQLController = require('./modules/postGIS_layers/controllers/sql-controller');
+var geoJSONController = require('./modules/postGIS_layers/controllers/geoJSON-controller');
 var app = express();
 // Configuration
 app.set('port', 5000);
@@ -39,6 +40,7 @@ app.use('/api/userpagelayer', UserPageLayerController);
 app.use('/api/userpage', PageController);
 app.use('/api/server', ServerController);
 app.use('/api/sql', SQLController);
+app.use('/api/geojson', geoJSONController);
 app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
 });
