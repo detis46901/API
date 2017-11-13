@@ -35,6 +35,14 @@ router.get('/userlist', function (req, res) {
         res.send(error);
     });
 });
+router.get('/getbylayer', function (req, res) {
+    var layerID = req.query.layerAdminID;
+    service.getByLayer(layerID).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.post('/create', function (req, res) {
     var request = req.body;
     service.create(request).then(function (result) {

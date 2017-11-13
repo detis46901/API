@@ -52,7 +52,6 @@ var LayerPermissionService = (function () {
     };
     LayerPermissionService.prototype.delete = function (ID) {
         return LayerPermissionModel.Model.findById(ID).then(function (LayerPermissionInstance) {
-            console.log(LayerPermissionInstance);
             return LayerPermissionInstance.destroy();
         });
     };

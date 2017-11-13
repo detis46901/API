@@ -3,13 +3,14 @@ var UserPageLayerModel = require('../models/user-page-layer-model');
 var PageModel = require('../../users/models/page-model');
 var LayerModel = require('../models/layers-admin-model');
 var ServerModel = require('../models/servers-model');
+var UserModel = require('../../users/models/users-model');
 var UserPageLayerService = (function () {
     function UserPageLayerService() {
     }
     UserPageLayerService.prototype.getList = function (pageID) {
         var findOptions = {
             order: [
-                'rowID'
+                'ID'
             ]
         };
         if (pageID) {
@@ -24,7 +25,7 @@ var UserPageLayerService = (function () {
     UserPageLayerService.prototype.getPageLayers = function (pageID) {
         var findOptions = {
             order: [
-                'ID'
+                'pageID'
             ]
         };
         if (pageID) {
@@ -40,7 +41,7 @@ var UserPageLayerService = (function () {
     UserPageLayerService.prototype.getUserLayer = function (userID) {
         var findOptions = {
             order: [
-                'rowID'
+                'userID'
             ]
         };
         if (userID) {
@@ -50,7 +51,22 @@ var UserPageLayerService = (function () {
                 ]
             };
         }
-        return UserPageLayerModel.Model.findAll(findOptions);
+        return UserPageLayerModel.Model.findAll({ order: ['ID'], where: { $and: [{ userID: userID }] }, include: [{ model: UserModel.Model }, { model: LayerModel.Model }, { model: PageModel.Model }] });
+    };
+    UserPageLayerService.prototype.getByLayer = function (layerID) {
+        var findOptions = {
+            order: [
+                'layerID'
+            ]
+        };
+        if (layerID) {
+            findOptions.where = {
+                $and: [
+                    { layerAdminID: layerID }
+                ]
+            };
+        }
+        return UserPageLayerModel.Model.findAll({ order: ['ID'], where: { $and: [{ layerAdminID: layerID }] } });
     };
     UserPageLayerService.prototype.get = function (rowID) {
         return UserPageLayerModel.Model.findById(rowID);

@@ -3,6 +3,7 @@ import UserPageLayerModel = require('../models/user-page-layer-model');
 import PageModel = require('../../users/models/page-model')
 import LayerModel = require('../models/layers-admin-model')
 import ServerModel = require ('../models/servers-model')
+import UserModel = require('../../users/models/users-model');
 
 class UserPageLayerService {
 
@@ -10,7 +11,7 @@ class UserPageLayerService {
 
         var findOptions: Sequelize.FindOptions = {
             order: [
-                'rowID'
+                'ID'
             ]
         };
 
@@ -29,7 +30,7 @@ class UserPageLayerService {
     getPageLayers(pageID: number): any {
         var findOptions: Sequelize.FindOptions = {
             order: [
-                'ID'
+                'pageID'
             ]
         };
 
@@ -48,11 +49,10 @@ class UserPageLayerService {
         return UserPageLayerModel.Model.findAll({order: ['ID'], where: {$and: [{ userPageID: pageID}]}, include: [{model: PageModel.Model}, {model: LayerModel.Model, include: [ServerModel.Model]}]})
     }
 
-    getUserLayer(userID: number): Promise<UserPageLayerModel.UserPageLayerInstance[]> {
-
+    getUserLayer(userID: number): any {
         var findOptions: Sequelize.FindOptions = {
             order: [
-                'rowID'
+                'userID'
             ]
         };
 
@@ -64,7 +64,25 @@ class UserPageLayerService {
             }
         }
 
-        return UserPageLayerModel.Model.findAll(findOptions);
+        return UserPageLayerModel.Model.findAll({order: ['ID'], where: {$and: [{ userID: userID}]}, include: [{model: UserModel.Model}, {model: LayerModel.Model}, {model: PageModel.Model}]});
+    }
+
+    getByLayer(layerID: number): any {
+        var findOptions: Sequelize.FindOptions = {
+            order: [
+                'layerID'
+            ]
+        };
+
+        if (layerID) {
+            findOptions.where = {
+                $and: [
+                    { layerAdminID: layerID}
+                ]
+            }
+        }
+
+        return UserPageLayerModel.Model.findAll({order: ['ID'], where: {$and: [{ layerAdminID: layerID}]}});
     }
 
     get(rowID: number): Promise<UserPageLayerModel.UserPageLayerInstance> {
