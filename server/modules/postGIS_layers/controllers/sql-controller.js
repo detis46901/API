@@ -18,6 +18,14 @@ router.get('/all', function (req, res) {
         res.send(error);
     });
 });
+router.get('/getschema', function (req, res) {
+    var table = req.query.table;
+    service.getschema(table).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.get('/create', function (req, res) {
     var table = req.query.table;
     service.create(table).then(function (result) {
@@ -44,6 +52,36 @@ router.get('/deleteTable', function (req, res) {
     console.log(req);
     var table = req.query.table;
     service.deleteTable(table).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
+router.get('/one', function (req, res) {
+    var table = req.query.table;
+    var id = req.query.id;
+    service.getsingle(table, id).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
+// router.post('/create', (req, res) => {
+//     var request = <App.User>req.body;
+//     console.log(request)
+//     service.create(request).then((result) => {
+//         res.send(result);
+//     }).catch((error) => {
+//         res.send(error);
+//     });
+// });
+router.get('/update', function (req, res) {
+    var table = req.query.table;
+    var id = req.query.id;
+    var field = req.query.field;
+    var type = req.query.type;
+    var value = req.query.value;
+    service.update(table, id, field, type, value).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);

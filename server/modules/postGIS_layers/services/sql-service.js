@@ -22,7 +22,7 @@ var SQLService = (function () {
     //     return UserModel.Model.findAll(findOptions);
     // }
     SQLService.prototype.get = function (table) {
-        return db.query("SELECT * from t" + table);
+        return db.query("SELECT * from mycube.t" + table);
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
     };
     SQLService.prototype.create = function (table) {
@@ -43,6 +43,22 @@ var SQLService = (function () {
     };
     SQLService.prototype.deleteTable = function (table) {
         return db.query('DROP TABLE mycube.t' + table);
+    };
+    SQLService.prototype.getschema = function (table) {
+        return db.query("SELECT column_name AS field, data_type as type FROM information_schema.columns WHERE table_schema = 'mycube' AND table_name = 't" + table + "'");
+    };
+    SQLService.prototype.getsingle = function (table, id) {
+        return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';");
+    };
+    SQLService.prototype.update = function (table, id, field, type, value) {
+        switch (type) {
+            case "integer": {
+                return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';");
+            }
+            case "text": {
+                return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE " + "id='" + id + "';");
+            }
+        }
     };
     return SQLService;
 }());
