@@ -1,5 +1,6 @@
 import dbConnection = require('../../../core/db-connection');
 import Sequelize = require('sequelize');
+import GroupModel = require('../models/group-model');
 
 var db = dbConnection();
 
@@ -9,12 +10,6 @@ export interface RoleModel extends Sequelize.Model<RoleInstance, App.Role> { }
 
 var sequalizeModel = db.define<RoleInstance, App.Role>('role', <any>{
     ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-    groupID: {
-        type: Sequelize.INTEGER,
-        validate: {
-            min: 1
-        }
-    },
     role: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -46,6 +41,6 @@ if(flag == 1) {
         active: true
     })
 }
-
+sequalizeModel.belongsTo(GroupModel.Model);
 sequalizeModel.sync()    
 export var Model = sequalizeModel;

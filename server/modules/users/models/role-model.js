@@ -1,15 +1,10 @@
 "use strict";
 var dbConnection = require('../../../core/db-connection');
 var Sequelize = require('sequelize');
+var GroupModel = require('../models/group-model');
 var db = dbConnection();
 var sequalizeModel = db.define('role', {
     ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-    groupID: {
-        type: Sequelize.INTEGER,
-        validate: {
-            min: 1
-        }
-    },
     role: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -36,6 +31,7 @@ if (flag == 1) {
         active: true
     });
 }
+sequalizeModel.belongsTo(GroupModel.Model);
 sequalizeModel.sync();
 exports.Model = sequalizeModel;
 
