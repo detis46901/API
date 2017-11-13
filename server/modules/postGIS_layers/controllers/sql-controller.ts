@@ -27,6 +27,18 @@ router.get('/all', (req, res) => {
 
 });
 
+router.get('/getschema', (req, res) => {
+    
+        var table = <string>req.query.table;
+        
+        service.getschema(table).then((result) => {
+            res.send(result);
+        }).catch((error) => {
+            res.send(error);
+        });
+    
+    });
+
 router.get('/create', (req, res) => {
     
         var table = <string>req.query.table;
@@ -69,6 +81,17 @@ router.get('/addColumn', (req, res) => {
         });
     
     });
+
+    router.get('/one', (req, res) => {
+        var table = <string>req.query.table;
+        var id = <string>req.query.id;
+        service.getsingle(table, id).then((result) => {
+            res.send(result);
+        }).catch((error) => {
+            res.send(error);
+        });
+    })
+    
 // router.post('/create', (req, res) => {
     
 //     var request = <App.User>req.body;
@@ -81,17 +104,21 @@ router.get('/addColumn', (req, res) => {
 
 // });
 
-// router.put('/update', (req, res) => {
+ router.get('/update', (req, res) => {
     
-//     var request = <App.User>req.body;
+     var table = <string>req.query.table;
+     var id = <string>req.query.id;
+    var field = <string>req.query.field;
+    var type = <string>req.query.type;
+    var value = <any>req.query.value;
 
-//     service.update(request).then((result) => {
-//         res.send(result);
-//     }).catch((error) => {
-//         res.send(error);
-//     });
+     service.update(table, id, field, type, value).then((result) => {
+         res.send(result);
+     }).catch((error) => {
+         res.send(error);
+     });
 
-// });
+ });
 
 // router.delete('/delete', (req, res) => {
     
