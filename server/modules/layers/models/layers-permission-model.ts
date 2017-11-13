@@ -1,6 +1,7 @@
 import dbConnection = require('../../../core/db-connection');
 import Sequelize = require('sequelize');
-var LayerAdminModel = require('./layers-admin-model');
+import UserModel = require('../../users/models/users-model');
+import LayerAdminModel = require('./layers-admin-model');
 
 var db = dbConnection();
 
@@ -11,15 +12,12 @@ export interface LayerPermissionModel extends Sequelize.Model<LayerPermissionIns
 
 var sequalizeModel = db.define<LayerPermissionInstance, App.LayerPermission>('layer_permission', <any>{
     ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-    userID: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-    },
     edit: {
         type: Sequelize.BOOLEAN,
     }
 });
 
+sequalizeModel.belongsTo(UserModel.Model);
 sequalizeModel.belongsTo(LayerAdminModel.Model);
 sequalizeModel.sync(); 
 

@@ -4,7 +4,6 @@ import ServerModel = require ('../models/servers-model')
 
 
 class LayerAdminService {
-
     getList(searchValue: string): Promise<LayerAdminModel.LayerAdminInstance[]> {
 
         var findOptions: Sequelize.FindOptions = {
@@ -57,7 +56,7 @@ class LayerAdminService {
     delete(ID: number) {
 
         return LayerAdminModel.Model.findById(ID).then((LayerAdminInstance) => {
-
+            console.log(LayerAdminInstance)
             return LayerAdminInstance.destroy();
 
         });

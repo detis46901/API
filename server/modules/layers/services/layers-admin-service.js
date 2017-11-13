@@ -45,6 +45,7 @@ var LayerAdminService = (function () {
     };
     LayerAdminService.prototype.delete = function (ID) {
         return LayerAdminModel.Model.findById(ID).then(function (LayerAdminInstance) {
+            console.log(LayerAdminInstance);
             return LayerAdminInstance.destroy();
         });
     };
