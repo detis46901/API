@@ -27,7 +27,7 @@ class SQLService {
     // }
 
     get(table: string): Promise<any> {
-        return db.query("SELECT * from t" + table)
+        return db.query("SELECT * from mycube.t" + table)
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
     }
 
@@ -56,6 +56,24 @@ class SQLService {
         return db.query('DROP TABLE mycube.t' + table)
     }
 
+    getschema(table:string): Promise<any> {
+        return db.query("SELECT column_name AS field, data_type as type FROM information_schema.columns WHERE table_schema = 'mycube' AND table_name = 't" + table + "'")
+    }
+
+    getsingle(table:string, id:string): Promise<any> {
+        return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';")
+    }
+    update(table: string, id: string, field: string, type: string, value: any) {
+        switch (type) {
+            case "integer": {
+                return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';")
+            }
+            case "text": {
+                return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE " + "id='" + id + "';")
+                
+            }
+        }
+    }
 //     create(request: App.User): Promise<UserModel.UserInstance> {
 //         //let plain_password = request.password
 //         //put the hash in here, then set request.password to hash result, have the code written in the js of this file
