@@ -67,7 +67,6 @@ class LayerPermissionService {
     delete(ID: number) {
 
         return LayerPermissionModel.Model.findById(ID).then((LayerPermissionInstance) => {
-            console.log(LayerPermissionInstance)
             return LayerPermissionInstance.destroy();
 
         });

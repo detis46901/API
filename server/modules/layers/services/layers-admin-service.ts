@@ -56,7 +56,6 @@ class LayerAdminService {
     delete(ID: number) {
 
         return LayerAdminModel.Model.findById(ID).then((LayerAdminInstance) => {
-            console.log(LayerAdminInstance)
             return LayerAdminInstance.destroy();
 
         });

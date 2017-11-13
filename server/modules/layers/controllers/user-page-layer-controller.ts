@@ -51,6 +51,16 @@ router.get('/userlist', (req, res) => {
 
 });
 
+router.get('/getbylayer', (req, res) => {
+    var layerID = <number>req.query.layerAdminID;
+
+    service.getByLayer(layerID).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+})
+
 router.post('/create', (req, res) => {
     
     var request = <App.LayerAdmin>req.body;
