@@ -8,7 +8,7 @@ class RoleService {
 
         var findOptions: Sequelize.FindOptions = {
             order: [
-                'role'
+                'ID'
             ]
         };
 
@@ -50,6 +50,24 @@ class RoleService {
         return RoleModel.Model.findById(rowID);
     }
 
+    getByGroup(groupID: number): any {
+        var findOptions: Sequelize.FindOptions = {
+            order: [
+                'groupID'
+            ]
+        };
+
+        if (groupID) {
+            findOptions.where = {
+                $and: [
+                    {groupID: groupID}
+                ]
+            }
+        }
+
+        return RoleModel.Model.findAll(findOptions);
+    }
+
     create(request: App.Role): Promise<RoleModel.RoleInstance> {
         console.log("made it to the API")
         return RoleModel.Model.create(request);
@@ -66,9 +84,9 @@ class RoleService {
         }));
     }
 
-    delete(rowID: number) {
+    delete(ID: number) {
 
-        return RoleModel.Model.findById(rowID).then((RoleInstance) => {
+        return RoleModel.Model.findById(ID).then((RoleInstance) => {
 
             return RoleInstance.destroy();
 

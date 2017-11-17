@@ -3,7 +3,6 @@ var UserPageLayerModel = require('../models/user-page-layer-model');
 var PageModel = require('../../users/models/page-model');
 var LayerModel = require('../models/layers-admin-model');
 var ServerModel = require('../models/servers-model');
-var UserModel = require('../../users/models/users-model');
 var UserPageLayerService = (function () {
     function UserPageLayerService() {
     }
@@ -51,7 +50,8 @@ var UserPageLayerService = (function () {
                 ]
             };
         }
-        return UserPageLayerModel.Model.findAll({ order: ['ID'], where: { $and: [{ userID: userID }] }, include: [{ model: UserModel.Model }, { model: LayerModel.Model }, { model: PageModel.Model }] });
+        //return UserPageLayerModel.Model.findAll({order: ['ID'], where: {$and: [{ userID: userID}]}, include: [{model: UserModel.Model}, {model: LayerModel.Model}, {model: PageModel.Model}]});
+        return UserPageLayerModel.Model.findAll(findOptions);
     };
     UserPageLayerService.prototype.getByLayer = function (layerID) {
         var findOptions = {
@@ -66,7 +66,7 @@ var UserPageLayerService = (function () {
                 ]
             };
         }
-        return UserPageLayerModel.Model.findAll({ order: ['ID'], where: { $and: [{ layerAdminID: layerID }] } });
+        return UserPageLayerModel.Model.findAll(findOptions);
     };
     UserPageLayerService.prototype.get = function (rowID) {
         return UserPageLayerModel.Model.findById(rowID);

@@ -25,6 +25,16 @@ router.get('/rolesgroupsdepartments', (req, res) => {
     
 });
 
+router.get('/getbygroup', (req, res) => {
+    var groupID = <number>req.query.groupID;
+
+    service.getByGroup(groupID).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    })
+});
+
 router.get('/one', (req, res) => {
 
     var User = <number>req.query.rowid;
@@ -63,7 +73,8 @@ router.put('/update', (req, res) => {
 
 router.delete('/delete', (req, res) => {
     
-    var rowID = <number>req.query.rowID;
+    var rowID = <number>req.query.ID;
+    console.log(rowID)
 
     service.delete(rowID).then((result) => {
         res.send(result);
