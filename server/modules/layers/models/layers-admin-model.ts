@@ -37,6 +37,7 @@ var sequalizeModel = db.define<LayerAdminInstance, App.LayerAdmin>('layer_admin'
           len: [1, 200]
       }
   },
+  
      layerFormat: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -59,6 +60,8 @@ var sequalizeModel = db.define<LayerAdminInstance, App.LayerAdmin>('layer_admin'
         }
     }
 });
+
+
 
 sequalizeModel.belongsTo(ServerModel.Model);
 sequalizeModel.sync(); 

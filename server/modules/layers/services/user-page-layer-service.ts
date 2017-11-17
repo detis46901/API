@@ -64,7 +64,8 @@ class UserPageLayerService {
             }
         }
 
-        return UserPageLayerModel.Model.findAll({order: ['ID'], where: {$and: [{ userID: userID}]}, include: [{model: UserModel.Model}, {model: LayerModel.Model}, {model: PageModel.Model}]});
+        //return UserPageLayerModel.Model.findAll({order: ['ID'], where: {$and: [{ userID: userID}]}, include: [{model: UserModel.Model}, {model: LayerModel.Model}, {model: PageModel.Model}]});
+        return UserPageLayerModel.Model.findAll(findOptions);
     }
 
     getByLayer(layerID: number): any {
@@ -77,12 +78,12 @@ class UserPageLayerService {
         if (layerID) {
             findOptions.where = {
                 $and: [
-                    { layerAdminID: layerID}
+                    {layerAdminID: layerID}
                 ]
             }
         }
 
-        return UserPageLayerModel.Model.findAll({order: ['ID'], where: {$and: [{ layerAdminID: layerID}]}});
+        return UserPageLayerModel.Model.findAll(findOptions);
     }
 
     get(rowID: number): Promise<UserPageLayerModel.UserPageLayerInstance> {

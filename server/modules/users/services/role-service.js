@@ -6,7 +6,7 @@ var RoleService = (function () {
     RoleService.prototype.getList = function (searchValue) {
         var findOptions = {
             order: [
-                'role'
+                'ID'
             ]
         };
         if (searchValue) {
@@ -40,6 +40,21 @@ var RoleService = (function () {
     RoleService.prototype.get = function (rowID) {
         return RoleModel.Model.findById(rowID);
     };
+    RoleService.prototype.getByGroup = function (groupID) {
+        var findOptions = {
+            order: [
+                'groupID'
+            ]
+        };
+        if (groupID) {
+            findOptions.where = {
+                $and: [
+                    { groupID: groupID }
+                ]
+            };
+        }
+        return RoleModel.Model.findAll(findOptions);
+    };
     RoleService.prototype.create = function (request) {
         console.log("made it to the API");
         return RoleModel.Model.create(request);
@@ -51,8 +66,8 @@ var RoleService = (function () {
             return RoleInstance.save();
         }));
     };
-    RoleService.prototype.delete = function (rowID) {
-        return RoleModel.Model.findById(rowID).then(function (RoleInstance) {
+    RoleService.prototype.delete = function (ID) {
+        return RoleModel.Model.findById(ID).then(function (RoleInstance) {
             return RoleInstance.destroy();
         });
     };
