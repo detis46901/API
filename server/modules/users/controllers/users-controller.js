@@ -18,9 +18,16 @@ router.get('/one', function (req, res) {
         res.send(error);
     });
 });
+router.get('/getbyrole', function (req, res) {
+    var roleID = req.query.roleID;
+    service.getByRole(roleID).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.post('/create', function (req, res) {
     var request = req.body;
-    console.log(request);
     service.create(request).then(function (result) {
         res.send(result);
     }).catch(function (error) {

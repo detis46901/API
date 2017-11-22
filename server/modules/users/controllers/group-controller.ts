@@ -15,14 +15,14 @@ router.get('/list', (req, res) => {
     
 });
 
-router.get('/dep', (req, res) => {
-    
-    service.getdepartment(req.query.ID).then((result) => {
+router.get('/getbydept', (req, res) => {
+    var departmentID = <number>req.query.departmentID;
+
+    service.getByDepartment(departmentID).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
-    });
-    
+    })
 });
 
 router.get('/one', (req, res) => {
@@ -59,11 +59,12 @@ router.put('/update', (req, res) => {
         res.send(error);
     });
 
+
 });
 
 router.delete('/delete', (req, res) => {
     
-    var rowID = <number>req.query.rowID;
+    var rowID = <number>req.query.ID;
 
     service.delete(rowID).then((result) => {
         res.send(result);

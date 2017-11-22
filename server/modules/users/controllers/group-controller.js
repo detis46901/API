@@ -10,8 +10,9 @@ router.get('/list', function (req, res) {
         res.send(error);
     });
 });
-router.get('/dep', function (req, res) {
-    service.getdepartment(req.query.ID).then(function (result) {
+router.get('/getbydept', function (req, res) {
+    var departmentID = req.query.departmentID;
+    service.getByDepartment(departmentID).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
@@ -42,7 +43,7 @@ router.put('/update', function (req, res) {
     });
 });
 router.delete('/delete', function (req, res) {
-    var rowID = req.query.rowID;
+    var rowID = req.query.ID;
     service.delete(rowID).then(function (result) {
         res.send(result);
     }).catch(function (error) {

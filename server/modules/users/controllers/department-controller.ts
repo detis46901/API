@@ -53,7 +53,7 @@ router.put('/update', (req, res) => {
 
 router.delete('/delete', (req, res) => {
     
-    var rowID = <number>req.query.rowID;
+    var rowID = <number>req.query.ID;
 
     service.delete(rowID).then((result) => {
         res.send(result);
