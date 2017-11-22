@@ -1,6 +1,5 @@
 "use strict";
 var GroupModel = require('../models/group-model');
-var DepartmentModel = require('../models/department-model');
 var GroupService = (function () {
     function GroupService() {
     }
@@ -21,8 +20,20 @@ var GroupService = (function () {
         }
         return GroupModel.Model.findAll(findOptions);
     };
-    GroupService.prototype.getdepartment = function (ID) {
-        return GroupModel.Model.findAll({ include: [DepartmentModel.Model] });
+    GroupService.prototype.getByDepartment = function (departmentID) {
+        var findOptions = {
+            order: [
+                'departmentID'
+            ]
+        };
+        if (departmentID) {
+            findOptions.where = {
+                $and: [
+                    { departmentID: departmentID }
+                ]
+            };
+        }
+        return GroupModel.Model.findAll(findOptions);
     };
     GroupService.prototype.get = function (rowID) {
         return GroupModel.Model.findById(rowID);

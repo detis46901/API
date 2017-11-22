@@ -20,6 +20,21 @@ var UserService = (function () {
         }
         return UserModel.Model.findAll(findOptions);
     };
+    UserService.prototype.getByRole = function (roleID) {
+        var findOptions = {
+            order: [
+                'roleID'
+            ]
+        };
+        if (roleID) {
+            findOptions.where = {
+                $and: [
+                    { roleID: roleID }
+                ]
+            };
+        }
+        return UserModel.Model.findAll(findOptions);
+    };
     UserService.prototype.get = function (rowID) {
         return UserModel.Model.findById(rowID);
     };

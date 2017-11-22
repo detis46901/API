@@ -26,8 +26,22 @@ class GroupService {
         return GroupModel.Model.findAll(findOptions);
     }
 
-    getdepartment(ID: number): any {
-        return GroupModel.Model.findAll({ include: [ DepartmentModel.Model ]})
+    getByDepartment(departmentID: number): any {
+        var findOptions: Sequelize.FindOptions = {
+            order: [
+                'departmentID'
+            ]
+        };
+
+        if (departmentID) {
+            findOptions.where = {
+                $and: [
+                    {departmentID: departmentID}
+                ]
+            }
+        }
+
+        return GroupModel.Model.findAll(findOptions);
     }
 
     get(rowID: number): Promise<GroupModel.GroupInstance> {

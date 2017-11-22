@@ -27,6 +27,24 @@ class UserService {
         return UserModel.Model.findAll(findOptions);
     }
 
+    getByRole(roleID: number): any {
+        var findOptions: Sequelize.FindOptions = {
+            order: [
+                'roleID'
+            ]
+        };
+
+        if (roleID) {
+            findOptions.where = {
+                $and: [
+                    {roleID: roleID}
+                ]
+            }
+        }
+
+        return UserModel.Model.findAll(findOptions);
+    }
+
     get(rowID: number): Promise<UserModel.UserInstance> {
         return UserModel.Model.findById(rowID);
     }

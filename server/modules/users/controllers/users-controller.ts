@@ -6,7 +6,6 @@ var router = express.Router();
 var service = new UserService();
 
 router.get('/list', (req, res) => {
-    
     service.getList(req.query.searchValue).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -16,7 +15,6 @@ router.get('/list', (req, res) => {
 });
 
 router.get('/one', (req, res) => {
-
     var User = <number>req.query.rowid;
     
     service.get(User).then((result) => {
@@ -27,10 +25,19 @@ router.get('/one', (req, res) => {
 
 });
 
+router.get('/getbyrole', (req, res) => {
+    var roleID = <number>req.query.roleID
+
+    service.getByRole(roleID).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    })
+});
+
 router.post('/create', (req, res) => {
-    
     var request = <App.User>req.body;
-    console.log(request)
+
     service.create(request).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -40,7 +47,6 @@ router.post('/create', (req, res) => {
 });
 
 router.put('/update', (req, res) => {
-    
     var request = <App.User>req.body;
 
     service.update(request).then((result) => {
@@ -52,7 +58,6 @@ router.put('/update', (req, res) => {
 });
 
 router.delete('/delete', (req, res) => {
-    
     var ID = <number>req.query.ID;
     console.log (ID);
     service.delete(ID).then((result) => {
