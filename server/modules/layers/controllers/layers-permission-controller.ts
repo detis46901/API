@@ -65,7 +65,7 @@ router.put('/update', (req, res) => {
 
 router.delete('/delete', (req, res) => {
     
-    var ID = <number>req.queryID;
+    var ID = <number>req.query.ID;
     console.log (ID);
     service.delete(ID).then((result) => {
         res.send(result);
