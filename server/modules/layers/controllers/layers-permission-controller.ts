@@ -41,7 +41,7 @@ router.get('/userlist', (req, res) => {
 
 router.post('/create', (req, res) => {
     
-    var request = <App.LayerAdmin>req.body;
+    var request = <App.LayerPermission>req.body;
     
     service.create(request).then((result) => {
         res.send(result);
@@ -53,7 +53,7 @@ router.post('/create', (req, res) => {
 
 router.put('/update', (req, res) => {
     
-    var request = <App.LayerAdmin>req.body;
+    var request = <App.LayerPermission>req.body;
 
     service.update(request).then((result) => {
         res.send(result);
