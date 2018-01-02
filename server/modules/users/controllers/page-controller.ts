@@ -15,6 +15,16 @@ router.get('/list', (req, res) => {
     
 });
 
+router.get('/getactivebyuserid', (req, res) => {
+    
+    service.getActiveByUserID(req.query.userID).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+    
+});
+
 router.get('/default', (req, res) => {
     
     service.getDefault(req.query.userID).then((result) => {

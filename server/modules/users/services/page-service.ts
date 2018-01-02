@@ -23,6 +23,26 @@ class PageService {
         return PageModel.Model.findAll(findOptions);
     }
 
+    getActiveByUserID(userID: string): Promise<PageModel.PageInstance[]> {
+        
+                var findOptions: Sequelize.FindOptions = {
+                    order: [
+                        'pageOrder'
+                    ]
+                };
+        
+                if (userID) {
+                    findOptions.where = {
+                        $and: [
+                            { userID: userID},
+                            { active: true}
+                        ]
+                    }
+                }
+                
+                return PageModel.Model.findAll(findOptions);
+            }
+        
     getDefault(userID: string): Promise<PageModel.PageInstance[]> {
 
         var findOptions: Sequelize.FindOptions = {
