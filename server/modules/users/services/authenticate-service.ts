@@ -1,7 +1,7 @@
 import Sequelize = require('sequelize');
 import UserModel = require('../models/users-model');
 
-class UserService {
+class AuthService {
 
     getList(email: string, password: string): Promise<UserModel.UserInstance[]> { //hashing
 
@@ -73,4 +73,4 @@ class UserService {
 
 }
 
-export = UserService;
+export = AuthService;

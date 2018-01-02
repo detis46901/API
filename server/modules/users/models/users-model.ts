@@ -69,12 +69,12 @@ sequalizeModel.findAll({
 
 if(flag == 1) {
     sequalizeModel.create({
-        firstName: 'Carey',
-        lastName: 'Stranahan',
-        password: 'c8108df8eaad2bf5004850ab32c9fa23', // this is Monday01
+        firstName: 'John',
+        lastName: 'Doe',
+        password: 'c8108df8eaad2bf5004850ab32c9fa23',
         roleID: 1,
-        active: true,
-        email: 'cstranahan@cityofkokomo.org',
+        active: false,
+        email: 'john.doe@email.com',
         administrator: true
     })
 }

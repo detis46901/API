@@ -1,11 +1,11 @@
 import express = require('express');
 
 //import UserService = require('../services/users-service');
-import AuthenticateService = require('../services/authenticate-service')
+import AuthService = require('../services/authenticate-service')
 import UserModel = require ('../models/users-model')
 
 var router = express.Router();
-var service = new AuthenticateService();
+var service = new AuthService();
 
 router.get('/list', (req, res) => {
     console.log(req.query.searchValue)
