@@ -10,6 +10,13 @@ router.get('/list', function (req, res) {
         res.send(error);
     });
 });
+router.get('/getactivebyuserid', function (req, res) {
+    service.getActiveByUserID(req.query.userID).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.get('/default', function (req, res) {
     service.getDefault(req.query.userID).then(function (result) {
         res.send(result);

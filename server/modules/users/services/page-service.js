@@ -18,6 +18,22 @@ var PageService = (function () {
         }
         return PageModel.Model.findAll(findOptions);
     };
+    PageService.prototype.getActiveByUserID = function (userID) {
+        var findOptions = {
+            order: [
+                'pageOrder'
+            ]
+        };
+        if (userID) {
+            findOptions.where = {
+                $and: [
+                    { userID: userID },
+                    { active: true }
+                ]
+            };
+        }
+        return PageModel.Model.findAll(findOptions);
+    };
     PageService.prototype.getDefault = function (userID) {
         var findOptions = {
             order: [
