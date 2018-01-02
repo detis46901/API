@@ -56,6 +56,22 @@ class UserService {
         return UserModel.Model.create(request);
     }
 
+    login(request: App.User): any {
+        // var email = new Array<string>();
+        // email.push("email", "email")
+        // //var email = ["email", "email"]
+        // UserModel.Model.find({attributes:email = request.body.email})
+        // .exec()
+        // .then(user => {
+        //     if(user) {
+        //         return res.status(409).json({
+        //             message: "User already exists."
+        //         })
+        //     } else {
+        //     }
+        // })
+    }
+
     update(request: App.User): Promise<UserModel.UserInstance> {
         
         return <any>(UserModel.Model.findById(request.ID).then((UserInstance) => {

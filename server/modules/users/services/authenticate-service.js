@@ -1,9 +1,9 @@
 "use strict";
 var UserModel = require('../models/users-model');
-var UserService = (function () {
-    function UserService() {
+var AuthService = (function () {
+    function AuthService() {
     }
-    UserService.prototype.getList = function (email, password) {
+    AuthService.prototype.getList = function (email, password) {
         var findOptions = {
             order: [
                 'ID'
@@ -19,13 +19,13 @@ var UserService = (function () {
         }
         return UserModel.Model.findAll(findOptions);
     };
-    UserService.prototype.get = function (rowID) {
+    AuthService.prototype.get = function (rowID) {
         return UserModel.Model.findById(rowID);
     };
-    UserService.prototype.getemail = function (email) {
+    AuthService.prototype.getemail = function (email) {
         return UserModel.Model.findById(email);
     };
-    UserService.prototype.create = function (request) {
+    AuthService.prototype.create = function (request) {
         /*let plain_password = request.password;
 
         bcrypt.genSalt(11, function (err, salt) {
@@ -43,7 +43,7 @@ var UserService = (function () {
         })*/ //hashing attempt
         return UserModel.Model.create(request);
     };
-    UserService.prototype.update = function (request) {
+    AuthService.prototype.update = function (request) {
         return (UserModel.Model.findById(request.ID).then(function (UserInstance) {
             UserInstance.firstName = request.firstName;
             UserInstance.lastName = request.lastName;
@@ -51,13 +51,13 @@ var UserService = (function () {
             return UserInstance.save();
         }));
     };
-    UserService.prototype.delete = function (rowID) {
+    AuthService.prototype.delete = function (rowID) {
         return UserModel.Model.findById(rowID).then(function (UserInstance) {
             return UserInstance.destroy();
         });
     };
-    return UserService;
+    return AuthService;
 }());
-module.exports = UserService;
+module.exports = AuthService;
 
 //# sourceMappingURL=../../../source-maps/modules/users/services/authenticate-service.js.map

@@ -1,9 +1,9 @@
 "use strict";
 var express = require('express');
 //import UserService = require('../services/users-service');
-var AuthenticateService = require('../services/authenticate-service');
+var AuthService = require('../services/authenticate-service');
 var router = express.Router();
-var service = new AuthenticateService();
+var service = new AuthService();
 router.get('/list', function (req, res) {
     console.log(req.query.searchValue);
     service.getList(req.query.email, req.query.password).then(function (result) {

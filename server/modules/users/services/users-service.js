@@ -44,6 +44,21 @@ var UserService = (function () {
         //request.password = (Md5.hashStr("Monday01")).toString()
         return UserModel.Model.create(request);
     };
+    UserService.prototype.login = function (request) {
+        // var email = new Array<string>();
+        // email.push("email", "email")
+        // //var email = ["email", "email"]
+        // UserModel.Model.find({attributes:email = request.body.email})
+        // .exec()
+        // .then(user => {
+        //     if(user) {
+        //         return res.status(409).json({
+        //             message: "User already exists."
+        //         })
+        //     } else {
+        //     }
+        // })
+    };
     UserService.prototype.update = function (request) {
         return (UserModel.Model.findById(request.ID).then(function (UserInstance) {
             UserInstance.firstName = request.firstName;
