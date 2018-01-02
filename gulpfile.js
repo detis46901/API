@@ -86,7 +86,7 @@ function startServer(cb) {
       script: config.mainServerFile,
       ignore: ["client/*"],
       env: { 'NODE_ENV': 'development' },
-      nodeArgs: ['--debug'],
+      nodeArgs: ['--inspect'],
       ext: 'js'
    }).on('start', function () {
       if (!started) {
