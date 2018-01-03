@@ -50,9 +50,6 @@ class UserService {
     }
 
     create(request: App.User): Promise<UserModel.UserInstance> {
-        //let plain_password = request.password
-        //put the hash in here, then set request.password to hash result, have the code written in the js of this file
-        //request.password = (Md5.hashStr("Monday01")).toString()
         return UserModel.Model.create(request);
     }
 

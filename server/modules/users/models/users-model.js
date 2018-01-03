@@ -34,20 +34,23 @@ var sequalizeModel = db.define('user', {
     active: {
         type: Sequelize.BOOLEAN,
         validate: {
-            is: ["[a-z]", 'i'] //only allow letters
+            is: ["[a-z]", 'i'] //only allow letters //1/3/18 why is this here? letter validation for a boolean type?
         }
     },
     email: {
         type: Sequelize.STRING,
         allowNull: false,
+        required: true,
+        unique: true,
         validate: {
-            len: [1, 200]
+            len: [1, 200],
+            isEmail: true
         }
     },
     administrator: {
         type: Sequelize.BOOLEAN,
         validate: {
-            is: ["[a-z]", 'i']
+            is: ["[a-z]", 'i'] //1/3/18^^^
         }
     }
 });
