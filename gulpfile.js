@@ -85,7 +85,10 @@ function startServer(cb) {
    return nodemon({
       script: config.mainServerFile,
       ignore: ["client/*"],
-      env: { 'NODE_ENV': 'development' },
+      env: { 
+            'NODE_ENV': 'development',
+            'JWT_SECRET_KEY': 'Monday01'//Assign a better secret once in production
+      },
       nodeArgs: ['--inspect'],
       ext: 'js'
    }).on('start', function () {
