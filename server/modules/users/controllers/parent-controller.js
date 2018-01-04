@@ -1,10 +1,10 @@
 "use strict";
 var express = require('express');
-var LayerAdminService = require('../services/layers-admin-service');
-var token_auth = require('../../JWT_Checker/authorize.js');
+var ParentService = require("./parent-service");
 var router = express.Router();
-var service = new LayerAdminService();
-router.get('/list', token_auth, function (req, res) {
+var service = new ParentService();
+//assign "var service = new ____Service();" in children
+router.get('/list', function (req, res) {
     service.getList(req.query.searchValue).then(function (result) {
         res.send(result);
     }).catch(function (error) {
@@ -12,18 +12,16 @@ router.get('/list', token_auth, function (req, res) {
     });
 });
 router.get('/one', function (req, res) {
-    var LayerAdmin = req.query.rowid;
-    service.get(LayerAdmin).then(function (result) {
+    service.get(req.query.rowid).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
     });
 });
-router.post('/create', token_auth, function (req, res) {
-    var request = req.body;
-    service.create(request).then(function (result) {
+router.get('/getbyrole', function (req, res) {
+    var roleID = req.query.roleID;
+    service.getByRole(roleID).then(function (result) {
         res.send(result);
-        console.log(result);
     }).catch(function (error) {
         res.send(error);
     });
@@ -45,6 +43,5 @@ router.delete('/delete', function (req, res) {
         res.send(error);
     });
 });
-module.exports = router;
 
-//# sourceMappingURL=../../../source-maps/modules/layers/controllers/layers-admin-controller.js.map
+//# sourceMappingURL=../../../source-maps/modules/users/controllers/parent-controller.js.map
