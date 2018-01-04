@@ -2,13 +2,10 @@
 var express = require('express');
 var UserService = require('../services/users-service');
 var UserModel = require('../models/users-model');
-var AuthService = require('../services/authenticate-service');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 var router = express.Router();
 var service = new UserService();
-var authService = new AuthService();
-var jwt_secret = "cityofkokomo46901";
 router.get('/list', function (req, res) {
     service.getList(req.query.searchValue).then(function (result) {
         res.send(result);
@@ -113,47 +110,6 @@ router.post('/login', function (req, res) {
         });
     });
 });
-// router.post('/login', (req, res) => {
-//     // var request = <App.User>req.body;
-//     // service.create(request).then(function (result) {
-//     //     res.send(result);
-//     // }).catch(function (error) {
-//     //     res.send(error);
-//     // });
-//     /*From 'authenticate-controller.ts'/authenticate*/
-//     var request = <App.User>req.body;
-//     var row = 0
-//     var admin = false
-//     console.log(req)
-//     authService.getList(request.email, request.password).then((user) => {
-//         //row = result[0].ID
-//         //admin = result[0].administrator
-//         //if (result.length==0){res.send({}) } else  {res.send(JSON.stringify({ token: 'fake-jwt-token2', userid: row, admin: admin }));}
-//         if(user.length < 1) {
-//             console.log("user.length < 1")
-//             return res.status(404).json({
-//                 message: 'User not found.'
-//             })
-//         } else {
-//             console.log("got token")
-//             const token = jwt.sign({
-//                 email: user[0].email,
-//                 ID: user[0].ID
-//             }, 
-//             jwt_secret,
-//             {
-//                 expiresIn: "1h"
-//             }
-//         );
-//         return res.status(200).json({
-//             message: "Auth successful",
-//             token: token
-//         })
-//         }
-//     }).catch((error) => {
-//         res.send(error);
-//     });
-// });
 router.put('/update', function (req, res) {
     var request = req.body;
     service.update(request).then(function (result) {

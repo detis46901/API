@@ -1,12 +1,16 @@
 import express = require('express');
-import LayerAdminService = require('../services/layers-admin-service');
-import token_auth = require('../../JWT_Checker/authorize.js');
+import sequalizeModel = require("../models/users-model");
+import Sequelize = require('sequelize');
+import jwt = require('jsonwebtoken');
+import bcrypt = require('bcrypt');
+import token_auth = require('./JWT_Checker/authorize');
+import ParentService = require ("./parent-service");
 
 var router = express.Router();
-var service = new LayerAdminService();
+var service = new ParentService()
+//assign "var service = new ____Service();" in children
 
-router.get('/list', token_auth, (req, res) => {
-    
+router.get('/list', (req, res) => {
     service.getList(req.query.searchValue).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -15,11 +19,8 @@ router.get('/list', token_auth, (req, res) => {
     
 });
 
-router.get('/one', (req, res) => {
-
-    var LayerAdmin = <number>req.query.rowid;
-    
-    service.get(LayerAdmin).then((result) => {
+router.get('/one', (req, res) => {   
+    service.get(req.query.rowid).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
@@ -27,22 +28,18 @@ router.get('/one', (req, res) => {
 
 });
 
-router.post('/create', token_auth, (req, res) => {
-    
-    var request = <App.LayerAdmin>req.body;
-    
-    service.create(request).then((result) => {
+router.get('/getbyrole', (req, res) => {
+    var roleID = <number>req.query.roleID
+
+    service.getByRole(roleID).then((result) => {
         res.send(result);
-        console.log(result)
     }).catch((error) => {
         res.send(error);
-    });
-
+    })
 });
 
 router.put('/update', (req, res) => {
-    
-    var request = <App.LayerAdmin>req.body;
+    var request = <App.User>req.body;
 
     service.update(request).then((result) => {
         res.send(result);
@@ -53,7 +50,6 @@ router.put('/update', (req, res) => {
 });
 
 router.delete('/delete', (req, res) => {
-    
     var ID = <number>req.query.ID;
     console.log (ID);
     service.delete(ID).then((result) => {
@@ -63,6 +59,3 @@ router.delete('/delete', (req, res) => {
     });
 
 });
-
-
-export = router;
