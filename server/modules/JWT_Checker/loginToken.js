@@ -7,7 +7,8 @@ module.exports = (req, res, next) => {
         const decoded_token = jwt.verify(token, process.env.JWT_SECRET_KEY, {
             ignoreExpiration:false
         }) //jwt.verify() does jwt.decode() and verifies signature afterwards.
-        req.loginToken = decoded_token
+        req.loginJsonData = decoded_token
+        console.log("\n\n"+req.loginJsonData+"\n\n")
         next();
     } catch(error) {
         return res.status(401).json({

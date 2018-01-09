@@ -109,7 +109,9 @@ router.post('/login', (req, res) => {
                 );
                 return res.status(200).json({
                     message: "Token granted.",
-                    token: login_token
+                    token: login_token,
+                    userID: user[0].ID,
+                    admin: user[0].administrator
                 });
             } else if(!result) { //If hash comparison does not match
                 return res.status(401).json({
@@ -144,7 +146,8 @@ router.post('/generatekey', (req, res) => {
                 const api_token = jwt.sign(
                     {
                         email: user[0].email,
-                        ID: user[0].ID //Use first+last name combo instead of ID to ensure key is different than login key
+                        firstName: user[0].firstName, //Use first+last name combo instead of ID to ensure key is different than login key
+                        lastName: user[0].lastName
                     }, 
                     process.env.JWT_SECRET_KEY,
                     {
@@ -153,7 +156,9 @@ router.post('/generatekey', (req, res) => {
                 );
                 return res.status(200).json({
                     message: "Token granted.",
-                    token: api_token
+                    token: api_token,
+                    userID: user[0].ID,
+                    admin: user[0].administrator
                 });
             } else if(!result) { //If hash comparison does not match
                 return res.status(401).json({

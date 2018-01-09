@@ -95,7 +95,9 @@ router.post('/login', function (req, res) {
                 });
                 return res.status(200).json({
                     message: "Token granted.",
-                    token: login_token
+                    token: login_token,
+                    userID: user[0].ID,
+                    admin: user[0].administrator
                 });
             }
             else if (!result) {
@@ -128,15 +130,17 @@ router.post('/generatekey', function (req, res) {
             }
             if (result) {
                 var api_token = jwt.sign({
-                    doggie: 26,
                     email: user[0].email,
-                    ID: user[0].ID //Use first+last name combo instead of ID to ensure key is different than login key
+                    firstName: user[0].firstName,
+                    lastName: user[0].lastName
                 }, process.env.JWT_SECRET_KEY, {
                     expiresIn: "30 days"
                 });
                 return res.status(200).json({
                     message: "Token granted.",
-                    token: api_token
+                    token: api_token,
+                    userID: user[0].ID,
+                    admin: user[0].administrator
                 });
             }
             else if (!result) {
