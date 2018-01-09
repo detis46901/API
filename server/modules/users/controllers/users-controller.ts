@@ -86,7 +86,6 @@ router.post('/login', (req, res) => {
         where: {email: req.body.email}
     }).then(user => {
         if(user.length < 1) { //If supplied email is not found as a user in the database
-
             return res.status(404).json({
                 message: 'User not found.'
             })
@@ -98,19 +97,19 @@ router.post('/login', (req, res) => {
                 })
             } 
             if(result) { //If input pw hash matches db pw hash
-                const token = jwt.sign(
+                const login_token = jwt.sign(
                     {
                         email: user[0].email,
                         ID: user[0].ID
                     }, 
                     process.env.JWT_SECRET_KEY,
                     {
-                        expiresIn: "1h"
+                        expiresIn: "30 days"
                     }
                 );
                 return res.status(200).json({
                     message: "Token granted.",
-                    token: token
+                    token: login_token
                 });
             } else if(!result) { //If hash comparison does not match
                 return res.status(401).json({
@@ -124,6 +123,50 @@ router.post('/login', (req, res) => {
         })
     });
 });
+
+//This request generates an API key (JWT) to be used for Google Earth KML files and such. Not to be confused with login "session" JWT above.
+router.post('/generatekey', (req, res) => {
+    UserModel.Model.findAll({
+        where: {email: req.body.email}
+    }).then(user => {
+        if(user.length < 1) { //If supplied email is not found as a user in the database
+            return res.status(404).json({
+                message: 'User not found.'
+            })
+        }
+        bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+            if(err) { //bcrypt hashing error
+                return res.status(500).json({
+                    message: 'bcrypt hash comparison failed.'
+                })
+            }
+            if(result) {
+                const api_token = jwt.sign(
+                    {
+                        email: user[0].email,
+                        ID: user[0].ID //Use first+last name combo instead of ID to ensure key is different than login key
+                    }, 
+                    process.env.JWT_SECRET_KEY,
+                    {
+                        expiresIn: "30 days"
+                    }
+                );
+                return res.status(200).json({
+                    message: "Token granted.",
+                    token: api_token
+                });
+            } else if(!result) { //If hash comparison does not match
+                return res.status(401).json({
+                    message: 'Authorization failed.'
+                })
+            }
+        })   
+    }).catch(err => {
+        return res.status(500).json({
+            error:err
+        })
+    });
+})
 
 router.put('/update', (req, res) => {
     var request = <App.User>req.body;
