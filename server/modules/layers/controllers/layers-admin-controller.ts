@@ -1,6 +1,6 @@
 import express = require('express');
 import LayerAdminService = require('../services/layers-admin-service');
-import token_auth = require('../../JWT_Checker/authorize.js');
+import token_auth = require('../../JWT_Checker/loginToken.js');
 
 var router = express.Router();
 var service = new LayerAdminService();

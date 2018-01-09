@@ -87,15 +87,56 @@ router.post('/login', function (req, res) {
                 });
             }
             if (result) {
-                var token = jwt.sign({
+                var login_token = jwt.sign({
                     email: user[0].email,
                     ID: user[0].ID
                 }, process.env.JWT_SECRET_KEY, {
-                    expiresIn: "1h"
+                    expiresIn: "30 days"
                 });
                 return res.status(200).json({
                     message: "Token granted.",
-                    token: token
+                    token: login_token
+                });
+            }
+            else if (!result) {
+                return res.status(401).json({
+                    message: 'Authorization failed.'
+                });
+            }
+        });
+    }).catch(function (err) {
+        return res.status(500).json({
+            error: err
+        });
+    });
+});
+//This request generates an API key (JWT) to be used for Google Earth KML files and such. Not to be confused with login "session" JWT above.
+router.post('/generatekey', function (req, res) {
+    UserModel.Model.findAll({
+        where: { email: req.body.email }
+    }).then(function (user) {
+        if (user.length < 1) {
+            return res.status(404).json({
+                message: 'User not found.'
+            });
+        }
+        bcrypt.compare(req.body.password, user[0].password, function (err, result) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'bcrypt hash comparison failed.'
+                });
+            }
+            if (result) {
+                var api_token = jwt.sign({
+                    doggie: 26,
+                    email: user[0].email,
+                    ID: user[0].ID //Use first+last name combo instead of ID to ensure key is different than login key
+                }, process.env.JWT_SECRET_KEY, {
+                    expiresIn: "30 days"
+                });
+                return res.status(200).json({
+                    message: "Token granted.",
+                    token: api_token
                 });
             }
             else if (!result) {

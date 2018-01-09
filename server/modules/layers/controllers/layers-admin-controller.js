@@ -1,7 +1,7 @@
 "use strict";
 var express = require('express');
 var LayerAdminService = require('../services/layers-admin-service');
-var token_auth = require('../../JWT_Checker/authorize.js');
+var token_auth = require('../../JWT_Checker/loginToken.js');
 var router = express.Router();
 var service = new LayerAdminService();
 router.get('/list', token_auth, function (req, res) {
