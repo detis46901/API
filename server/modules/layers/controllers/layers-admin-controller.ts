@@ -15,7 +15,7 @@ router.get('/list', token_auth, (req, res) => {
     
 });
 
-router.get('/one', (req, res) => {
+router.get('/one', token_auth, (req, res) => {
 
     var LayerAdmin = <number>req.query.rowid;
     
@@ -40,7 +40,7 @@ router.post('/create', token_auth, (req, res) => {
 
 });
 
-router.put('/update', (req, res) => {
+router.put('/update', token_auth, (req, res) => {
     
     var request = <App.LayerAdmin>req.body;
 
@@ -52,7 +52,7 @@ router.put('/update', (req, res) => {
 
 });
 
-router.delete('/delete', (req, res) => {
+router.delete('/delete', token_auth, (req, res) => {
     
     var ID = <number>req.query.ID;
     console.log (ID);

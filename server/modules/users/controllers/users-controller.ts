@@ -5,7 +5,7 @@ import sequalizeModel = require("../models/users-model");
 import Sequelize = require('sequelize');
 import jwt = require('jsonwebtoken');
 import bcrypt = require('bcrypt');
-import token_auth = require('../../JWT_Checker/authorize.js');
+import token_auth = require('../../JWT_Checker/loginToken.js');
 
 var router = express.Router();
 var service = new UserService();
@@ -81,6 +81,45 @@ router.post('/create', (req, res) => {
     })
 });
 
+router.put('/updatePassword', (req, res) => {
+    console.log("\n\nhere\n\n")
+    bcrypt.compare(req.body.oldPassword, req.body.password, (err, result) => {
+        if(err) { //bcrypt hashing error
+            return res.status(500).json({
+                message: 'bcrypt hash comparison failure. Try again in a few minutes.'
+            })
+        } else if(result) {
+            bcrypt.hash(req.body.newPassword, 10, (err, hash) => {
+                if(err) {
+                    return res.status(500).json({
+                        error:err,
+                        message:"Hash failed."
+                    })
+                } else {
+                    req.body.password = hash
+                    req.body.currUser.password = hash
+                    service.update(<App.User>req.body.currUser)
+                    .then(result => {
+                        res.status(204).json({
+                            message: "Hash compare successful. Password updated.",
+                            user: req.body.currUser
+                        })
+                    }).catch(err => {
+                        res.status(500).json({
+                            error:err,
+                            message:"Password could not be changed."
+                        })
+                    })
+                }
+            })          
+        } else if(!result) {
+            return res.status(401).json({
+                message: 'Authorization failed.'
+            })
+        }
+    })
+})
+
 router.post('/login', (req, res) => {
     UserModel.Model.findAll({
         where: {email: req.body.email}
@@ -93,10 +132,9 @@ router.post('/login', (req, res) => {
         bcrypt.compare(req.body.password, user[0].password, (err, result) => {
             if(err) { //bcrypt hashing error
                 return res.status(500).json({
-                    message: 'bcrypt hash comparison failed.'
+                    message: 'bcrypt hash comparison failure. Try again in a few minutes.'
                 })
-            } 
-            if(result) { //If input pw hash matches db pw hash
+            } else if(result) { //If input pw hash matches db pw hash
                 const login_token = jwt.sign(
                     {
                         email: user[0].email,
@@ -139,7 +177,7 @@ router.post('/generatekey', (req, res) => {
         bcrypt.compare(req.body.password, user[0].password, (err, result) => {
             if(err) { //bcrypt hashing error
                 return res.status(500).json({
-                    message: 'bcrypt hash comparison failed.'
+                    message: 'bcrypt hash comparison failed.'//1/11/18 erroring here
                 })
             }
             if(result) {

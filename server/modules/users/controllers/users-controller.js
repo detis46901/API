@@ -71,6 +71,47 @@ router.post('/create', function (req, res) {
         });
     });
 });
+router.put('/updatePassword', function (req, res) {
+    console.log("\n\nhere\n\n");
+    bcrypt.compare(req.body.oldPassword, req.body.password, function (err, result) {
+        if (err) {
+            return res.status(500).json({
+                message: 'bcrypt hash comparison failure. Try again in a few minutes.'
+            });
+        }
+        else if (result) {
+            bcrypt.hash(req.body.newPassword, 10, function (err, hash) {
+                if (err) {
+                    return res.status(500).json({
+                        error: err,
+                        message: "Hash failed."
+                    });
+                }
+                else {
+                    req.body.password = hash;
+                    req.body.currUser.password = hash;
+                    service.update(req.body.currUser)
+                        .then(function (result) {
+                        res.status(204).json({
+                            message: "Hash compare successful. Password updated.",
+                            user: req.body.currUser
+                        });
+                    }).catch(function (err) {
+                        res.status(500).json({
+                            error: err,
+                            message: "Password could not be changed."
+                        });
+                    });
+                }
+            });
+        }
+        else if (!result) {
+            return res.status(401).json({
+                message: 'Authorization failed.'
+            });
+        }
+    });
+});
 router.post('/login', function (req, res) {
     UserModel.Model.findAll({
         where: { email: req.body.email }
@@ -83,10 +124,10 @@ router.post('/login', function (req, res) {
         bcrypt.compare(req.body.password, user[0].password, function (err, result) {
             if (err) {
                 return res.status(500).json({
-                    message: 'bcrypt hash comparison failed.'
+                    message: 'bcrypt hash comparison failure. Try again in a few minutes.'
                 });
             }
-            if (result) {
+            else if (result) {
                 var login_token = jwt.sign({
                     email: user[0].email,
                     ID: user[0].ID
