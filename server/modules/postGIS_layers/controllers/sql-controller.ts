@@ -1,6 +1,6 @@
 import express = require('express');
-
 import SQLService = require('../services/sql-service');
+import token_auth = require('../../JWT_Checker/loginToken.js');
 
 var router = express.Router();
 var service = new SQLService();
@@ -15,7 +15,7 @@ var service = new SQLService();
     
 // });
 
-router.get('/all', (req, res) => {
+router.get('/all', token_auth, (req, res) => {
 
     var table = <string>req.query.table;
     
@@ -27,7 +27,7 @@ router.get('/all', (req, res) => {
 
 });
 
-router.get('/getschema', (req, res) => {
+router.get('/getschema', token_auth, (req, res) => {
     
         var table = <string>req.query.table;
         
@@ -39,7 +39,7 @@ router.get('/getschema', (req, res) => {
     
     });
 
-router.get('/create', (req, res) => {
+router.get('/create', token_auth, (req, res) => {
     
         var table = <string>req.query.table;
        
@@ -52,45 +52,43 @@ router.get('/create', (req, res) => {
     
     });
 
-router.get('/addColumn', (req, res) => {
-        
+router.get('/addColumn', token_auth, (req, res) => {       
     console.log(req)
-        var table = <string>req.query.table;
-        var field = <string>req.query.field;
-        var type = <string>req.query.type
-        console.log('table=' + table)
-        console.log('field=' + field)
-        console.log('type=' + type)
-        service.addColumn(table,field,type).then((result) => {
-            res.send(result);
-        }).catch((error) => {
-            res.send(error);
-        });
-    
+    var table = <string>req.query.table;
+    var field = <string>req.query.field;
+    var type = <string>req.query.type
+    console.log('table=' + table)
+    console.log('field=' + field)
+    console.log('type=' + type)
+    service.addColumn(table,field,type).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
     });
 
-    router.get('/deleteTable', (req, res) => {
-        
+});
+
+router.get('/deleteTable', token_auth, (req, res) => {
     console.log(req)
-        var table = <string>req.query.table;
-        
-        service.deleteTable(table).then((result) => {
-            res.send(result);
-        }).catch((error) => {
-            res.send(error);
-        });
+    var table = <string>req.query.table;
     
+    service.deleteTable(table).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
     });
 
-    router.get('/one', (req, res) => {
-        var table = <string>req.query.table;
-        var id = <string>req.query.id;
-        service.getsingle(table, id).then((result) => {
-            res.send(result);
-        }).catch((error) => {
-            res.send(error);
-        });
-    })
+});
+
+router.get('/one', token_auth, (req, res) => {
+    var table = <string>req.query.table;
+    var id = <string>req.query.id;
+    service.getsingle(table, id).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+})
     
 // router.post('/create', (req, res) => {
     
@@ -104,10 +102,10 @@ router.get('/addColumn', (req, res) => {
 
 // });
 
- router.get('/update', (req, res) => {
+ router.get('/update', token_auth, (req, res) => {
     
-     var table = <string>req.query.table;
-     var id = <string>req.query.id;
+    var table = <string>req.query.table;
+    var id = <string>req.query.id;
     var field = <string>req.query.field;
     var type = <string>req.query.type;
     var value = <any>req.query.value;

@@ -1,6 +1,7 @@
 "use strict";
 var express = require('express');
 var SQLService = require('../services/sql-service');
+var token_auth = require('../../JWT_Checker/loginToken.js');
 var router = express.Router();
 var service = new SQLService();
 // router.get('/list', (req, res) => {
@@ -10,7 +11,7 @@ var service = new SQLService();
 //         res.send(error);
 //     });
 // });
-router.get('/all', function (req, res) {
+router.get('/all', token_auth, function (req, res) {
     var table = req.query.table;
     service.get(table).then(function (result) {
         res.send(result);
@@ -18,7 +19,7 @@ router.get('/all', function (req, res) {
         res.send(error);
     });
 });
-router.get('/getschema', function (req, res) {
+router.get('/getschema', token_auth, function (req, res) {
     var table = req.query.table;
     service.getschema(table).then(function (result) {
         res.send(result);
@@ -26,7 +27,7 @@ router.get('/getschema', function (req, res) {
         res.send(error);
     });
 });
-router.get('/create', function (req, res) {
+router.get('/create', token_auth, function (req, res) {
     var table = req.query.table;
     service.create(table).then(function (result) {
         res.send(result);
@@ -34,7 +35,7 @@ router.get('/create', function (req, res) {
         res.send(error);
     });
 });
-router.get('/addColumn', function (req, res) {
+router.get('/addColumn', token_auth, function (req, res) {
     console.log(req);
     var table = req.query.table;
     var field = req.query.field;
@@ -48,7 +49,7 @@ router.get('/addColumn', function (req, res) {
         res.send(error);
     });
 });
-router.get('/deleteTable', function (req, res) {
+router.get('/deleteTable', token_auth, function (req, res) {
     console.log(req);
     var table = req.query.table;
     service.deleteTable(table).then(function (result) {
@@ -57,7 +58,7 @@ router.get('/deleteTable', function (req, res) {
         res.send(error);
     });
 });
-router.get('/one', function (req, res) {
+router.get('/one', token_auth, function (req, res) {
     var table = req.query.table;
     var id = req.query.id;
     service.getsingle(table, id).then(function (result) {
@@ -75,7 +76,7 @@ router.get('/one', function (req, res) {
 //         res.send(error);
 //     });
 // });
-router.get('/update', function (req, res) {
+router.get('/update', token_auth, function (req, res) {
     var table = req.query.table;
     var id = req.query.id;
     var field = req.query.field;

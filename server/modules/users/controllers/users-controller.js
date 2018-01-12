@@ -4,16 +4,17 @@ var UserService = require('../services/users-service');
 var UserModel = require('../models/users-model');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
+var token_auth = require('../../JWT_Checker/loginToken.js');
 var router = express.Router();
 var service = new UserService();
-router.get('/list', function (req, res) {
+router.get('/list', token_auth, function (req, res) {
     service.getList(req.query.searchValue).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
     });
 });
-router.get('/one', function (req, res) {
+router.get('/one', token_auth, function (req, res) {
     var User = req.query.rowid;
     service.get(User).then(function (result) {
         res.send(result);
@@ -21,7 +22,7 @@ router.get('/one', function (req, res) {
         res.send(error);
     });
 });
-router.get('/getbyrole', function (req, res) {
+router.get('/getbyrole', token_auth, function (req, res) {
     var roleID = req.query.roleID;
     service.getByRole(roleID).then(function (result) {
         res.send(result);
@@ -30,7 +31,7 @@ router.get('/getbyrole', function (req, res) {
     });
 });
 //1/3/18: Robust way to do /create and /login
-router.post('/create', function (req, res) {
+router.post('/create', token_auth, function (req, res) {
     var request = req.body;
     UserModel.Model.findAll({
         where: { email: request.email }
@@ -71,7 +72,7 @@ router.post('/create', function (req, res) {
         });
     });
 });
-router.put('/updatePassword', function (req, res) {
+router.put('/updatePassword', token_auth, function (req, res) {
     console.log("\n\nhere\n\n");
     bcrypt.compare(req.body.oldPassword, req.body.password, function (err, result) {
         if (err) {
@@ -134,6 +135,7 @@ router.post('/login', function (req, res) {
                 }, process.env.JWT_SECRET_KEY, {
                     expiresIn: "30 days"
                 });
+                console.log("\n\n\n" + login_token + "\n\n\n\n");
                 return res.status(200).json({
                     message: "Token granted.",
                     token: login_token,
@@ -154,7 +156,7 @@ router.post('/login', function (req, res) {
     });
 });
 //This request generates an API key (JWT) to be used for Google Earth KML files and such. Not to be confused with login "session" JWT above.
-router.post('/generatekey', function (req, res) {
+router.post('/generatekey', token_auth, function (req, res) {
     UserModel.Model.findAll({
         where: { email: req.body.email }
     }).then(function (user) {
@@ -166,7 +168,7 @@ router.post('/generatekey', function (req, res) {
         bcrypt.compare(req.body.password, user[0].password, function (err, result) {
             if (err) {
                 return res.status(500).json({
-                    message: 'bcrypt hash comparison failed.'
+                    message: 'bcrypt hash comparison failed.' //1/11/18 erroring here
                 });
             }
             if (result) {
@@ -196,7 +198,7 @@ router.post('/generatekey', function (req, res) {
         });
     });
 });
-router.put('/update', function (req, res) {
+router.put('/update', token_auth, function (req, res) {
     var request = req.body;
     service.update(request).then(function (result) {
         res.send(result);
@@ -204,7 +206,7 @@ router.put('/update', function (req, res) {
         res.send(error);
     });
 });
-router.delete('/delete', function (req, res) {
+router.delete('/delete', token_auth, function (req, res) {
     var ID = req.query.ID;
     console.log(ID);
     service.delete(ID).then(function (result) {

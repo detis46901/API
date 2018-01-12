@@ -1,11 +1,11 @@
 import express = require('express');
-
 import ServerService = require('../services/servers-service');
+import token_auth = require('../../JWT_Checker/loginToken.js');
 
 var router = express.Router();
 var service = new ServerService();
 
-router.get('/list', (req, res) => {
+router.get('/list', token_auth, (req, res) => {
     
     service.getList(req.query.searchValue).then((result) => {
         res.send(result);
@@ -15,7 +15,7 @@ router.get('/list', (req, res) => {
     
 });
 
-router.get('/one', (req, res) => {
+router.get('/one', token_auth, (req, res) => {
 
     var Server = <number>req.query.rowid;
     
@@ -27,7 +27,7 @@ router.get('/one', (req, res) => {
 
 });
 
-router.post('/create', (req, res) => {
+router.post('/create', token_auth, (req, res) => {
     
     var request = <App.Server>req.body;
     
@@ -39,7 +39,7 @@ router.post('/create', (req, res) => {
 
 });
 
-router.put('/update', (req, res) => {
+router.put('/update', token_auth, (req, res) => {
     
     var request = <App.Server>req.body;
 
@@ -51,7 +51,7 @@ router.put('/update', (req, res) => {
 
 });
 
-router.delete('/delete', (req, res) => {
+router.delete('/delete', token_auth, (req, res) => {
     
     var ID = <number>req.query.ID;
 

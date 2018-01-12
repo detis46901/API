@@ -1,11 +1,11 @@
 import express = require('express');
-
 import PageService = require('../services/page-service');
+import token_auth = require('../../JWT_Checker/loginToken.js');
 
 var router = express.Router();
 var service = new PageService();
 
-router.get('/list', (req, res) => {
+router.get('/list', token_auth, (req, res) => {
     
     service.getList(req.query.userID).then((result) => {
         res.send(result);
@@ -15,7 +15,7 @@ router.get('/list', (req, res) => {
     
 });
 
-router.get('/getactivebyuserid', (req, res) => {
+router.get('/getactivebyuserid', token_auth, (req, res) => {
     
     service.getActiveByUserID(req.query.userID).then((result) => {
         res.send(result);
@@ -25,7 +25,7 @@ router.get('/getactivebyuserid', (req, res) => {
     
 });
 
-router.get('/default', (req, res) => {
+router.get('/default', token_auth, (req, res) => {
     
     service.getDefault(req.query.userID).then((result) => {
         res.send(result);
@@ -35,7 +35,7 @@ router.get('/default', (req, res) => {
     
 });
 
-router.get('/one', (req, res) => {
+router.get('/one', token_auth, (req, res) => {
 
     var Page = <number>req.query.rowid;
     
@@ -47,7 +47,7 @@ router.get('/one', (req, res) => {
 
 });
 
-router.post('/create', (req, res) => {
+router.post('/create', token_auth, (req, res) => {
     
     var request = <App.UserPage>req.body;
     
@@ -59,7 +59,7 @@ router.post('/create', (req, res) => {
 
 });
 
-router.put('/update', (req, res) => {
+router.put('/update', token_auth, (req, res) => {
     
     var request = <App.UserPage>req.body;
 
@@ -71,7 +71,7 @@ router.put('/update', (req, res) => {
 
 });
 
-router.delete('/delete', (req, res) => {
+router.delete('/delete', token_auth, (req, res) => {
     
     var rowID = <number>req.query.rowID;
     console.log (rowID);
