@@ -166,7 +166,7 @@ router.post('/generatekey', function (req, res) {
         bcrypt.compare(req.body.password, user[0].password, function (err, result) {
             if (err) {
                 return res.status(500).json({
-                    message: 'bcrypt hash comparison failed.'
+                    message: 'bcrypt hash comparison failed.' //1/11/18 erroring here
                 });
             }
             if (result) {

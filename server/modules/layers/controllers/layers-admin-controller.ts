@@ -28,7 +28,7 @@ router.get('/one', token_auth, (req, res) => {
 });
 
 router.post('/create', token_auth, (req, res) => {
-    
+    console.log(token_auth)
     var request = <App.LayerAdmin>req.body;
     
     service.create(request).then((result) => {
