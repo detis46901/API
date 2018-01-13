@@ -1,6 +1,6 @@
 import express = require('express');
-
 import geoJSONService = require('../services/geojson-service');
+import token_auth = require('../../JWT_Checker/loginToken.js');
 
 var router = express.Router();
 var service = new geoJSONService();
@@ -15,7 +15,7 @@ var service = new geoJSONService();
     
 // });
 
-router.get('/all', (req, res) => {
+router.get('/all', token_auth, (req, res) => {
 
     var table = <string>req.query.table;
     
@@ -27,7 +27,7 @@ router.get('/all', (req, res) => {
 
 });
 
-router.get('/create', (req, res) => {
+router.get('/create', token_auth, (req, res) => {
     
         var table = <string>req.query.table;
        
@@ -40,7 +40,7 @@ router.get('/create', (req, res) => {
     
     });
 
-router.get('/addColumn', (req, res) => {
+router.get('/addColumn', token_auth, (req, res) => {
         
     console.log(req)
         var table = <string>req.query.table;
@@ -57,18 +57,17 @@ router.get('/addColumn', (req, res) => {
     
     });
 
-    router.get('/deleteTable', (req, res) => {
-        
+router.get('/deleteTable', token_auth, (req, res) => {      
     console.log(req)
-        var table = <string>req.query.table;
-        
-        service.deleteTable(table).then((result) => {
-            res.send(result);
-        }).catch((error) => {
-            res.send(error);
-        });
+    var table = <string>req.query.table;
     
+    service.deleteTable(table).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
     });
+
+});
 // router.post('/create', (req, res) => {
     
 //     var request = <App.User>req.body;

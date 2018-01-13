@@ -10,7 +10,7 @@ import token_auth = require('../../JWT_Checker/loginToken.js');
 var router = express.Router();
 var service = new UserService();
 
-router.get('/list', (req, res) => {
+router.get('/list', token_auth, (req, res) => {
     service.getList(req.query.searchValue).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -19,7 +19,7 @@ router.get('/list', (req, res) => {
     
 });
 
-router.get('/one', (req, res) => {
+router.get('/one', token_auth, (req, res) => {
     var User = <number>req.query.rowid;
     
     service.get(User).then((result) => {
@@ -30,7 +30,7 @@ router.get('/one', (req, res) => {
 
 });
 
-router.get('/getbyrole', (req, res) => {
+router.get('/getbyrole', token_auth, (req, res) => {
     var roleID = <number>req.query.roleID
 
     service.getByRole(roleID).then((result) => {
@@ -41,7 +41,7 @@ router.get('/getbyrole', (req, res) => {
 });
 
 //1/3/18: Robust way to do /create and /login
-router.post('/create', (req, res) => {
+router.post('/create', token_auth, (req, res) => {
     var request = <App.User>req.body;
     UserModel.Model.findAll({
         where: { email: request.email}
@@ -81,7 +81,7 @@ router.post('/create', (req, res) => {
     })
 });
 
-router.put('/updatePassword', (req, res) => {
+router.put('/updatePassword', token_auth, (req, res) => {
     console.log("\n\nhere\n\n")
     bcrypt.compare(req.body.oldPassword, req.body.password, (err, result) => {
         if(err) { //bcrypt hashing error
@@ -143,8 +143,10 @@ router.post('/login', (req, res) => {
                     process.env.JWT_SECRET_KEY,
                     {
                         expiresIn: "30 days"
+                        //expiresIn: "10s" //testing
                     }
                 );
+                console.log("\n\n\n"+login_token+"\n\n\n\n")
                 return res.status(200).json({
                     message: "Token granted.",
                     token: login_token,
@@ -165,7 +167,7 @@ router.post('/login', (req, res) => {
 });
 
 //This request generates an API key (JWT) to be used for Google Earth KML files and such. Not to be confused with login "session" JWT above.
-router.post('/generatekey', (req, res) => {
+router.post('/generatekey', token_auth, (req, res) => {
     UserModel.Model.findAll({
         where: {email: req.body.email}
     }).then(user => {
@@ -211,7 +213,7 @@ router.post('/generatekey', (req, res) => {
     });
 })
 
-router.put('/update', (req, res) => {
+router.put('/update', token_auth, (req, res) => {
     var request = <App.User>req.body;
 
     service.update(request).then((result) => {
@@ -222,7 +224,7 @@ router.put('/update', (req, res) => {
 
 });
 
-router.delete('/delete', (req, res) => {
+router.delete('/delete', token_auth, (req, res) => {
     var ID = <number>req.query.ID;
     console.log (ID);
     service.delete(ID).then((result) => {

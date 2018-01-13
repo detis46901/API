@@ -1,11 +1,11 @@
 import express = require('express');
-
 import UserPageLayer = require('../services/user-page-layer-service');
+import token_auth = require('../../JWT_Checker/loginToken.js');
 
 var router = express.Router();
 var service = new UserPageLayer();
 
-router.get('/list', (req, res) => {
+router.get('/list', token_auth, (req, res) => {
     console.log(req.query.pageID)
     service.getList(req.query.pageID).then((result) => {
         res.send(result);
@@ -15,7 +15,7 @@ router.get('/list', (req, res) => {
     
 });
 
-router.get('/one', (req, res) => {
+router.get('/one', token_auth, (req, res) => {
 
     var LayerAdmin = <number>req.query.rowid;
     
@@ -27,7 +27,7 @@ router.get('/one', (req, res) => {
 
 });
 
-router.get('/getpagelayers', (req, res) => {
+router.get('/getpagelayers', token_auth, (req, res) => {
 
     var PageID = <number>req.query.pageID;
     
@@ -39,7 +39,7 @@ router.get('/getpagelayers', (req, res) => {
 
 });
 
-router.get('/userlist', (req, res) => {
+router.get('/userlist', token_auth, (req, res) => {
 
     var userid = <number>req.query.userid;
     
@@ -51,7 +51,7 @@ router.get('/userlist', (req, res) => {
 
 });
 
-router.get('/getbylayer', (req, res) => {
+router.get('/getbylayer', token_auth, (req, res) => {
     var layerID = <number>req.query.layerAdminID;
 
     service.getByLayer(layerID).then((result) => {
@@ -61,7 +61,7 @@ router.get('/getbylayer', (req, res) => {
     });
 })
 
-router.post('/create', (req, res) => {
+router.post('/create', token_auth, (req, res) => {
     
     var request = <App.LayerAdmin>req.body;
     
@@ -73,7 +73,7 @@ router.post('/create', (req, res) => {
 
 });
 
-router.put('/update', (req, res) => {
+router.put('/update', token_auth, (req, res) => {
     
     var request = <App.LayerAdmin>req.body;
 
@@ -85,7 +85,7 @@ router.put('/update', (req, res) => {
 
 });
 
-router.delete('/delete', (req, res) => {
+router.delete('/delete', token_auth, (req, res) => {
     
     var ID = <number>req.query.ID;
     console.log (req.query.ID);
