@@ -1,5 +1,4 @@
 import express = require('express');
-
 import GroupService = require('../services/group-service');
 
 var router = express.Router();
@@ -13,16 +12,6 @@ router.get('/list', (req, res) => {
         res.send(error);
     });
     
-});
-
-router.get('/getbydept', (req, res) => {
-    var departmentID = <number>req.query.departmentID;
-
-    service.getByDepartment(departmentID).then((result) => {
-        res.send(result);
-    }).catch((error) => {
-        res.send(error);
-    })
 });
 
 router.get('/one', (req, res) => {

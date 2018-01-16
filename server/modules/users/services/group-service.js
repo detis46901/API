@@ -20,21 +20,6 @@ var GroupService = (function () {
         }
         return GroupModel.Model.findAll(findOptions);
     };
-    GroupService.prototype.getByDepartment = function (departmentID) {
-        var findOptions = {
-            order: [
-                'departmentID'
-            ]
-        };
-        if (departmentID) {
-            findOptions.where = {
-                $and: [
-                    { departmentID: departmentID }
-                ]
-            };
-        }
-        return GroupModel.Model.findAll(findOptions);
-    };
     GroupService.prototype.get = function (rowID) {
         return GroupModel.Model.findById(rowID);
     };
@@ -43,8 +28,8 @@ var GroupService = (function () {
     };
     GroupService.prototype.update = function (request) {
         return (GroupModel.Model.findById(request.ID).then(function (GroupInstance) {
-            GroupInstance.group = request.group;
-            GroupInstance.active = request.active;
+            GroupInstance.name = request.name;
+            GroupInstance.description = request.description;
             return GroupInstance.save();
         }));
     };

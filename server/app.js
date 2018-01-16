@@ -7,8 +7,6 @@ var cors = require('cors');
 var path_1 = require('path');
 var AuthenticateController = require('./modules/users/controllers/authenticate-controller');
 var GroupController = require('./modules/users/controllers/group-controller');
-var DepartmentController = require('./modules/users/controllers/department-controller');
-var RoleController = require('./modules/users/controllers/role-controller');
 var UsersController = require('./modules/users/controllers/users-controller');
 var LayerAdminController = require('./modules/layers/controllers/layers-admin-controller');
 var PageController = require('./modules/users/controllers/page-controller');
@@ -31,9 +29,7 @@ app.use(errorHandler());
 // Routes
 app.use('/api/users', UsersController);
 app.use('/api/authenticate', AuthenticateController);
-app.use('/api/department', DepartmentController);
 app.use('/api/group', GroupController);
-app.use('/api/role', RoleController);
 app.use('/api/layerAdmin', LayerAdminController);
 app.use('/api/layerpermission', LayerPermissionController);
 app.use('/api/userpagelayer', UserPageLayerController);
