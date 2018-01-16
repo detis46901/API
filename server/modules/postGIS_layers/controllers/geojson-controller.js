@@ -50,6 +50,15 @@ router.get('/deleteTable', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/updateGeometry', token_auth, function (req, res) {
+    console.log(req);
+    var table = req.query.table;
+    var geometry = req.query.geometry;
+    var id = req.query.id;
+    service.updateGeometry(table, geometry, id).then(function (result) {
+        res.send(result);
+    });
+});
 module.exports = router;
 
 //# sourceMappingURL=../../../source-maps/modules/postGIS_layers/controllers/geojson-controller.js.map

@@ -44,6 +44,10 @@ var SQLService = (function () {
     SQLService.prototype.deleteTable = function (table) {
         return db.query('DROP TABLE mycube.t' + table);
     };
+    SQLService.prototype.updateGeometry = function (table, geometry, id) {
+        //return db.query("UPDATE mycube.t" + table + ' SET "1" = true;')
+        return db.query("UPDATE mycube.t" + table + " SET geom = ST_GeomFromGeoJSON('" + geometry + "') WHERE id='" + id + "';");
+    };
     return SQLService;
 }());
 module.exports = SQLService;

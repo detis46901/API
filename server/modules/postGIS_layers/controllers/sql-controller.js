@@ -76,6 +76,15 @@ router.get('/one', token_auth, function (req, res) {
 //         res.send(error);
 //     });
 // });
+router.get('/addRecord', token_auth, function (req, res) {
+    var table = req.query.table;
+    var geometry = req.query.geometry;
+    service.addRecord(table, geometry).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.get('/update', token_auth, function (req, res) {
     var table = req.query.table;
     var id = req.query.id;

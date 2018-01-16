@@ -70,6 +70,11 @@ class SQLService {
         return db.query('DROP TABLE mycube.t' + table)
     }
 
+    updateGeometry(table: string, geometry: string, id: string): Promise<any> {
+        //return db.query("UPDATE mycube.t" + table + ' SET "1" = true;')
+        return db.query("UPDATE mycube.t" + table + " SET geom = ST_GeomFromGeoJSON('" + geometry + "') WHERE id='" + id + "';")
+    }
+
     
 //     create(request: App.User): Promise<UserModel.UserInstance> {
 //         //let plain_password = request.password

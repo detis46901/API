@@ -102,6 +102,21 @@ router.get('/one', token_auth, (req, res) => {
 
 // });
 
+router.get('/addRecord', token_auth, (req, res) => {
+    let table = <string>req.query.table;
+    let geometry = <string>req.query.geometry;
+    service.addRecord(table, geometry).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+})
+
+router.get('/deleteRecord', token_auth, (req, res) => {
+    let table = <string>req.query.table;
+    let id = <string>req.query.id;
+    service
+})
  router.get('/update', token_auth, (req, res) => {
     
     var table = <string>req.query.table;

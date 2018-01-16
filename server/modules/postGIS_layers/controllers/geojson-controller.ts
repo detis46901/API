@@ -68,6 +68,16 @@ router.get('/deleteTable', token_auth, (req, res) => {
     });
 
 });
+
+router.get('/updateGeometry', token_auth, (req, res) => {
+    console.log(req)
+    let table = <string>req.query.table;
+    let geometry = <string>req.query.geometry;
+    let id = <string>req.query.id;
+    service.updateGeometry(table, geometry, id).then(result => {
+        res.send(result)
+    })
+})
 // router.post('/create', (req, res) => {
     
 //     var request = <App.User>req.body;

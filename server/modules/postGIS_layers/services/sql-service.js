@@ -44,6 +44,9 @@ var SQLService = (function () {
     SQLService.prototype.deleteTable = function (table) {
         return db.query('DROP TABLE mycube.t' + table);
     };
+    SQLService.prototype.addRecord = function (table, geometry) {
+        return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_GeomFromGeoJSON('" + geometry + "'));");
+    };
     SQLService.prototype.getschema = function (table) {
         return db.query("SELECT column_name AS field, data_type as type FROM information_schema.columns WHERE table_schema = 'mycube' AND table_name = 't" + table + "'");
     };
