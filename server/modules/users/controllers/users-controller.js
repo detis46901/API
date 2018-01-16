@@ -128,7 +128,6 @@ router.post('/generatekey', function (req, res) {
             }
             if (result) {
                 var api_token = jwt.sign({
-                    doggie: 26,
                     email: user[0].email,
                     ID: user[0].ID //Use first+last name combo instead of ID to ensure key is different than login key
                 }, process.env.JWT_SECRET_KEY, {

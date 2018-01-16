@@ -10,14 +10,6 @@ router.get('/list', function (req, res) {
         res.send(error);
     });
 });
-router.get('/getbydept', function (req, res) {
-    var departmentID = req.query.departmentID;
-    service.getByDepartment(departmentID).then(function (result) {
-        res.send(result);
-    }).catch(function (error) {
-        res.send(error);
-    });
-});
 router.get('/one', function (req, res) {
     var User = req.query.rowid;
     service.get(User).then(function (result) {

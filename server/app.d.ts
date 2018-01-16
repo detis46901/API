@@ -1,17 +1,7 @@
-﻿
-declare module App {
-
+﻿declare module App {
     interface IModelBase {
         createdAt?: Date;
         updatedAt?: Date;
-    }
-
-    interface IDogeFriend extends IModelBase {
-        idDogeFriend?: number;
-        firstName?: string;
-        lastName?: string;
-        favoriteDogePhrase?: string;
-        reputation?: number;
     }
 
     interface User extends IModelBase {
@@ -19,7 +9,6 @@ declare module App {
         firstName?: string;
         lastName?: string;
         password?: string;
-        roleID?: number;
         active?: boolean;
         email: string;
         administrator: boolean;
@@ -52,27 +41,19 @@ declare module App {
         layerAdminID?: number;
     }
 
-interface Department extends IModelBase {
+    interface Group extends IModelBase {
         ID?: number;
-        department?: string;
-        active?: boolean;
+        name: string;
+        description?: string;
     }
 
-interface Group extends IModelBase {
-        ID?: number;
-        departmentID?: number;
-        group: string;
-        active?: boolean;
+    interface GroupMembers extends IModelBase {
+        ID: any;
+        groupID: number;
+        userID: number;
     }
 
-interface Role extends IModelBase {
-        ID?: number;
-        groupID?: number;
-        role: string;
-        active?: boolean;
-    }
-
-interface UserPage extends IModelBase {
+    interface UserPage extends IModelBase {
         ID?: number;
         userID?: number;
         page: string;
@@ -81,19 +62,15 @@ interface UserPage extends IModelBase {
         active?: boolean;
     }
 
-interface Server extends IModelBase {
-    ID?: number;
-    serverName?: string;
-    serverType?: string;
-    serverURL?: string;
+    interface Server extends IModelBase {
+        ID?: number;
+        serverName?: string;
+        serverType?: string;
+        serverURL?: string;
     }
 }
 
 declare module 'app' {
-
-    module e {
-        
-    }
-
+    module e {}
     export = e;
 }

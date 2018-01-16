@@ -1,7 +1,5 @@
 import Sequelize = require('sequelize');
 import GroupModel = require('../models/group-model');
-import DepartmentModel = require('../models/department-model');
-
 
 class GroupService {
 
@@ -26,24 +24,6 @@ class GroupService {
         return GroupModel.Model.findAll(findOptions);
     }
 
-    getByDepartment(departmentID: number): any {
-        var findOptions: Sequelize.FindOptions = {
-            order: [
-                'departmentID'
-            ]
-        };
-
-        if (departmentID) {
-            findOptions.where = {
-                $and: [
-                    {departmentID: departmentID}
-                ]
-            }
-        }
-
-        return GroupModel.Model.findAll(findOptions);
-    }
-
     get(rowID: number): Promise<GroupModel.GroupInstance> {
         return GroupModel.Model.findById(rowID);
     }
@@ -56,8 +36,8 @@ class GroupService {
         
         return <any>(GroupModel.Model.findById(request.ID).then((GroupInstance) => {
 
-            GroupInstance.group = request.group;
-            GroupInstance.active = request.active;
+            GroupInstance.name = request.name;
+            GroupInstance.description = request.description;
 
             return GroupInstance.save();
         }));

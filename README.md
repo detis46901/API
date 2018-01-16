@@ -8,8 +8,8 @@ This is the API/postgres part of the Cube Application, which manages the databas
 2. Install PostgreSQL from http://www.postgresql.org/
 3. Clone repository to your local mashine
 4. Run Npm install `npm install`
-5. Run gulp start-server to start server side application with WEB API `gulp start-server`
-6. Run gulp start-client to start client side angular2 application `gulp start-client`
+5. Run 'gulp start-server' to start server side application with WEB API `gulp start-server`
+6. Run 'gulp start-client' to start client side angular2 application `gulp start-client`
 
 Recommened IDE is Visual Studio Community because it have best integration with Typescript compilation. This is also my prefered IDE as a .NET developer.
 

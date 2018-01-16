@@ -25,12 +25,6 @@ var sequalizeModel = db.define('user', {
             len: [1, 200]
         }
     },
-    roleID: {
-        type: Sequelize.INTEGER,
-        validate: {
-            min: 1
-        }
-    },
     active: {
         type: Sequelize.BOOLEAN,
         validate: {
@@ -64,7 +58,6 @@ if (flag == 1) {
         firstName: 'John',
         lastName: 'Doe',
         password: 'c8108df8eaad2bf5004850ab32c9fa23',
-        roleID: 1,
         active: false,
         email: 'john.doe@email.com',
         administrator: true
