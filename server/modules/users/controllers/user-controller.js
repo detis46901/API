@@ -1,7 +1,7 @@
 "use strict";
 var express = require('express');
-var UserService = require('../services/users-service');
-var UserModel = require('../models/users-model');
+var UserService = require('../services/user-service');
+var UserModel = require('../models/user-model');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 var token_auth = require('../../JWT_Checker/loginToken.js');
@@ -217,4 +217,4 @@ router.delete('/delete', token_auth, function (req, res) {
 });
 module.exports = router;
 
-//# sourceMappingURL=../../../source-maps/modules/users/controllers/users-controller.js.map
+//# sourceMappingURL=../../../source-maps/modules/users/controllers/user-controller.js.map

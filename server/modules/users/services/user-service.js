@@ -1,5 +1,6 @@
 "use strict";
-var UserModel = require('../models/users-model');
+var UserModel = require('../models/user-model');
+//import ParentService = require('../../parent-service');
 var UserService = (function () {
     function UserService() {
     }
@@ -20,47 +21,16 @@ var UserService = (function () {
         }
         return UserModel.Model.findAll(findOptions);
     };
-    UserService.prototype.getByRole = function (roleID) {
-        var findOptions = {
-            order: [
-                'roleID'
-            ]
-        };
-        if (roleID) {
-            findOptions.where = {
-                $and: [
-                    { roleID: roleID }
-                ]
-            };
-        }
-        return UserModel.Model.findAll(findOptions);
-    };
     UserService.prototype.get = function (rowID) {
         return UserModel.Model.findById(rowID);
     };
     UserService.prototype.create = function (request) {
         return UserModel.Model.create(request);
     };
-    UserService.prototype.login = function (request) {
-        // var email = new Array<string>();
-        // email.push("email", "email")
-        // //var email = ["email", "email"]
-        // UserModel.Model.find({attributes:email = request.body.email})
-        // .exec()
-        // .then(user => {
-        //     if(user) {
-        //         return res.status(409).json({
-        //             message: "User already exists."
-        //         })
-        //     } else {
-        //     }
-        // })
-    };
     UserService.prototype.update = function (request) {
         return (UserModel.Model.findById(request.ID).then(function (UserInstance) {
             UserInstance.firstName = request.firstName;
             UserInstance.lastName = request.lastName;
-            UserInstance.roleID = request.roleID;
             UserInstance.email = request.email;
             UserInstance.active = request.active;
             UserInstance.administrator = request.administrator;
@@ -79,4 +49,4 @@ var UserService = (function () {
 }());
 module.exports = UserService;
 
-//# sourceMappingURL=../../../source-maps/modules/users/services/users-service.js.map
+//# sourceMappingURL=../../../source-maps/modules/users/services/user-service.js.map

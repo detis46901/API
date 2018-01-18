@@ -2,7 +2,7 @@
 var express = require('express');
 //import ParentService = require('./parent-service')
 var router = express.Router();
-var service; // = new ParentService();
+var service; //= new ParentService();
 //"var service = new ______Service()" in child component
 router.get('/list', function (req, res) {
     service.getList(req.query.searchValue).then(function (result) {

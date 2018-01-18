@@ -1,5 +1,5 @@
 "use strict";
-var UserModel = require('../models/users-model');
+var UserModel = require('../models/user-model');
 var AuthService = (function () {
     function AuthService() {
     }
@@ -26,28 +26,12 @@ var AuthService = (function () {
         return UserModel.Model.findById(email);
     };
     AuthService.prototype.create = function (request) {
-        /*let plain_password = request.password;
-
-        bcrypt.genSalt(11, function (err, salt) {
-            if (err) {
-                return console.log(err);
-            }
-
-            bcrypt.hash(plain_password, salt, function (err, hashedPassword) {
-                if (err) {
-                    return console.log(err);
-                }
-
-                request.password = hashedPassword;
-            })
-        })*/ //hashing attempt
         return UserModel.Model.create(request);
     };
     AuthService.prototype.update = function (request) {
         return (UserModel.Model.findById(request.ID).then(function (UserInstance) {
             UserInstance.firstName = request.firstName;
             UserInstance.lastName = request.lastName;
-            UserInstance.roleID = request.roleID;
             return UserInstance.save();
         }));
     };

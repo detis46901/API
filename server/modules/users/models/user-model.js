@@ -1,14 +1,8 @@
-import dbConnection = require('../../../core/db-connection');
-import Sequelize = require('sequelize');
-
+"use strict";
+var dbConnection = require('../../../core/db-connection');
+var Sequelize = require('sequelize');
 var db = dbConnection();
-
-
-export interface UserInstance extends Sequelize.Instance<UserInstance, App.User>, App.User { }
-export interface UserModel extends Sequelize.Model<UserInstance, App.User> { }
-
-
-var sequalizeModel = db.define<UserInstance, App.User>('user', <any>{
+var sequalizeModel = db.define('user', {
     ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     firstName: {
         type: Sequelize.STRING,
@@ -31,19 +25,13 @@ var sequalizeModel = db.define<UserInstance, App.User>('user', <any>{
             len: [1, 200]
         }
     },
-    roleID: {
-        type: Sequelize.INTEGER,
-        validate: {
-            min: 1
-        }
-    },    
     active: {
         type: Sequelize.BOOLEAN,
         validate: {
-            is: ["[a-z]",'i'] //only allow letters //1/3/18 why is this here? letter validation for a boolean type?
+            is: ["[a-z]", 'i'] //only allow letters //1/3/18 why is this here? letter validation for a boolean type?
         }
     },
-    email: { //consider adding isEmail: true when this is ready for deployment
+    email: {
         type: Sequelize.STRING,
         allowNull: false,
         required: true,
@@ -56,31 +44,28 @@ var sequalizeModel = db.define<UserInstance, App.User>('user', <any>{
     administrator: {
         type: Sequelize.BOOLEAN,
         validate: {
-            is: ["[a-z]",'i'] //1/3/18^^^
+            is: ["[a-z]", 'i'] //1/3/18^^^
         }
     }
 });
-
-   
+console.log("\n\n" + sequalizeModel + "\n\n");
 var flag = 0;
-
-sequalizeModel.findAll({
-}).then(function(result) {
-    if(result == null)
+sequalizeModel.findAll({}).then(function (result) {
+    if (result == null)
         flag = 1; //Create default user if there isn't one yet
 });
-
-if(flag == 1) {
+if (flag == 1) {
     sequalizeModel.create({
         firstName: 'John',
         lastName: 'Doe',
         password: 'c8108df8eaad2bf5004850ab32c9fa23',
-        roleID: 1,
         active: false,
         email: 'john.doe@email.com',
         administrator: true
-    })
+    });
 }
+//sequalizeModel.hasOne(GroupMemberModel.Model)
+sequalizeModel.sync();
+exports.Model = sequalizeModel;
 
-sequalizeModel.sync() 
-export var Model = sequalizeModel;
+//# sourceMappingURL=../../../source-maps/modules/users/models/user-model.js.map

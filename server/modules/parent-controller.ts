@@ -2,11 +2,11 @@ import express = require('express');
 import Sequelize = require('sequelize');
 import jwt = require('jsonwebtoken');
 import bcrypt = require('bcrypt');
-import token_auth = require('./JWT_Checker/authorize');
+import token_auth = require('./JWT_Checker/loginToken');
 //import ParentService = require('./parent-service')
 
 var router = express.Router();
-var service// = new ParentService();
+var service //= new ParentService();
 //"var service = new ______Service()" in child component
 
 router.get('/list', (req, res) => {

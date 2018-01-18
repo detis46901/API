@@ -4,11 +4,11 @@ import {urlencoded, json} from 'body-parser';
 import errorHandler = require('errorhandler');
 import cors = require('cors');
 import {join} from 'path';
+import ParentController = require('./modules/parent-controller');
 import AuthenticateController = require('./modules/users/controllers/authenticate-controller');
-import GroupController = require ('./modules/users/controllers/group-controller')
-import DepartmentController = require ('./modules/users/controllers/department-controller')
-import RoleController = require ('./modules/users/controllers/role-controller')
-import UsersController = require('./modules/users/controllers/users-controller');
+import GroupController = require ('./modules/users/controllers/group-controller');
+import UserController = require('./modules/users/controllers/user-controller');
+import GroupMemberController = require('./modules/users/controllers/group-member-controller')
 import LayerAdminController = require('./modules/layers/controllers/layers-admin-controller');
 import PageController = require('./modules/users/controllers/page-controller');
 import UserPageLayerController = require('./modules/layers/controllers/user-page-layer-controller');
@@ -16,7 +16,6 @@ import LayerPermissionController = require('./modules/layers/controllers/layers-
 import ServerController = require('./modules/layers/controllers/servers-controller');
 import SQLController = require('./modules/postGIS_layers/controllers/sql-controller');
 import geoJSONController = require('./modules/postGIS_layers/controllers/geoJSON-controller');
-
 
 var app = express();
 
@@ -32,18 +31,18 @@ app.use(express.static(join(__dirname, '/../client')));
 app.use(errorHandler());
 
 // Routes
-app.use('/api/users', UsersController);
-app.use('/api/authenticate', AuthenticateController)
-app.use('/api/department', DepartmentController)
-app.use('/api/group', GroupController)
-app.use('/api/role', RoleController)
+//app.use('/api/parent', ParentController);
+app.use('/api/users', UserController);
+app.use('/api/authenticate', AuthenticateController);
+app.use('/api/group', GroupController);
+app.use('/api/groupmember', GroupMemberController)
 app.use('/api/layerAdmin', LayerAdminController);
 app.use('/api/layerpermission', LayerPermissionController);
 app.use('/api/userpagelayer', UserPageLayerController);
 app.use('/api/userpage', PageController);
 app.use('/api/server', ServerController);
 app.use('/api/sql', SQLController);
-app.use('/api/geojson', geoJSONController)
+app.use('/api/geojson', geoJSONController);
 
 
 app.listen(app.get('port'), function() {

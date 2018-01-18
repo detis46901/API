@@ -1,7 +1,7 @@
 "use strict";
 var dbConnection = require('../../../core/db-connection');
 var Sequelize = require('sequelize');
-var UserModel = require('../../users/models/users-model');
+var UserModel = require('../../users/models/user-model');
 var LayerAdminModel = require('./layers-admin-model');
 var db = dbConnection();
 var sequalizeModel = db.define('layer_permission', {

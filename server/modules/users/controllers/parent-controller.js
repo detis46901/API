@@ -1,8 +1,8 @@
 "use strict";
 var express = require('express');
-var ParentService = require("./parent-service");
+//import ParentService = require ("./parent-service");
 var router = express.Router();
-var service = new ParentService();
+var service; // = new ParentService()
 //assign "var service = new ____Service();" in children
 router.get('/list', function (req, res) {
     service.getList(req.query.searchValue).then(function (result) {

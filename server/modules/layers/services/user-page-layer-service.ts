@@ -3,7 +3,7 @@ import UserPageLayerModel = require('../models/user-page-layer-model');
 import PageModel = require('../../users/models/page-model')
 import LayerModel = require('../models/layers-admin-model')
 import ServerModel = require ('../models/servers-model')
-import UserModel = require('../../users/models/users-model');
+import UserModel = require('../../users/models/user-model');
 
 class UserPageLayerService {
 
