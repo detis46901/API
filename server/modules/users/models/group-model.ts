@@ -1,5 +1,6 @@
 import dbConnection = require('../../../core/db-connection');
 import Sequelize = require('sequelize');
+import GroupMemberModel = require('./group-members-model');
 
 var db = dbConnection();
 
@@ -33,6 +34,8 @@ sequalizeModel.findAll({
     if(result == null)
         flag = 1; //Create default group if there isn't one yet
 });
+
+//sequalizeModel.hasOne(GroupMemberModel.Model)
 
 sequalizeModel.sync()    
 export var Model = sequalizeModel;

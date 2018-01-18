@@ -1,5 +1,6 @@
 import dbConnection = require('../../../core/db-connection');
 import Sequelize = require('sequelize');
+import GroupMemberModel = require('./group-members-model');
 
 var db = dbConnection();
 
@@ -55,7 +56,8 @@ var sequalizeModel = db.define<UserInstance, App.User>('user', <any>{
     }
 });
 
-   
+console.log("\n\n"+sequalizeModel+"\n\n")
+
 var flag = 0;
 
 sequalizeModel.findAll({
@@ -74,6 +76,8 @@ if(flag == 1) {
         administrator: true
     })
 }
+
+//sequalizeModel.hasOne(GroupMemberModel.Model)
 
 sequalizeModel.sync() 
 export var Model = sequalizeModel;

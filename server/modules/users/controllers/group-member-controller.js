@@ -1,9 +1,8 @@
 "use strict";
 var express = require('express');
-//import ParentService = require ("./parent-service");
+var GroupMemberService = require('../services/group-member-service');
 var router = express.Router();
-var service; // = new ParentService()
-//assign "var service = new ____Service();" in children
+var service = new GroupMemberService;
 router.get('/list', function (req, res) {
     service.getList(req.query.searchValue).then(function (result) {
         res.send(result);
@@ -12,23 +11,16 @@ router.get('/list', function (req, res) {
     });
 });
 router.get('/one', function (req, res) {
-    service.get(req.query.rowid).then(function (result) {
+    var request = req.query.rowid;
+    service.get(request).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
     });
 });
-router.get('/getbyrole', function (req, res) {
-    var roleID = req.query.roleID;
-    service.getByRole(roleID).then(function (result) {
-        res.send(result);
-    }).catch(function (error) {
-        res.send(error);
-    });
-});
-router.put('/update', function (req, res) {
+router.post('/create', function (req, res) {
     var request = req.body;
-    service.update(request).then(function (result) {
+    service.create(request).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
@@ -43,5 +35,6 @@ router.delete('/delete', function (req, res) {
         res.send(error);
     });
 });
+module.exports = router;
 
-//# sourceMappingURL=../../../source-maps/modules/users/controllers/parent-controller.js.map
+//# sourceMappingURL=../../../source-maps/modules/users/controllers/group-member-controller.js.map

@@ -1,11 +1,12 @@
 import express = require('express');
-import UserService = require('../services/users-service');
-import UserModel = require('../models/users-model');
-import sequalizeModel = require("../models/users-model");
+import UserService = require('../services/user-service');
+import UserModel = require('../models/user-model');
+import sequalizeModel = require("../models/user-model");
 import Sequelize = require('sequelize');
 import jwt = require('jsonwebtoken');
 import bcrypt = require('bcrypt');
-import token_auth = require('../../JWT_Checker/authorize.js');
+import token_auth = require('../../JWT_Checker/loginToken')
+import GroupMemberModel = require('../models/group-member-model')
 
 var router = express.Router();
 var service = new UserService();
@@ -28,16 +29,6 @@ router.get('/one', (req, res) => {
         res.send(error);
     });
 
-});
-
-router.get('/getbyrole', (req, res) => {
-    var roleID = <number>req.query.roleID
-
-    service.getByRole(roleID).then((result) => {
-        res.send(result);
-    }).catch((error) => {
-        res.send(error);
-    })
 });
 
 //1/3/18: Robust way to do /create and /login
