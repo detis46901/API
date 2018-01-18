@@ -47,8 +47,8 @@
         description?: string;
     }
 
-    interface GroupMembers extends IModelBase {
-        ID: any;
+    interface GroupMember extends IModelBase {
+        ID: number;
         groupID: number;
         userID: number;
     }

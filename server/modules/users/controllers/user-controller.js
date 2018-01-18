@@ -1,7 +1,7 @@
 "use strict";
 var express = require('express');
-var UserService = require('../services/users-service');
-var UserModel = require('../models/users-model');
+var UserService = require('../services/user-service');
+var UserModel = require('../models/user-model');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 var router = express.Router();
@@ -16,14 +16,6 @@ router.get('/list', function (req, res) {
 router.get('/one', function (req, res) {
     var User = req.query.rowid;
     service.get(User).then(function (result) {
-        res.send(result);
-    }).catch(function (error) {
-        res.send(error);
-    });
-});
-router.get('/getbyrole', function (req, res) {
-    var roleID = req.query.roleID;
-    service.getByRole(roleID).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
@@ -169,4 +161,4 @@ router.delete('/delete', function (req, res) {
 });
 module.exports = router;
 
-//# sourceMappingURL=../../../source-maps/modules/users/controllers/users-controller.js.map
+//# sourceMappingURL=../../../source-maps/modules/users/controllers/user-controller.js.map

@@ -2,7 +2,7 @@ import express = require('express');
 
 //import UserService = require('../services/users-service');
 import AuthService = require('../services/authenticate-service')
-import UserModel = require ('../models/users-model')
+import UserModel = require ('../models/user-model')
 
 var router = express.Router();
 var service = new AuthService();

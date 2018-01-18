@@ -87,7 +87,13 @@ function startServer(cb) {
       ignore: ["client/*"],
       env: { 
             'NODE_ENV': 'development',
-            'JWT_SECRET_KEY': 'Monday01'//Assign a better secret once in production
+            'JWT_SECRET_KEY': 'Monday01',//Assign a better secret once in production
+            'DB_HOST':'pgis-kokomo.cdxshbbvmooi.us-east-2.rds.amazonaws.com',
+            'DB_NAME':'postgres_test',
+            'DB_USERNAME':'geoadmin',
+            'DB_PASSWORD':'G30s3rv3r',
+            'DB_PORT':5432,
+            'DB_SSL':false
       },
       nodeArgs: ['--inspect'],
       ext: 'js'

@@ -1,6 +1,6 @@
 import dbConnection = require('../../../core/db-connection');
 import Sequelize = require('sequelize');
-import UserModel = require('../../users/models/users-model');
+import UserModel = require('../../users/models/user-model');
 import LayerAdminModel = require('./layers-admin-model');
 
 var db = dbConnection();

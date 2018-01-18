@@ -1,32 +1,31 @@
 import express = require('express');
-import Sequelize = require('sequelize');
-import jwt = require('jsonwebtoken');
-import bcrypt = require('bcrypt');
-import token_auth = require('./JWT_Checker/loginToken');
-//import ParentService = require('./parent-service')
+import GroupMemberModel = require('../models/group-member-model')
+import GroupMemberService = require('../services/group-member-service')
 
 var router = express.Router();
-var service //= new ParentService();
-//"var service = new ______Service()" in child component
+var service = new GroupMemberService;
 
 router.get('/list', (req, res) => {
     service.getList(req.query.searchValue).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
-    });   
+    });
+    
 });
 
-router.get('/one', (req, res) => {   
-    service.get(req.query.rowid).then((result) => {
+router.get('/one', (req, res) => {
+    var request = <number>req.query.rowid;  
+    service.get(request).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
 });
 
-router.put('/update', (req, res) => {
-    service.update(req.body).then((result) => {
+router.post('/create', (req, res) => {  
+    var request = <App.GroupMember>req.body;  
+    service.create(request).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
@@ -34,7 +33,9 @@ router.put('/update', (req, res) => {
 });
 
 router.delete('/delete', (req, res) => {
-    service.delete(req.query.ID).then((result) => {
+    var ID = <number>req.query.ID;
+    console.log (ID);
+    service.delete(ID).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
