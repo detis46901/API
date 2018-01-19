@@ -7,12 +7,39 @@ var service = new LayerPermissionService();
 
 router.get('/list', token_auth, (req, res) => {
     console.log(req.query.layerID)
-    service.getList(req.query.layerID).then((result) => {
+    service.getList().then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
     
+});
+
+router.get('/getbyuser', token_auth, (req, res) => {
+    var userid = <number>req.query.userid;   
+    service.getByUser(userid).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+});
+
+router.get('/getbylayer', token_auth, (req, res) => {
+    var layerid = <number>req.query.layerAdminID;   
+    service.getByLayer(layerid).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+});
+
+router.get('/getbygroup', token_auth, (req, res) => {
+    var groupid = <number>req.query.groupID;   
+    service.getByGroup(groupid).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
 });
 
 router.get('/one', token_auth, (req, res) => {
@@ -20,18 +47,6 @@ router.get('/one', token_auth, (req, res) => {
     var LayerAdmin = <number>req.query.rowid;
     
     service.get(LayerAdmin).then((result) => {
-        res.send(result);
-    }).catch((error) => {
-        res.send(error);
-    });
-
-});
-
-router.get('/userlist', token_auth, (req, res) => {
-
-    var userid = <number>req.query.userid;
-    
-    service.getUserLayer(userid).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
@@ -64,7 +79,7 @@ router.put('/update', token_auth, (req, res) => {
 });
 
 router.delete('/delete', token_auth, (req, res) => {
-    
+    //if(req.body.delete) {
     var ID = <number>req.query.ID;
     console.log (ID);
     service.delete(ID).then((result) => {
@@ -72,7 +87,11 @@ router.delete('/delete', token_auth, (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-
+    // } else {
+    //     res.status(500).json({
+    //         message:"You do not have permission to delete this permission entry."
+    //     })
+    // }
 });
 
 

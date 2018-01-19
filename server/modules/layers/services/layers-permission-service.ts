@@ -4,7 +4,11 @@ import LayerModel = require('../models/layers-admin-model')
 
 
 class LayerPermissionService {
-    getList(layerAdminID: number): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
+    getList(): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
+        return LayerPermissionModel.Model.findAll();
+    }
+    
+    getByLayer(layerAdminID: number): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
 
         var findOptions: Sequelize.FindOptions = {
             order: [
@@ -24,7 +28,7 @@ class LayerPermissionService {
         return LayerPermissionModel.Model.findAll(findOptions);
     }
 
-    getUserLayer(userID: number): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
+    getByUser(userID: number): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
 
         var findOptions: Sequelize.FindOptions = {
             order: [
@@ -36,6 +40,26 @@ class LayerPermissionService {
             findOptions.where = {
                 $and: [
                     { userID: userID}
+                ]
+            }
+        }
+
+        findOptions.include = [LayerModel.Model]
+        return LayerPermissionModel.Model.findAll(findOptions);
+    }
+
+    getByGroup(groupID: number): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
+
+        var findOptions: Sequelize.FindOptions = {
+            order: [
+                'ID'
+            ]
+        };
+
+        if (groupID) {
+            findOptions.where = {
+                $and: [
+                    { groupID: groupID}
                 ]
             }
         }
@@ -56,9 +80,16 @@ class LayerPermissionService {
         
         return <any>(LayerPermissionModel.Model.findById(request.ID).then((LayerPermissionInstance) => {
 
-            LayerPermissionInstance.layerAdminID = request.layerAdminID;
-            LayerPermissionInstance.userID = request.userID;
+            //Probably should disallow foreign key editing. Create new entry if need new user/layer permission.
+            //LayerPermissionInstance.layerAdminID = request.layerAdminID;
+            //LayerPermissionInstance.userID = request.userID;
+
             LayerPermissionInstance.edit = request.edit;
+            LayerPermissionInstance.delete = request.delete;
+            LayerPermissionInstance.owner = request.owner;
+            LayerPermissionInstance.canGrant = request.canGrant;
+            LayerPermissionInstance.grantedBy = request.grantedBy;
+            LayerPermissionInstance.comments = request.comments;
 
             return LayerPermissionInstance.save();
         }));

@@ -4,7 +4,7 @@ var UserService = require('../services/user-service');
 var UserModel = require('../models/user-model');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
-var token_auth = require('../../JWT_Checker/loginToken.js');
+var token_auth = require('../../JWT_Checker/loginToken');
 var router = express.Router();
 var service = new UserService();
 router.get('/list', token_auth, function (req, res) {
@@ -17,14 +17,6 @@ router.get('/list', token_auth, function (req, res) {
 router.get('/one', token_auth, function (req, res) {
     var User = req.query.rowid;
     service.get(User).then(function (result) {
-        res.send(result);
-    }).catch(function (error) {
-        res.send(error);
-    });
-});
-router.get('/getbyrole', token_auth, function (req, res) {
-    var roleID = req.query.roleID;
-    service.getByRole(roleID).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);

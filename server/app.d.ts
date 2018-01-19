@@ -27,10 +27,16 @@
     }
 
     interface LayerPermission extends IModelBase {
-        ID?: number;
-        userID?: number;
-        edit?: boolean;
-        layerAdminID?: number;
+        ID: number;
+        edit: boolean;
+        delete: boolean;
+        owner: boolean;
+        canGrant: boolean;
+        grantedBy?: number;
+        comments?: string;
+        userID: number;
+        layerAdminID: number;
+        groupID: number;
     }
 
     interface UserPageLayer extends IModelBase {

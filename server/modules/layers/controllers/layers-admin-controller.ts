@@ -53,7 +53,7 @@ router.put('/update', token_auth, (req, res) => {
 });
 
 router.delete('/delete', token_auth, (req, res) => {
-    
+    //if(req.body.layerPerm.delete) {
     var ID = <number>req.query.ID;
     console.log (ID);
     service.delete(ID).then((result) => {
@@ -61,7 +61,11 @@ router.delete('/delete', token_auth, (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-
+    // } else {
+    //     res.status(500).json({
+    //         message:"You do not have permission to delete this permission entry."
+    //     })
+    // }
 });
 
 

@@ -4,7 +4,10 @@ var LayerModel = require('../models/layers-admin-model');
 var LayerPermissionService = (function () {
     function LayerPermissionService() {
     }
-    LayerPermissionService.prototype.getList = function (layerAdminID) {
+    LayerPermissionService.prototype.getList = function () {
+        return LayerPermissionModel.Model.findAll();
+    };
+    LayerPermissionService.prototype.getByLayer = function (layerAdminID) {
         var findOptions = {
             order: [
                 'ID'
@@ -20,7 +23,7 @@ var LayerPermissionService = (function () {
         findOptions.include = [LayerModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
     };
-    LayerPermissionService.prototype.getUserLayer = function (userID) {
+    LayerPermissionService.prototype.getByUser = function (userID) {
         var findOptions = {
             order: [
                 'ID'
@@ -36,6 +39,22 @@ var LayerPermissionService = (function () {
         findOptions.include = [LayerModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
     };
+    LayerPermissionService.prototype.getByGroup = function (groupID) {
+        var findOptions = {
+            order: [
+                'ID'
+            ]
+        };
+        if (groupID) {
+            findOptions.where = {
+                $and: [
+                    { groupID: groupID }
+                ]
+            };
+        }
+        findOptions.include = [LayerModel.Model];
+        return LayerPermissionModel.Model.findAll(findOptions);
+    };
     LayerPermissionService.prototype.get = function (ID) {
         return LayerPermissionModel.Model.findById(ID);
     };
@@ -44,9 +63,15 @@ var LayerPermissionService = (function () {
     };
     LayerPermissionService.prototype.update = function (request) {
         return (LayerPermissionModel.Model.findById(request.ID).then(function (LayerPermissionInstance) {
-            LayerPermissionInstance.layerAdminID = request.layerAdminID;
-            LayerPermissionInstance.userID = request.userID;
+            //Probably should disallow foreign key editing. Create new entry if need new user/layer permission.
+            //LayerPermissionInstance.layerAdminID = request.layerAdminID;
+            //LayerPermissionInstance.userID = request.userID;
             LayerPermissionInstance.edit = request.edit;
+            LayerPermissionInstance.delete = request.delete;
+            LayerPermissionInstance.owner = request.owner;
+            LayerPermissionInstance.canGrant = request.canGrant;
+            LayerPermissionInstance.grantedBy = request.grantedBy;
+            LayerPermissionInstance.comments = request.comments;
             return LayerPermissionInstance.save();
         }));
     };
