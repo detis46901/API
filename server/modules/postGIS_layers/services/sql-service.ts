@@ -57,7 +57,12 @@ class SQLService {
     }
 
     addRecord(table: string, geometry: string): Promise<any> {
-        return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_GeomFromGeoJSON('" + geometry + "'));")
+        return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_GeomFromGeoJSON('" + geometry + "')) RETURNING id;")
+    }
+
+    deleteRecord(table: string, id: string): Promise<any> {
+        console.log ("Deleting table = " + table + " and id = " + id +"';" )
+        return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';")
     }
     
     getschema(table:string): Promise<any> {

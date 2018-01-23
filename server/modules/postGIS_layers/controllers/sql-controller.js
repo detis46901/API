@@ -86,9 +86,14 @@ router.get('/addRecord', token_auth, function (req, res) {
     });
 });
 router.get('/deleteRecord', token_auth, function (req, res) {
+    console.log('In deleterecord controller');
     var table = req.query.table;
     var id = req.query.id;
-    service;
+    service.deleteRecord(table, id).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
 });
 router.get('/update', token_auth, function (req, res) {
     var table = req.query.table;

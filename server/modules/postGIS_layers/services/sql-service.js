@@ -45,7 +45,11 @@ var SQLService = (function () {
         return db.query('DROP TABLE mycube.t' + table);
     };
     SQLService.prototype.addRecord = function (table, geometry) {
-        return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_GeomFromGeoJSON('" + geometry + "'));");
+        return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_GeomFromGeoJSON('" + geometry + "')) RETURNING id;");
+    };
+    SQLService.prototype.deleteRecord = function (table, id) {
+        console.log("Deleting table = " + table + " and id = " + id + "';");
+        return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';");
     };
     SQLService.prototype.getschema = function (table) {
         return db.query("SELECT column_name AS field, data_type as type FROM information_schema.columns WHERE table_schema = 'mycube' AND table_name = 't" + table + "'");

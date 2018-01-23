@@ -1,6 +1,7 @@
 import express = require('express');
 import SQLService = require('../services/sql-service');
 import token_auth = require('../../JWT_Checker/loginToken.js');
+import { error } from 'util';
 
 var router = express.Router();
 var service = new SQLService();
@@ -113,10 +114,16 @@ router.get('/addRecord', token_auth, (req, res) => {
 })
 
 router.get('/deleteRecord', token_auth, (req, res) => {
+    console.log('In deleterecord controller')
     let table = <string>req.query.table;
     let id = <string>req.query.id;
-    service
-})
+    service.deleteRecord(table, id).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error)
+    })
+    })
+        
  router.get('/update', token_auth, (req, res) => {
     
     var table = <string>req.query.table;
