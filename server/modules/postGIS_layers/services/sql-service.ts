@@ -43,9 +43,15 @@ class SQLService {
     //   `)
         console.log("API table=" + JSON.stringify(table))
         return db.query(`CREATE TABLE mycube.t` + table + ` (
-            ID    timestamp PRIMARY KEY DEFAULT current_timestamp,
+            ID    SERIAL PRIMARY KEY,
             geom   geometry
-        );`)
+        );
+        `)
+    }
+
+    setSRID(table): Promise<any> {
+        console.log((`SELECT UpdateGeometrySRID('mycube', 't` + table + `','geom',4326);`))
+        return db.query(`SELECT UpdateGeometrySRID('mycube', 't` + table + `','geom',4326);`)
     }
 
     addColumn(table: string, field: string, type: string): Promise<any> {
@@ -82,6 +88,9 @@ class SQLService {
             }
             case "boolean": {
                 return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';")
+            }
+            case "date": {
+                return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE id='" + id + "';")
             }
         }
     }

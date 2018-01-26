@@ -101,7 +101,16 @@ router.get('/update', token_auth, function (req, res) {
     var field = req.query.field;
     var type = req.query.type;
     var value = req.query.value;
+    console.log(value);
     service.update(table, id, field, type, value).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
+router.get('/setSRID', token_auth, function (req, res) {
+    var table = req.query.table;
+    service.setSRID(table).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);

@@ -125,12 +125,12 @@ router.get('/deleteRecord', token_auth, (req, res) => {
     })
         
  router.get('/update', token_auth, (req, res) => {
-    
     var table = <string>req.query.table;
     var id = <string>req.query.id;
     var field = <string>req.query.field;
     var type = <string>req.query.type;
     var value = <any>req.query.value;
+    console.log(value)
 
      service.update(table, id, field, type, value).then((result) => {
          res.send(result);
@@ -139,6 +139,15 @@ router.get('/deleteRecord', token_auth, (req, res) => {
      });
 
  });
+
+ router.get('/setSRID', token_auth, (req, res) => {
+     var table = <string>req.query.table;
+     service.setSRID(table).then((result) => {
+         res.send(result);
+     }).catch((error) => {
+         res.send(error);
+     })
+ })
 
 // router.delete('/delete', (req, res) => {
     

@@ -36,7 +36,11 @@ var SQLService = (function () {
         //     OWNER TO geoadmin;
         //   `)
         console.log("API table=" + JSON.stringify(table));
-        return db.query("CREATE TABLE mycube.t" + table + " (\n            ID    timestamp PRIMARY KEY DEFAULT current_timestamp,\n            geom   geometry\n        );");
+        return db.query("CREATE TABLE mycube.t" + table + " (\n            ID    SERIAL PRIMARY KEY,\n            geom   geometry\n        );\n        ");
+    };
+    SQLService.prototype.setSRID = function (table) {
+        console.log(("SELECT UpdateGeometrySRID('mycube', 't" + table + "','geom',4326);"));
+        return db.query("SELECT UpdateGeometrySRID('mycube', 't" + table + "','geom',4326);");
     };
     SQLService.prototype.addColumn = function (table, field, type) {
         return db.query('ALTER TABLE mycube.t' + table + ' ADD "' + field + '" ' + type);
@@ -67,6 +71,9 @@ var SQLService = (function () {
             }
             case "boolean": {
                 return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';");
+            }
+            case "date": {
+                return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE id='" + id + "';");
             }
         }
     };
