@@ -63,7 +63,7 @@ class SQLService {
     }
 
     addRecord(table: string, geometry: string): Promise<any> {
-        return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_GeomFromGeoJSON('" + geometry + "')) RETURNING id;")
+        return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" + geometry + "'),4326)) RETURNING id;")
     }
 
     deleteRecord(table: string, id: string): Promise<any> {

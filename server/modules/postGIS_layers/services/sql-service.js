@@ -49,7 +49,7 @@ var SQLService = (function () {
         return db.query('DROP TABLE mycube.t' + table);
     };
     SQLService.prototype.addRecord = function (table, geometry) {
-        return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_GeomFromGeoJSON('" + geometry + "')) RETURNING id;");
+        return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" + geometry + "'),4326)) RETURNING id;");
     };
     SQLService.prototype.deleteRecord = function (table, id) {
         console.log("Deleting table = " + table + " and id = " + id + "';");

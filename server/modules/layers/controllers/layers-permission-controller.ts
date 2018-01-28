@@ -25,7 +25,8 @@ router.get('/getbyuser', token_auth, (req, res) => {
 });
 
 router.get('/getbylayer', token_auth, (req, res) => {
-    var layerid = <number>req.query.layerAdminID;   
+    var layerid = <number>req.query.layerID;
+    console.log(layerid) 
     service.getByLayer(layerid).then((result) => {
         res.send(result);
     }).catch((error) => {
