@@ -49,6 +49,16 @@ class SQLService {
         `)
     }
 
+    createCommentTable(table: string): Promise<any> {
+        return db.query(`CREATE TABLE mycube.c` + table + ` (
+            ID   SERIAL PRIMARY KEY,
+            userID integer,
+            comment text,
+            geom geometry,
+            featureID integer);
+            `)
+    }
+
     setSRID(table): Promise<any> {
         console.log((`SELECT UpdateGeometrySRID('mycube', 't` + table + `','geom',4326);`))
         return db.query(`SELECT UpdateGeometrySRID('mycube', 't` + table + `','geom',4326);`)
@@ -60,6 +70,10 @@ class SQLService {
 
     deleteTable(table: string): Promise<any> {
         return db.query('DROP TABLE mycube.t' + table)
+    }
+
+    deleteCommentTable(table: string): Promise<any> {
+        return db.query('DROP TABLE mycube.c' + table)
     }
 
     addRecord(table: string, geometry: string): Promise<any> {
@@ -74,9 +88,14 @@ class SQLService {
     getschema(table:string): Promise<any> {
         return db.query("SELECT column_name AS field, data_type as type FROM information_schema.columns WHERE table_schema = 'mycube' AND table_name = 't" + table + "'")
     }
-
     getsingle(table:string, id:string): Promise<any> {
         return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';")
+    }
+    getcomments(table:string, id:string): Promise<any> {
+        return db.query("SELECT * FROM mycube.c" + table + " WHERE featureid='" + id + "';")
+    }
+    addComment(table:string, id:string, comment:string, userid: number): Promise<any> {
+        return db.query("INSERT INTO mycube.c" + table + " (userid, comment, featureid) VALUES (" + userid + ",'" + comment + "'," + id + ")")
     }
     update(table: string, id: string, field: string, type: string, value: any) {
         switch (type) {

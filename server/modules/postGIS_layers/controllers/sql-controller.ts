@@ -41,10 +41,7 @@ router.get('/getschema', token_auth, (req, res) => {
     });
 
 router.get('/create', token_auth, (req, res) => {
-    
-        var table = <string>req.query.table;
-       
-        
+        var table = <string>req.query.table;       
         service.create(table).then((result) => {
             res.send(result);
         }).catch((error) => {
@@ -52,6 +49,15 @@ router.get('/create', token_auth, (req, res) => {
         });
     
     });
+
+router.get('/createcommenttable', token_auth, (req, res) => {
+    var table = <string>req.query.table;
+    service.createCommentTable(table).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    })
+})
 
 router.get('/addColumn', token_auth, (req, res) => {       
     console.log(req)
@@ -81,10 +87,32 @@ router.get('/deleteTable', token_auth, (req, res) => {
 
 });
 
+router.get('/deletecommenttable', token_auth, (req, res) => {
+    console.log(req)
+    var table = <string>req.query.table;
+    
+    service.deleteCommentTable(table).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+
+});
+
 router.get('/one', token_auth, (req, res) => {
     var table = <string>req.query.table;
     var id = <string>req.query.id;
     service.getsingle(table, id).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+})
+
+router.get('/getcomments', token_auth, (req, res) => {
+    var table = <string>req.query.table;
+    var id = <string>req.query.id;
+    service.getcomments(table, id).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);

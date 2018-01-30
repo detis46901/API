@@ -74,6 +74,13 @@
         serverType?: string;
         serverURL?: string;
     }
+
+    interface Comments extends IModelBase {
+        ID?: number;
+        userID?: number;
+        comment?: string;
+        
+    }
 }
 
 declare module 'app' {

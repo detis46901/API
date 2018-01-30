@@ -38,6 +38,9 @@ var SQLService = (function () {
         console.log("API table=" + JSON.stringify(table));
         return db.query("CREATE TABLE mycube.t" + table + " (\n            ID    SERIAL PRIMARY KEY,\n            geom   geometry\n        );\n        ");
     };
+    SQLService.prototype.createCommentTable = function (table) {
+        return db.query("CREATE TABLE mycube.c" + table + " (\n            ID   SERIAL PRIMARY KEY,\n            userID integer,\n            comment text,\n            geom geometry,\n            featureID integer);\n            ");
+    };
     SQLService.prototype.setSRID = function (table) {
         console.log(("SELECT UpdateGeometrySRID('mycube', 't" + table + "','geom',4326);"));
         return db.query("SELECT UpdateGeometrySRID('mycube', 't" + table + "','geom',4326);");
@@ -47,6 +50,9 @@ var SQLService = (function () {
     };
     SQLService.prototype.deleteTable = function (table) {
         return db.query('DROP TABLE mycube.t' + table);
+    };
+    SQLService.prototype.deleteCommentTable = function (table) {
+        return db.query('DROP TABLE mycube.c' + table);
     };
     SQLService.prototype.addRecord = function (table, geometry) {
         return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" + geometry + "'),4326)) RETURNING id;");
@@ -60,6 +66,12 @@ var SQLService = (function () {
     };
     SQLService.prototype.getsingle = function (table, id) {
         return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';");
+    };
+    SQLService.prototype.getcomments = function (table, id) {
+        return db.query("SELECT * FROM mycube.c" + table + " WHERE featureid='" + id + "';");
+    };
+    SQLService.prototype.addComment = function (table, id, comment, userid) {
+        return db.query("INSERT INTO mycube.c" + table + " (userid, comment, featureid) VALUES (" + userid + ",'" + comment + "'," + id + ")");
     };
     SQLService.prototype.update = function (table, id, field, type, value) {
         switch (type) {

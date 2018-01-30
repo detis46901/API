@@ -35,6 +35,14 @@ router.get('/create', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/createcommenttable', token_auth, function (req, res) {
+    var table = req.query.table;
+    service.createCommentTable(table).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.get('/addColumn', token_auth, function (req, res) {
     console.log(req);
     var table = req.query.table;
@@ -58,10 +66,28 @@ router.get('/deleteTable', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/deletecommenttable', token_auth, function (req, res) {
+    console.log(req);
+    var table = req.query.table;
+    service.deleteCommentTable(table).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.get('/one', token_auth, function (req, res) {
     var table = req.query.table;
     var id = req.query.id;
     service.getsingle(table, id).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
+router.get('/getcomments', token_auth, function (req, res) {
+    var table = req.query.table;
+    var id = req.query.id;
+    service.getcomments(table, id).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
