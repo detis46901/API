@@ -24,7 +24,7 @@ class GroupMemberService {
             }
         }
 
-        findOptions.include = [UserModel.Model]
+        findOptions.include = [GroupModel.Model]
         return GroupMemberModel.Model.findAll(findOptions);
     }
 
@@ -44,7 +44,7 @@ class GroupMemberService {
             }
         }
 
-        findOptions.include = [GroupModel.Model]
+        findOptions.include = [UserModel.Model]
         return GroupMemberModel.Model.findAll(findOptions);
     }
 

@@ -21,7 +21,7 @@ var GroupMemberService = (function () {
                 ]
             };
         }
-        findOptions.include = [UserModel.Model];
+        findOptions.include = [GroupModel.Model];
         return GroupMemberModel.Model.findAll(findOptions);
     };
     GroupMemberService.prototype.getByGroup = function (groupID) {
@@ -37,7 +37,7 @@ var GroupMemberService = (function () {
                 ]
             };
         }
-        findOptions.include = [GroupModel.Model];
+        findOptions.include = [UserModel.Model];
         return GroupMemberModel.Model.findAll(findOptions);
     };
     GroupMemberService.prototype.get = function (rowID) {

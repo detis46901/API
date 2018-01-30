@@ -1,9 +1,11 @@
 "use strict";
 var express = require('express');
 var LayerPermissionService = require('../services/layers-permission-service');
+var GroupMemberService = require('../../users/services/group-member-service');
 var token_auth = require('../../JWT_Checker/loginToken.js');
 var router = express.Router();
 var service = new LayerPermissionService();
+var groupMemberService = new GroupMemberService();
 router.get('/list', token_auth, function (req, res) {
     console.log(req.query.layerID);
     service.getList().then(function (result) {
@@ -32,9 +34,28 @@ router.get('/getbylayer', token_auth, function (req, res) {
 router.get('/getbygroup', token_auth, function (req, res) {
     var groupid = req.query.groupID;
     service.getByGroup(groupid).then(function (result) {
+        //console.log("\n\n\n\n\n\n"+result[0].groupID+"\n")
         res.send(result);
     }).catch(function (error) {
         res.send(error);
+    });
+});
+//non-functional 1/30/18
+router.get('/getbyusergroups', token_auth, function (req, res) {
+    var finalResponse = new Array();
+    groupMemberService.getByUser(req.query.userID).then(function (result) {
+        for (var _i = 0, result_1 = result; _i < result_1.length; _i++) {
+            var gm = result_1[_i];
+            service.getByGroup(gm.groupID).then(function (perms) {
+                for (var _i = 0, perms_1 = perms; _i < perms_1.length; _i++) {
+                    var perm = perms_1[_i];
+                    finalResponse.push(perm);
+                }
+                console.log("\nfinalResponse: " + finalResponse + "\n");
+            });
+        }
+        //console.log("\nfinalResponse: "+finalResponse+"\n")
+        //res.send(finalResponse)  
     });
 });
 router.get('/one', token_auth, function (req, res) {

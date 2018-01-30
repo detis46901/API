@@ -1,9 +1,11 @@
 import express = require('express');
 import LayerPermissionService = require('../services/layers-permission-service');
+import GroupMemberService = require('../../users/services/group-member-service');
 import token_auth = require('../../JWT_Checker/loginToken.js');
 
 var router = express.Router();
 var service = new LayerPermissionService();
+var groupMemberService = new GroupMemberService();
 
 router.get('/list', token_auth, (req, res) => {
     console.log(req.query.layerID)
@@ -37,10 +39,30 @@ router.get('/getbylayer', token_auth, (req, res) => {
 router.get('/getbygroup', token_auth, (req, res) => {
     var groupid = <number>req.query.groupID;   
     service.getByGroup(groupid).then((result) => {
+        //console.log("\n\n\n\n\n\n"+result[0].groupID+"\n")
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
+});
+
+//non-functional 1/30/18
+router.get('/getbyusergroups', token_auth, (req, res) => {
+    var finalResponse = new Array<any>();
+    groupMemberService.getByUser(req.query.userID).then((result) => {
+        for(let gm of result) {
+            service.getByGroup(gm.groupID).then((perms) => {
+                for(let perm of perms) {
+                    finalResponse.push(perm)
+                }
+                
+                console.log("\nfinalResponse: "+finalResponse+"\n")
+            })
+            //console.log("\nfinalResponse: "+finalResponse+"\n")
+        }
+        //console.log("\nfinalResponse: "+finalResponse+"\n")
+        //res.send(finalResponse)  
+    })
 });
 
 router.get('/one', token_auth, (req, res) => {
