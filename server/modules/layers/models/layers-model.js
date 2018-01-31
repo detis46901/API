@@ -3,7 +3,7 @@ var dbConnection = require('../../../core/db-connection');
 var Sequelize = require('sequelize');
 var ServerModel = require('./servers-model');
 var db = dbConnection();
-var sequalizeModel = db.define('layer_admin', {
+var sequalizeModel = db.define('layer', {
     ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     layerName: {
         type: Sequelize.STRING,
@@ -59,4 +59,4 @@ sequalizeModel.belongsTo(ServerModel.Model);
 sequalizeModel.sync();
 exports.Model = sequalizeModel;
 
-//# sourceMappingURL=../../../source-maps/modules/layers/models/layers-admin-model.js.map
+//# sourceMappingURL=../../../source-maps/modules/layers/models/layers-model.js.map

@@ -16,7 +16,8 @@ function getDbConfig() {
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         port: Number.parseInt(process.env.DB_PORT),
-        ssl: (process.env.DB_SSL == 'true')
+        ssl: (process.env.DB_SSL == 'true'),
+        newdb: true
     };
     return config;
 }

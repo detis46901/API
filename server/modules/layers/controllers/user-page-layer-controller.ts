@@ -17,9 +17,9 @@ router.get('/list', token_auth, (req, res) => {
 
 router.get('/one', token_auth, (req, res) => {
 
-    var LayerAdmin = <number>req.query.rowid;
+    var LayerID = <number>req.query.rowid;
     
-    service.get(LayerAdmin).then((result) => {
+    service.get(LayerID).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
@@ -52,7 +52,7 @@ router.get('/userlist', token_auth, (req, res) => {
 });
 
 router.get('/getbylayer', token_auth, (req, res) => {
-    var layerID = <number>req.query.layerAdminID;
+    var layerID = <number>req.query.layerID;
 
     service.getByLayer(layerID).then((result) => {
         res.send(result);
@@ -63,7 +63,7 @@ router.get('/getbylayer', token_auth, (req, res) => {
 
 router.post('/create', token_auth, (req, res) => {
     
-    var request = <App.LayerAdmin>req.body;
+    var request = <App.Layer>req.body;
     
     service.create(request).then((result) => {
         res.send(result);
@@ -75,7 +75,7 @@ router.post('/create', token_auth, (req, res) => {
 
 router.put('/update', token_auth, (req, res) => {
     
-    var request = <App.LayerAdmin>req.body;
+    var request = <App.Layer>req.body;
 
     service.update(request).then((result) => {
         res.send(result);

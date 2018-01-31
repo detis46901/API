@@ -1,7 +1,7 @@
 import dbConnection = require('../../../core/db-connection');
 import Sequelize = require('sequelize');
 import PageModel = require('../../users/models/page-model');
-import LayerAdminModel = require ('./layers-admin-model');
+import LayerModel = require ('./layers-model');
 import UserModel = require('../../users/models/user-model');
 
 var db = dbConnection();
@@ -20,7 +20,7 @@ var sequalizeModel = db.define<UserPageLayerInstance, App.UserPageLayer>('user_p
 
 sequalizeModel.belongsTo(UserModel.Model)
 sequalizeModel.belongsTo(PageModel.Model)
-sequalizeModel.belongsTo(LayerAdminModel.Model)
+sequalizeModel.belongsTo(LayerModel.Model)
 sequalizeModel.sync(); 
 
 export var Model = sequalizeModel;

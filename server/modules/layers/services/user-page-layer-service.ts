@@ -1,7 +1,7 @@
 import Sequelize = require('sequelize');
 import UserPageLayerModel = require('../models/user-page-layer-model');
 import PageModel = require('../../users/models/page-model')
-import LayerModel = require('../models/layers-admin-model')
+import LayerModel = require('../models/layers-model')
 import ServerModel = require ('../models/servers-model')
 import UserModel = require('../../users/models/user-model');
 
@@ -78,7 +78,7 @@ class UserPageLayerService {
         if (layerID) {
             findOptions.where = {
                 $and: [
-                    {layerAdminID: layerID}
+                    {layerID: layerID}
                 ]
             }
         }
@@ -98,7 +98,7 @@ class UserPageLayerService {
         
         return <any>(UserPageLayerModel.Model.findById(request.ID).then((UserPageLayerInstance) => {
 
-            UserPageLayerInstance.layerAdminID = request.layerAdminID;
+            UserPageLayerInstance.layerID = request.layerID;
             UserPageLayerInstance.userID = request.userID;
             UserPageLayerInstance.layerON = request.layerON;
 

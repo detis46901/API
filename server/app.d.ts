@@ -14,7 +14,7 @@
         administrator: boolean;
     }
 
-    interface LayerAdmin extends IModelBase {
+    interface Layer extends IModelBase {
         ID?: number;
         layerName?: string;
         layerType?: string;
@@ -35,7 +35,7 @@
         grantedBy?: number;
         comments?: string;
         userID: number;
-        layerAdminID: number;
+        layerID: number;
         groupID: number;
     }
 
@@ -44,7 +44,7 @@
         userID?: number;
         layerON?: boolean;
         userpageID?: number;
-        layerAdminID?: number;
+        layerID?: number;
     }
 
     interface Group extends IModelBase {

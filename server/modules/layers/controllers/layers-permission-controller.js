@@ -38,8 +38,8 @@ router.get('/getbygroup', token_auth, function (req, res) {
     });
 });
 router.get('/one', token_auth, function (req, res) {
-    var LayerAdmin = req.query.rowid;
-    service.get(LayerAdmin).then(function (result) {
+    var LayerID = req.query.rowid;
+    service.get(LayerID).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);

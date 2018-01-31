@@ -7,6 +7,7 @@ interface IDbConfig {
     password: string;
     port: number;
     ssl?: boolean;
+    newdb: boolean;
 }
 
 function getDbConfig() {
@@ -27,14 +28,15 @@ function getDbConfig() {
         username: process.env.DB_USERNAME, //7/6/17 - db password
         password: process.env.DB_PASSWORD,
         port: Number.parseInt(process.env.DB_PORT),
-        ssl: (process.env.DB_SSL == 'true')
+        ssl: (process.env.DB_SSL == 'true'),
+        newdb: true
     };
     return config;
 }
 
 function createConnection() {
 
-    var config = getDbConfig();
+    let config = getDbConfig();
 
     var sequelize = new Sequelize(config.database, config.username, config.password, <any>{
         host: config.host,

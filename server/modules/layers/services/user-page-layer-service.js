@@ -1,7 +1,7 @@
 "use strict";
 var UserPageLayerModel = require('../models/user-page-layer-model');
 var PageModel = require('../../users/models/page-model');
-var LayerModel = require('../models/layers-admin-model');
+var LayerModel = require('../models/layers-model');
 var ServerModel = require('../models/servers-model');
 var UserPageLayerService = (function () {
     function UserPageLayerService() {
@@ -62,7 +62,7 @@ var UserPageLayerService = (function () {
         if (layerID) {
             findOptions.where = {
                 $and: [
-                    { layerAdminID: layerID }
+                    { layerID: layerID }
                 ]
             };
         }
@@ -76,7 +76,7 @@ var UserPageLayerService = (function () {
     };
     UserPageLayerService.prototype.update = function (request) {
         return (UserPageLayerModel.Model.findById(request.ID).then(function (UserPageLayerInstance) {
-            UserPageLayerInstance.layerAdminID = request.layerAdminID;
+            UserPageLayerInstance.layerID = request.layerID;
             UserPageLayerInstance.userID = request.userID;
             UserPageLayerInstance.layerON = request.layerON;
             return UserPageLayerInstance.save();

@@ -45,9 +45,9 @@ router.get('/getbygroup', token_auth, (req, res) => {
 
 router.get('/one', token_auth, (req, res) => {
 
-    var LayerAdmin = <number>req.query.rowid;
+    var LayerID = <number>req.query.rowid;
     
-    service.get(LayerAdmin).then((result) => {
+    service.get(LayerID).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);

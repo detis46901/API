@@ -1,22 +1,22 @@
 "use strict";
 var LayerPermissionModel = require('../models/layers-permission-model');
-var LayerModel = require('../models/layers-admin-model');
+var LayerModel = require('../models/layers-model');
 var LayerPermissionService = (function () {
     function LayerPermissionService() {
     }
     LayerPermissionService.prototype.getList = function () {
         return LayerPermissionModel.Model.findAll();
     };
-    LayerPermissionService.prototype.getByLayer = function (layerAdminID) {
+    LayerPermissionService.prototype.getByLayer = function (layerID) {
         var findOptions = {
             order: [
                 'ID'
             ]
         };
-        if (layerAdminID) {
+        if (layerID) {
             findOptions.where = {
                 $and: [
-                    { layerAdminID: layerAdminID }
+                    { layerID: layerID }
                 ]
             };
         }
@@ -64,7 +64,7 @@ var LayerPermissionService = (function () {
     LayerPermissionService.prototype.update = function (request) {
         return (LayerPermissionModel.Model.findById(request.ID).then(function (LayerPermissionInstance) {
             //Probably should disallow foreign key editing. Create new entry if need new user/layer permission.
-            //LayerPermissionInstance.layerAdminID = request.layerAdminID;
+            //LayerPermissionInstance.layerID = request.layerID;
             //LayerPermissionInstance.userID = request.userID;
             LayerPermissionInstance.edit = request.edit;
             LayerPermissionInstance.delete = request.delete;

@@ -3,7 +3,7 @@ var dbConnection = require('../../../core/db-connection');
 var Sequelize = require('sequelize');
 var UserModel = require('../../users/models/user-model');
 var GroupModel = require('../../users/models/group-model');
-var LayerAdminModel = require('./layers-admin-model');
+var LayerModel = require('./layers-model');
 var db = dbConnection();
 var sequalizeModel = db.define('layer_permission', {
     ID: {
@@ -37,7 +37,7 @@ var sequalizeModel = db.define('layer_permission', {
     }
 });
 sequalizeModel.belongsTo(UserModel.Model);
-sequalizeModel.belongsTo(LayerAdminModel.Model);
+sequalizeModel.belongsTo(LayerModel.Model);
 sequalizeModel.belongsTo(GroupModel.Model);
 //sequalizeModel.sync({force:true});
 sequalizeModel.sync();

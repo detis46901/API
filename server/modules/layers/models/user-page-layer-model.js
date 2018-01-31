@@ -2,7 +2,7 @@
 var dbConnection = require('../../../core/db-connection');
 var Sequelize = require('sequelize');
 var PageModel = require('../../users/models/page-model');
-var LayerAdminModel = require('./layers-admin-model');
+var LayerModel = require('./layers-model');
 var UserModel = require('../../users/models/user-model');
 var db = dbConnection();
 var sequalizeModel = db.define('user_page_layer', {
@@ -13,7 +13,7 @@ var sequalizeModel = db.define('user_page_layer', {
 });
 sequalizeModel.belongsTo(UserModel.Model);
 sequalizeModel.belongsTo(PageModel.Model);
-sequalizeModel.belongsTo(LayerAdminModel.Model);
+sequalizeModel.belongsTo(LayerModel.Model);
 sequalizeModel.sync();
 exports.Model = sequalizeModel;
 

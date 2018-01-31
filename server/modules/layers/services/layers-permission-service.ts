@@ -1,6 +1,6 @@
 import Sequelize = require('sequelize');
 import LayerPermissionModel = require('../models/layers-permission-model');
-import LayerModel = require('../models/layers-admin-model')
+import LayerModel = require('../models/layers-model')
 
 
 class LayerPermissionService {
@@ -8,7 +8,7 @@ class LayerPermissionService {
         return LayerPermissionModel.Model.findAll();
     }
     
-    getByLayer(layerAdminID: number): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
+    getByLayer(layerID: number): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
 
         var findOptions: Sequelize.FindOptions = {
             order: [
@@ -16,10 +16,10 @@ class LayerPermissionService {
             ]
         };
 
-        if (layerAdminID) {
+        if (layerID) {
             findOptions.where = {
                 $and: [
-                    { layerAdminID: layerAdminID}
+                    { layerID: layerID}
                 ]
             }
         }
@@ -81,7 +81,7 @@ class LayerPermissionService {
         return <any>(LayerPermissionModel.Model.findById(request.ID).then((LayerPermissionInstance) => {
 
             //Probably should disallow foreign key editing. Create new entry if need new user/layer permission.
-            //LayerPermissionInstance.layerAdminID = request.layerAdminID;
+            //LayerPermissionInstance.layerID = request.layerID;
             //LayerPermissionInstance.userID = request.userID;
 
             LayerPermissionInstance.edit = request.edit;

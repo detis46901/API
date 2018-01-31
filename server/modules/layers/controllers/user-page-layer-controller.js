@@ -13,8 +13,8 @@ router.get('/list', token_auth, function (req, res) {
     });
 });
 router.get('/one', token_auth, function (req, res) {
-    var LayerAdmin = req.query.rowid;
-    service.get(LayerAdmin).then(function (result) {
+    var LayerID = req.query.rowid;
+    service.get(LayerID).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
@@ -37,7 +37,7 @@ router.get('/userlist', token_auth, function (req, res) {
     });
 });
 router.get('/getbylayer', token_auth, function (req, res) {
-    var layerID = req.query.layerAdminID;
+    var layerID = req.query.layerID;
     service.getByLayer(layerID).then(function (result) {
         res.send(result);
     }).catch(function (error) {

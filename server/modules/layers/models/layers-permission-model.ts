@@ -2,7 +2,7 @@ import dbConnection = require('../../../core/db-connection');
 import Sequelize = require('sequelize');
 import UserModel = require('../../users/models/user-model');
 import GroupModel = require('../../users/models/group-model');
-import LayerAdminModel = require('./layers-admin-model');
+import LayerModel = require('./layers-model');
 
 var db = dbConnection();
 
@@ -43,7 +43,7 @@ var sequalizeModel = db.define<LayerPermissionInstance, App.LayerPermission>('la
 });
 
 sequalizeModel.belongsTo(UserModel.Model);
-sequalizeModel.belongsTo(LayerAdminModel.Model);
+sequalizeModel.belongsTo(LayerModel.Model);
 sequalizeModel.belongsTo(GroupModel.Model)
 
 //sequalizeModel.sync({force:true});
