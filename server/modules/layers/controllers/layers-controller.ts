@@ -1,7 +1,7 @@
-import express = require('express');
 import LayerService = require('../services/layers-service');
 import token_auth = require('../../JWT_Checker/loginToken.js');
 
+var express = require('express');
 var router = express.Router();
 var service = new LayerService();
 
@@ -16,7 +16,6 @@ router.get('/list', token_auth, (req, res) => {
 });
 
 router.get('/one', token_auth, (req, res) => {
-
     var LayerID = <number>req.query.rowid;
     
     service.get(LayerID).then((result) => {
@@ -28,20 +27,17 @@ router.get('/one', token_auth, (req, res) => {
 });
 
 router.post('/create', token_auth, (req, res) => {
-    console.log(token_auth)
     var request = <App.Layer>req.body;
     
     service.create(request).then((result) => {
         res.send(result);
-        console.log(result)
     }).catch((error) => {
         res.send(error);
     });
 
 });
 
-router.put('/update', token_auth, (req, res) => {
-    
+router.put('/update', token_auth, (req, res) => {  
     var request = <App.Layer>req.body;
 
     service.update(request).then((result) => {
@@ -55,7 +51,7 @@ router.put('/update', token_auth, (req, res) => {
 router.delete('/delete', token_auth, (req, res) => {
     //if(req.body.layerPerm.delete) {
     var ID = <number>req.query.ID;
-    console.log (ID);
+
     service.delete(ID).then((result) => {
         res.send(result);
     }).catch((error) => {

@@ -35,7 +35,6 @@ var SQLService = (function () {
         //   ALTER TABLE public."test3_ID_seq"
         //     OWNER TO geoadmin;
         //   `)
-        console.log("API table=" + JSON.stringify(table));
         return db.query("CREATE TABLE mycube.t" + table + " (\n            ID    timestamp PRIMARY KEY DEFAULT current_timestamp,\n            geom   geometry\n        );");
     };
     SQLService.prototype.addColumn = function (table, field, type) {

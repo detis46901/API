@@ -1,13 +1,13 @@
-import express = require('express');
 import UserService = require('../services/user-service');
 import UserModel = require('../models/user-model');
 import sequalizeModel = require("../models/user-model");
 import Sequelize = require('sequelize');
-import jwt = require('jsonwebtoken');
-import bcrypt = require('bcrypt');
 import token_auth = require('../../JWT_Checker/loginToken')
 import GroupMemberModel = require('../models/group-member-model')
 
+var express = require('express');
+var jwt = require('jsonwebtoken');
+var bcrypt = require('bcrypt');
 var router = express.Router();
 var service = new UserService();
 
@@ -73,7 +73,6 @@ router.post('/create', token_auth, (req, res) => {
 });
 
 router.put('/updatePassword', token_auth, (req, res) => {
-    console.log("\n\nhere\n\n")
     bcrypt.compare(req.body.oldPassword, req.body.password, (err, result) => {
         if(err) { //bcrypt hashing error
             return res.status(500).json({
@@ -137,7 +136,6 @@ router.post('/login', (req, res) => {
                         //expiresIn: "10s" //testing
                     }
                 );
-                console.log("\n\n\n"+login_token+"\n\n\n\n")
                 return res.status(200).json({
                     message: "Token granted.",
                     token: login_token,
@@ -217,7 +215,7 @@ router.put('/update', token_auth, (req, res) => {
 
 router.delete('/delete', token_auth, (req, res) => {
     var ID = <number>req.query.ID;
-    console.log (ID);
+
     service.delete(ID).then((result) => {
         res.send(result);
     }).catch((error) => {

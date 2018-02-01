@@ -1,14 +1,13 @@
-import express = require('express');
 import LayerPermissionService = require('../services/layers-permission-service');
 import GroupMemberService = require('../../users/services/group-member-service');
 import token_auth = require('../../JWT_Checker/loginToken.js');
 
+var express = require('express');
 var router = express.Router();
 var service = new LayerPermissionService();
 var groupMemberService = new GroupMemberService();
 
 router.get('/list', token_auth, (req, res) => {
-    console.log(req.query.layerID)
     service.getList().then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -28,7 +27,6 @@ router.get('/getbyuser', token_auth, (req, res) => {
 
 router.get('/getbylayer', token_auth, (req, res) => {
     var layerid = <number>req.query.layerID;
-    console.log(layerid) 
     service.getByLayer(layerid).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -39,7 +37,6 @@ router.get('/getbylayer', token_auth, (req, res) => {
 router.get('/getbygroup', token_auth, (req, res) => {
     var groupid = <number>req.query.groupID;   
     service.getByGroup(groupid).then((result) => {
-        //console.log("\n\n\n\n\n\n"+result[0].groupID+"\n")
         res.send(result);
     }).catch((error) => {
         res.send(error);
@@ -56,7 +53,7 @@ router.get('/getbyusergroups', token_auth, (req, res) => {
                     finalResponse.push(perm)
                 }
                 
-                console.log("\nfinalResponse: "+finalResponse+"\n")
+                //console.log("\nfinalResponse: "+finalResponse+"\n")
             })
             //console.log("\nfinalResponse: "+finalResponse+"\n")
         }
@@ -104,7 +101,6 @@ router.put('/update', token_auth, (req, res) => {
 router.delete('/delete', token_auth, (req, res) => {
     //if(req.body.delete) {
     var ID = <number>req.query.ID;
-    console.log (ID);
     service.delete(ID).then((result) => {
         res.send(result);
     }).catch((error) => {

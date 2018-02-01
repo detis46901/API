@@ -1,11 +1,10 @@
 "use strict";
-var express = require('express');
 var UserPageLayer = require('../services/user-page-layer-service');
 var token_auth = require('../../JWT_Checker/loginToken.js');
+var express = require('express');
 var router = express.Router();
 var service = new UserPageLayer();
 router.get('/list', token_auth, function (req, res) {
-    console.log(req.query.pageID);
     service.getList(req.query.pageID).then(function (result) {
         res.send(result);
     }).catch(function (error) {
@@ -62,7 +61,6 @@ router.put('/update', token_auth, function (req, res) {
 });
 router.delete('/delete', token_auth, function (req, res) {
     var ID = req.query.ID;
-    console.log(req.query.ID);
     service.delete(ID).then(function (result) {
         res.send(result);
     }).catch(function (error) {

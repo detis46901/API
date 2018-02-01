@@ -1,11 +1,10 @@
 "use strict";
-var express = require('express');
 //import UserService = require('../services/users-service');
 var AuthService = require('../services/authenticate-service');
+var express = require('express');
 var router = express.Router();
 var service = new AuthService();
 router.get('/list', function (req, res) {
-    console.log(req.query.searchValue);
     service.getList(req.query.email, req.query.password).then(function (result) {
         res.send(result);
     }).catch(function (error) {
@@ -24,12 +23,9 @@ router.post('/', function (req, res) {
     var request = req.body;
     var row = 0;
     var admin = false;
-    console.log(req);
     service.getList(request.email, request.password).then(function (result) {
-        console.log(result);
         row = result[0].ID;
         admin = result[0].administrator;
-        console.log('admin =' + admin);
         if (result.length == 0) {
             res.send({});
         }

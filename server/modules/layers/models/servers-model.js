@@ -45,7 +45,6 @@ sequalizeModel.sync({ force: true })
         serverURL: "http://foster2.cityofkokomo.org:8080/geoserver/wms"
     });
 });
-//console.log(temp)
 exports.Model = sequalizeModel;
 
 //# sourceMappingURL=../../../source-maps/modules/layers/models/servers-model.js.map

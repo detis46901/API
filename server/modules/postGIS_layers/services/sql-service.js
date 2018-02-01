@@ -35,14 +35,12 @@ var SQLService = (function () {
         //   ALTER TABLE public."test3_ID_seq"
         //     OWNER TO geoadmin;
         //   `)
-        console.log("API table=" + JSON.stringify(table));
         return db.query("CREATE TABLE mycube.t" + table + " (\n            ID    SERIAL PRIMARY KEY,\n            geom   geometry\n        );\n        ");
     };
     SQLService.prototype.createCommentTable = function (table) {
         return db.query("CREATE TABLE mycube.c" + table + " (\n            ID   SERIAL PRIMARY KEY,\n            userID integer,\n            comment text,\n            geom geometry,\n            featureID integer,\n            createdAt timestamp with time zone default now());\n            ");
     };
     SQLService.prototype.setSRID = function (table) {
-        console.log(("SELECT UpdateGeometrySRID('mycube', 't" + table + "','geom',4326);"));
         return db.query("SELECT UpdateGeometrySRID('mycube', 't" + table + "','geom',4326);");
     };
     SQLService.prototype.addColumn = function (table, field, type) {
@@ -58,7 +56,6 @@ var SQLService = (function () {
         return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" + geometry + "'),4326)) RETURNING id;");
     };
     SQLService.prototype.deleteRecord = function (table, id) {
-        console.log("Deleting table = " + table + " and id = " + id + "';");
         return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';");
     };
     SQLService.prototype.getschema = function (table) {
@@ -68,7 +65,6 @@ var SQLService = (function () {
         return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';");
     };
     SQLService.prototype.getcomments = function (table, id) {
-        console.log("SELECT mycube.c" + table + ".*, users.firstName, users.lastName FROM mycube.c" + table + " WHERE mycube.c" + table + ".featureid='" + id + "' INNER JOIN users ON mycube.c" + table + ".userid = users.ID;");
         return db.query("SELECT mycube.c" + table + '.*, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';");
     };
     SQLService.prototype.addComment = function (table, featureID, comment, userid) {

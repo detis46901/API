@@ -1,7 +1,7 @@
 "use strict";
-var express = require('express');
 var geoJSONService = require('../services/geojson-service');
 var token_auth = require('../../JWT_Checker/loginToken.js');
+var express = require('express');
 var router = express.Router();
 var service = new geoJSONService();
 // router.get('/list', (req, res) => {
@@ -28,13 +28,9 @@ router.get('/create', token_auth, function (req, res) {
     });
 });
 router.get('/addColumn', token_auth, function (req, res) {
-    console.log(req);
     var table = req.query.table;
     var field = req.query.field;
     var type = req.query.type;
-    console.log('table=' + table);
-    console.log('field=' + field);
-    console.log('type=' + type);
     service.addColumn(table, field, type).then(function (result) {
         res.send(result);
     }).catch(function (error) {
@@ -42,7 +38,6 @@ router.get('/addColumn', token_auth, function (req, res) {
     });
 });
 router.get('/deleteTable', token_auth, function (req, res) {
-    console.log(req);
     var table = req.query.table;
     service.deleteTable(table).then(function (result) {
         res.send(result);
@@ -51,7 +46,6 @@ router.get('/deleteTable', token_auth, function (req, res) {
     });
 });
 router.get('/updateGeometry', token_auth, function (req, res) {
-    console.log(req);
     var table = req.query.table;
     var geometry = req.query.geometry;
     var id = req.query.id;

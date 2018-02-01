@@ -26,7 +26,6 @@ var LayerService = (function () {
         return LayerModel.Model.findById(rowID);
     };
     LayerService.prototype.create = function (request) {
-        console.log("Creating layer, request= " + request.layerName);
         return LayerModel.Model.create(request);
     };
     LayerService.prototype.update = function (request) {
@@ -39,7 +38,6 @@ var LayerService = (function () {
             LayerInstance.layerFormat = request.layerFormat;
             LayerInstance.layerDescription = request.layerDescription;
             LayerInstance.layerGeom = request.layerGeom;
-            console.log("API layer service");
             return LayerInstance.save();
         }));
     };

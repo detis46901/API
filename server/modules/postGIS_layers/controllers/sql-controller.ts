@@ -1,8 +1,8 @@
-import express = require('express');
 import SQLService = require('../services/sql-service');
 import token_auth = require('../../JWT_Checker/loginToken.js');
 import { error } from 'util';
 
+var express = require('express');
 var router = express.Router();
 var service = new SQLService();
 
@@ -60,13 +60,10 @@ router.get('/createcommenttable', token_auth, (req, res) => {
 })
 
 router.get('/addColumn', token_auth, (req, res) => {       
-    console.log(req)
     var table = <string>req.query.table;
     var field = <string>req.query.field;
     var type = <string>req.query.type
-    console.log('table=' + table)
-    console.log('field=' + field)
-    console.log('type=' + type)
+
     service.addColumn(table,field,type).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -76,7 +73,6 @@ router.get('/addColumn', token_auth, (req, res) => {
 });
 
 router.get('/deleteTable', token_auth, (req, res) => {
-    console.log(req)
     var table = <string>req.query.table;
     
     service.deleteTable(table).then((result) => {
@@ -88,7 +84,6 @@ router.get('/deleteTable', token_auth, (req, res) => {
 });
 
 router.get('/deletecommenttable', token_auth, (req, res) => {
-    console.log(req)
     var table = <string>req.query.table;
     
     service.deleteCommentTable(table).then((result) => {
@@ -155,7 +150,6 @@ router.get('/addRecord', token_auth, (req, res) => {
 })
 
 router.get('/deleteRecord', token_auth, (req, res) => {
-    console.log('In deleterecord controller')
     let table = <string>req.query.table;
     let id = <string>req.query.id;
     service.deleteRecord(table, id).then((result) => {
@@ -171,7 +165,6 @@ router.get('/deleteRecord', token_auth, (req, res) => {
     var field = <string>req.query.field;
     var type = <string>req.query.type;
     var value = <any>req.query.value;
-    console.log(value)
 
      service.update(table, id, field, type, value).then((result) => {
          res.send(result);

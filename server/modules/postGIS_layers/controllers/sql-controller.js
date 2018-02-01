@@ -1,7 +1,7 @@
 "use strict";
-var express = require('express');
 var SQLService = require('../services/sql-service');
 var token_auth = require('../../JWT_Checker/loginToken.js');
+var express = require('express');
 var router = express.Router();
 var service = new SQLService();
 // router.get('/list', (req, res) => {
@@ -44,13 +44,9 @@ router.get('/createcommenttable', token_auth, function (req, res) {
     });
 });
 router.get('/addColumn', token_auth, function (req, res) {
-    console.log(req);
     var table = req.query.table;
     var field = req.query.field;
     var type = req.query.type;
-    console.log('table=' + table);
-    console.log('field=' + field);
-    console.log('type=' + type);
     service.addColumn(table, field, type).then(function (result) {
         res.send(result);
     }).catch(function (error) {
@@ -58,7 +54,6 @@ router.get('/addColumn', token_auth, function (req, res) {
     });
 });
 router.get('/deleteTable', token_auth, function (req, res) {
-    console.log(req);
     var table = req.query.table;
     service.deleteTable(table).then(function (result) {
         res.send(result);
@@ -67,7 +62,6 @@ router.get('/deleteTable', token_auth, function (req, res) {
     });
 });
 router.get('/deletecommenttable', token_auth, function (req, res) {
-    console.log(req);
     var table = req.query.table;
     service.deleteCommentTable(table).then(function (result) {
         res.send(result);
@@ -124,7 +118,6 @@ router.get('/addRecord', token_auth, function (req, res) {
     });
 });
 router.get('/deleteRecord', token_auth, function (req, res) {
-    console.log('In deleterecord controller');
     var table = req.query.table;
     var id = req.query.id;
     service.deleteRecord(table, id).then(function (result) {
@@ -139,7 +132,6 @@ router.get('/update', token_auth, function (req, res) {
     var field = req.query.field;
     var type = req.query.type;
     var value = req.query.value;
-    console.log(value);
     service.update(table, id, field, type, value).then(function (result) {
         res.send(result);
     }).catch(function (error) {

@@ -1,10 +1,10 @@
 "use strict";
-var express = require('express');
 var UserService = require('../services/user-service');
 var UserModel = require('../models/user-model');
+var token_auth = require('../../JWT_Checker/loginToken');
+var express = require('express');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
-var token_auth = require('../../JWT_Checker/loginToken');
 var router = express.Router();
 var service = new UserService();
 router.get('/list', token_auth, function (req, res) {
@@ -65,7 +65,6 @@ router.post('/create', token_auth, function (req, res) {
     });
 });
 router.put('/updatePassword', token_auth, function (req, res) {
-    console.log("\n\nhere\n\n");
     bcrypt.compare(req.body.oldPassword, req.body.password, function (err, result) {
         if (err) {
             return res.status(500).json({
@@ -127,7 +126,6 @@ router.post('/login', function (req, res) {
                 }, process.env.JWT_SECRET_KEY, {
                     expiresIn: "30 days"
                 });
-                console.log("\n\n\n" + login_token + "\n\n\n\n");
                 return res.status(200).json({
                     message: "Token granted.",
                     token: login_token,
@@ -200,7 +198,6 @@ router.put('/update', token_auth, function (req, res) {
 });
 router.delete('/delete', token_auth, function (req, res) {
     var ID = req.query.ID;
-    console.log(ID);
     service.delete(ID).then(function (result) {
         res.send(result);
     }).catch(function (error) {

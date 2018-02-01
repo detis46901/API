@@ -1,7 +1,7 @@
 "use strict";
-var express = require('express');
 var GroupMemberService = require('../services/group-member-service');
 var token_auth = require('../../JWT_Checker/loginToken.js');
+var express = require('express');
 var router = express.Router();
 var service = new GroupMemberService;
 router.get('/list', token_auth, function (req, res) {
@@ -45,7 +45,6 @@ router.post('/create', token_auth, function (req, res) {
 });
 router.delete('/delete', token_auth, function (req, res) {
     var ID = req.query.ID;
-    console.log(ID);
     service.delete(ID).then(function (result) {
         res.send(result);
     }).catch(function (error) {

@@ -1,11 +1,13 @@
-import express = require('express');
-import sequalizeModel = require("../models/users-model");
-import Sequelize = require('sequelize');
-import jwt = require('jsonwebtoken');
-import bcrypt = require('bcrypt');
-import token_auth = require('./JWT_Checker/loginToken');
+// import express = require('express');
+// import sequalizeModel = require("../models/users-model");
+// import Sequelize = require('sequelize');
+// import jwt = require('jsonwebtoken');
+// import bcrypt = require('bcrypt');
+// import token_auth = require('./JWT_Checker/loginToken'); //broken links
+
 //import ParentService = require ("./parent-service");
 
+var express = require('express');
 var router = express.Router();
 var service// = new ParentService()
 //assign "var service = new ____Service();" in children
@@ -51,7 +53,7 @@ router.put('/update', (req, res) => {
 
 router.delete('/delete', (req, res) => {
     var ID = <number>req.query.ID;
-    console.log (ID);
+
     service.delete(ID).then((result) => {
         res.send(result);
     }).catch((error) => {

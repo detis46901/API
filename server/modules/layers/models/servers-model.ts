@@ -49,6 +49,4 @@ sequalizeModel.sync({force: true})
     })
         })
 
-//console.log(temp)
-
 export var Model = sequalizeModel;

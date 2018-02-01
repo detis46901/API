@@ -17,8 +17,6 @@ var sequalizeModel = db.define<GroupMemberInstance, App.GroupMember>('group_memb
     }
 });
 
-console.log("\n\n"+sequalizeModel+"\n\n")
-
 sequalizeModel.belongsTo(GroupModel.Model);
 sequalizeModel.belongsTo(UserModel.Model);
 

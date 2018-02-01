@@ -1,13 +1,12 @@
 "use strict";
-var express = require('express');
 var LayerPermissionService = require('../services/layers-permission-service');
 var GroupMemberService = require('../../users/services/group-member-service');
 var token_auth = require('../../JWT_Checker/loginToken.js');
+var express = require('express');
 var router = express.Router();
 var service = new LayerPermissionService();
 var groupMemberService = new GroupMemberService();
 router.get('/list', token_auth, function (req, res) {
-    console.log(req.query.layerID);
     service.getList().then(function (result) {
         res.send(result);
     }).catch(function (error) {
@@ -24,7 +23,6 @@ router.get('/getbyuser', token_auth, function (req, res) {
 });
 router.get('/getbylayer', token_auth, function (req, res) {
     var layerid = req.query.layerID;
-    console.log(layerid);
     service.getByLayer(layerid).then(function (result) {
         res.send(result);
     }).catch(function (error) {
@@ -34,7 +32,6 @@ router.get('/getbylayer', token_auth, function (req, res) {
 router.get('/getbygroup', token_auth, function (req, res) {
     var groupid = req.query.groupID;
     service.getByGroup(groupid).then(function (result) {
-        //console.log("\n\n\n\n\n\n"+result[0].groupID+"\n")
         res.send(result);
     }).catch(function (error) {
         res.send(error);
@@ -51,7 +48,7 @@ router.get('/getbyusergroups', token_auth, function (req, res) {
                     var perm = perms_1[_i];
                     finalResponse.push(perm);
                 }
-                console.log("\nfinalResponse: " + finalResponse + "\n");
+                //console.log("\nfinalResponse: "+finalResponse+"\n")
             });
         }
         //console.log("\nfinalResponse: "+finalResponse+"\n")
@@ -85,7 +82,6 @@ router.put('/update', token_auth, function (req, res) {
 router.delete('/delete', token_auth, function (req, res) {
     //if(req.body.delete) {
     var ID = req.query.ID;
-    console.log(ID);
     service.delete(ID).then(function (result) {
         res.send(result);
     }).catch(function (error) {

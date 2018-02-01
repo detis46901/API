@@ -41,7 +41,6 @@ class SQLService {
     //   ALTER TABLE public."test3_ID_seq"
     //     OWNER TO geoadmin;
     //   `)
-        console.log("API table=" + JSON.stringify(table))
         return db.query(`CREATE TABLE mycube.t` + table + ` (
             ID    SERIAL PRIMARY KEY,
             geom   geometry
@@ -61,7 +60,6 @@ class SQLService {
     }
 
     setSRID(table): Promise<any> {
-        console.log((`SELECT UpdateGeometrySRID('mycube', 't` + table + `','geom',4326);`))
         return db.query(`SELECT UpdateGeometrySRID('mycube', 't` + table + `','geom',4326);`)
     }
 
@@ -82,7 +80,6 @@ class SQLService {
     }
 
     deleteRecord(table: string, id: string): Promise<any> {
-        console.log ("Deleting table = " + table + " and id = " + id +"';" )
         return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';")
     }
     
@@ -93,7 +90,6 @@ class SQLService {
         return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';")
     }
     getcomments(table:string, id:string): Promise<any> {
-        console.log("SELECT mycube.c" + table + ".*, users.firstName, users.lastName FROM mycube.c" + table + " WHERE mycube.c" + table + ".featureid='" + id + "' INNER JOIN users ON mycube.c" + table + ".userid = users.ID;")
         return db.query("SELECT mycube.c" + table + '.*, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';")
     }
     addComment(table:string, featureID:string, comment:string, userid: number): Promise<any> {

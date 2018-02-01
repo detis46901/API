@@ -55,7 +55,6 @@ class SQLService {
     //   ALTER TABLE public."test3_ID_seq"
     //     OWNER TO geoadmin;
     //   `)
-        console.log("API table=" + JSON.stringify(table))
         return db.query(`CREATE TABLE mycube.t` + table + ` (
             ID    timestamp PRIMARY KEY DEFAULT current_timestamp,
             geom   geometry

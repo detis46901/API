@@ -11,7 +11,6 @@ var sequalizeModel = db.define('group_member', {
         autoIncrement: true
     }
 });
-console.log("\n\n" + sequalizeModel + "\n\n");
 sequalizeModel.belongsTo(GroupModel.Model);
 sequalizeModel.belongsTo(UserModel.Model);
 // sequalizeModel.create({

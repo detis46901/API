@@ -1,7 +1,7 @@
 "use strict";
-var express = require('express');
 var LayerService = require('../services/layers-service');
 var token_auth = require('../../JWT_Checker/loginToken.js');
+var express = require('express');
 var router = express.Router();
 var service = new LayerService();
 router.get('/list', token_auth, function (req, res) {
@@ -20,11 +20,9 @@ router.get('/one', token_auth, function (req, res) {
     });
 });
 router.post('/create', token_auth, function (req, res) {
-    console.log(token_auth);
     var request = req.body;
     service.create(request).then(function (result) {
         res.send(result);
-        console.log(result);
     }).catch(function (error) {
         res.send(error);
     });
@@ -40,7 +38,6 @@ router.put('/update', token_auth, function (req, res) {
 router.delete('/delete', token_auth, function (req, res) {
     //if(req.body.layerPerm.delete) {
     var ID = req.query.ID;
-    console.log(ID);
     service.delete(ID).then(function (result) {
         res.send(result);
     }).catch(function (error) {

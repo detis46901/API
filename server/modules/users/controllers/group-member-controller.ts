@@ -1,8 +1,8 @@
-import express = require('express');
 import GroupMemberModel = require('../models/group-member-model');
 import GroupMemberService = require('../services/group-member-service');
 import token_auth = require('../../JWT_Checker/loginToken.js');
 
+var express = require('express');
 var router = express.Router();
 var service = new GroupMemberService;
 
@@ -53,7 +53,7 @@ router.post('/create', token_auth, (req, res) => {
 
 router.delete('/delete', token_auth, (req, res) => {
     var ID = <number>req.query.ID;
-    console.log (ID);
+
     service.delete(ID).then((result) => {
         res.send(result);
     }).catch((error) => {

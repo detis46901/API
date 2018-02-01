@@ -1,12 +1,11 @@
-import express = require('express');
 import PageService = require('../services/page-service');
 import token_auth = require('../../JWT_Checker/loginToken.js');
 
+var express = require('express');
 var router = express.Router();
 var service = new PageService();
 
 router.get('/list', token_auth, (req, res) => {
-    
     service.getList(req.query.userID).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -16,7 +15,6 @@ router.get('/list', token_auth, (req, res) => {
 });
 
 router.get('/getactivebyuserid', token_auth, (req, res) => {
-    
     service.getActiveByUserID(req.query.userID).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -26,7 +24,6 @@ router.get('/getactivebyuserid', token_auth, (req, res) => {
 });
 
 router.get('/default', token_auth, (req, res) => {
-    
     service.getDefault(req.query.userID).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -36,7 +33,6 @@ router.get('/default', token_auth, (req, res) => {
 });
 
 router.get('/one', token_auth, (req, res) => {
-
     var Page = <number>req.query.rowid;
     
     service.get(Page).then((result) => {
@@ -48,7 +44,6 @@ router.get('/one', token_auth, (req, res) => {
 });
 
 router.post('/create', token_auth, (req, res) => {
-    
     var request = <App.UserPage>req.body;
     
     service.create(request).then((result) => {
@@ -59,8 +54,7 @@ router.post('/create', token_auth, (req, res) => {
 
 });
 
-router.put('/update', token_auth, (req, res) => {
-    
+router.put('/update', token_auth, (req, res) => {   
     var request = <App.UserPage>req.body;
 
     service.update(request).then((result) => {
@@ -71,10 +65,9 @@ router.put('/update', token_auth, (req, res) => {
 
 });
 
-router.delete('/delete', token_auth, (req, res) => {
-    
+router.delete('/delete', token_auth, (req, res) => {    
     var rowID = <number>req.query.rowID;
-    console.log (rowID);
+
     service.delete(rowID).then((result) => {
         res.send(result);
     }).catch((error) => {

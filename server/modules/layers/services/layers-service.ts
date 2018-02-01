@@ -31,7 +31,6 @@ class LayerService {
     }
 
     create(request: App.Layer): Promise<LayerModel.LayerInstance> {
-        console.log("Creating layer, request= " + request.layerName)
         return LayerModel.Model.create(request);
     }
 
@@ -47,7 +46,6 @@ class LayerService {
             LayerInstance.layerFormat = request.layerFormat;
             LayerInstance.layerDescription = request.layerDescription;
             LayerInstance.layerGeom = request.layerGeom;
-            console.log("API layer service")
 
             return LayerInstance.save();
         }));
