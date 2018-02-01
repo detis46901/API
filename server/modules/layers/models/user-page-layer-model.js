@@ -9,6 +9,9 @@ var sequalizeModel = db.define('user_page_layer', {
     ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     layerON: {
         type: Sequelize.BOOLEAN,
+        layerOrder: {
+            type: Sequelize.INTEGER
+        }
     }
 });
 sequalizeModel.belongsTo(UserModel.Model);

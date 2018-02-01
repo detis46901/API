@@ -33,10 +33,10 @@ app.use(errorHandler());
 // Routes
 //app.use('/api/parent', ParentController);
 app.use('/api/users', UserController);
+app.use('/api/layer', LayerController);
 app.use('/api/authenticate', AuthenticateController);
 app.use('/api/group', GroupController);
 app.use('/api/groupmember', GroupMemberController)
-app.use('/api/layer', LayerController);
 app.use('/api/layerpermission', LayerPermissionController);
 app.use('/api/userpagelayer', UserPageLayerController);
 app.use('/api/userpage', PageController);

@@ -93,6 +93,18 @@ router.get('/getcomments', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/addcomment', token_auth, function (req, res) {
+    var table = req.query.table;
+    var featureID = req.query.featureID;
+    var comment = req.query.comment;
+    var userID = req.query.userID;
+    var createdAt = req.query.createdAt;
+    service.addComment(table, featureID, comment, userID).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 // router.post('/create', (req, res) => {
 //     var request = <App.User>req.body;
 //     console.log(request)

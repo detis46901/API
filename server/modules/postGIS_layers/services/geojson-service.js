@@ -46,7 +46,7 @@ var SQLService = (function () {
     };
     SQLService.prototype.updateGeometry = function (table, geometry, id) {
         //return db.query("UPDATE mycube.t" + table + ' SET "1" = true;')
-        return db.query("UPDATE mycube.t" + table + " SET geom = ST_GeomFromGeoJSON('" + geometry + "') WHERE id='" + id + "';");
+        return db.query("UPDATE mycube.t" + table + " SET geom = (ST_SetSRID(ST_GeomFromGeoJSON('" + geometry + "'),4326)) WHERE id='" + id + "';");
     };
     return SQLService;
 }());

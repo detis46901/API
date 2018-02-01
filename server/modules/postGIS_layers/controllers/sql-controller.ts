@@ -118,6 +118,19 @@ router.get('/getcomments', token_auth, (req, res) => {
         res.send(error);
     });
 })
+
+router.get('/addcomment', token_auth, (req, res) => {
+    var table = <string>req.query.table;
+    var featureID = <string>req.query.featureID;
+    var comment = <string>req.query.comment
+    var userID = <number>req.query.userID
+    var createdAt = <Date>req.query.createdAt
+    service.addComment(table, featureID, comment, userID).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+})
     
 // router.post('/create', (req, res) => {
     

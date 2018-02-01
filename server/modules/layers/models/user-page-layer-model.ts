@@ -15,6 +15,9 @@ var sequalizeModel = db.define<UserPageLayerInstance, App.UserPageLayer>('user_p
     ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     layerON: {
         type: Sequelize.BOOLEAN,
+    layerOrder: {
+        type: Sequelize.INTEGER
+    }
     }
 });
 

@@ -55,7 +55,8 @@ class SQLService {
             userID integer,
             comment text,
             geom geometry,
-            featureID integer);
+            featureID integer,
+            createdAt timestamp with time zone default now());
             `)
     }
 
@@ -92,10 +93,11 @@ class SQLService {
         return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';")
     }
     getcomments(table:string, id:string): Promise<any> {
-        return db.query("SELECT * FROM mycube.c" + table + " WHERE featureid='" + id + "';")
+        console.log("SELECT mycube.c" + table + ".*, users.firstName, users.lastName FROM mycube.c" + table + " WHERE mycube.c" + table + ".featureid='" + id + "' INNER JOIN users ON mycube.c" + table + ".userid = users.ID;")
+        return db.query("SELECT mycube.c" + table + '.*, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';")
     }
-    addComment(table:string, id:string, comment:string, userid: number): Promise<any> {
-        return db.query("INSERT INTO mycube.c" + table + " (userid, comment, featureid) VALUES (" + userid + ",'" + comment + "'," + id + ")")
+    addComment(table:string, featureID:string, comment:string, userid: number): Promise<any> {
+        return db.query("INSERT INTO mycube.c" + table + '(userid, comment, featureid) VALUES (' + userid + ",'" + comment + "'," + featureID + ")")
     }
     update(table: string, id: string, field: string, type: string, value: any) {
         switch (type) {
@@ -113,39 +115,7 @@ class SQLService {
             }
         }
     }
-//     create(request: App.User): Promise<UserModel.UserInstance> {
-//         //let plain_password = request.password
-//         //put the hash in here, then set request.password to hash result, have the code written in the js of this file
-//         //request.password = (Md5.hashStr("Monday01")).toString()
-//         return UserModel.Model.create(request);
-//     }
 
-//     update(request: App.User): Promise<UserModel.UserInstance> {
-        
-//         return <any>(UserModel.Model.findById(request.ID).then((UserInstance) => {
-
-//             UserInstance.firstName = request.firstName;
-//             UserInstance.lastName = request.lastName;
-//             UserInstance.roleID = request.roleID;
-//             UserInstance.email = request.email;
-//             UserInstance.active = request.active;
-//             UserInstance.administrator = request.administrator;
-//             if (request.password) {
-//                 UserInstance.password = request.password;
-//             }
-
-//             return UserInstance.save();
-//         }));
-//     }
-
-//     delete(ID: number) {
-
-//         return UserModel.Model.findById(ID).then((UserInstance) => {
-
-//             return UserInstance.destroy();
-
-//         });
-//     }
 
 }
 
