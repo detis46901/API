@@ -63,8 +63,9 @@ router.get('/addColumn', token_auth, (req, res) => {
     var table = <string>req.query.table;
     var field = <string>req.query.field;
     var type = <string>req.query.type
+    var label = <boolean>req.query.label
 
-    service.addColumn(table,field,type).then((result) => {
+    service.addColumn(table,field,type,label).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
@@ -121,6 +122,17 @@ router.get('/addcomment', token_auth, (req, res) => {
     var userID = <number>req.query.userID
     var createdAt = <Date>req.query.createdAt
     service.addComment(table, featureID, comment, userID).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+})
+
+router.get('/deletecomment', token_auth, (req, res) => {
+    console.log("deleteComment")
+    var table = <string>req.query.table;
+    var id = <string>req.query.id;
+    service.deleteComment(table, id).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
@@ -194,6 +206,34 @@ router.get('/deleteRecord', token_auth, (req, res) => {
 //     });
 
 //});
+router.get('/getOID', token_auth, (req, res) => {
+    var table = <string>req.query.table;
 
+     service.getOID(table).then((result) => {
+         res.send(result);
+     }).catch((error) => {
+         res.send(error);
+     });
+
+ });
+
+ router.get('/getColumnCount', token_auth, (req, res) => {
+     var table = <string>req.query.table;
+     service.getColumnCount(table).then((result) => {
+         res.send(result);
+     }).catch((error) => {
+         res.send(error);
+     });
+
+router.get('/getIsLabel', token_auth, (req, res) => {
+    var oid = <number>req.query.oid;
+    var field = <number>req.query.field;
+    service.getIsLabel(oid,field).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+        })
+})
+ })
 
 export = router;

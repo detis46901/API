@@ -43,8 +43,12 @@ var SQLService = (function () {
     SQLService.prototype.setSRID = function (table) {
         return db.query("SELECT UpdateGeometrySRID('mycube', 't" + table + "','geom',4326);");
     };
-    SQLService.prototype.addColumn = function (table, field, type) {
-        return db.query('ALTER TABLE mycube.t' + table + ' ADD "' + field + '" ' + type);
+    SQLService.prototype.addColumn = function (table, field, type, label) {
+        db.query('ALTER TABLE mycube.t' + table + ' ADD "' + field + '" ' + type);
+        if (label == true) {
+            db.query("COMMENT ON COLUMN mycube.t" + table + '."' + field + "\" IS '" + field + "';");
+        }
+        return db.query("SELECT col_description(41644,3);");
     };
     SQLService.prototype.deleteTable = function (table) {
         return db.query('DROP TABLE mycube.t' + table);
@@ -70,6 +74,9 @@ var SQLService = (function () {
     SQLService.prototype.addComment = function (table, featureID, comment, userid) {
         return db.query("INSERT INTO mycube.c" + table + '(userid, comment, featureid) VALUES (' + userid + ",'" + comment + "'," + featureID + ")");
     };
+    SQLService.prototype.deleteComment = function (table, id) {
+        return db.query("DELETE FROM mycube.c" + table + ' WHERE id=' + id + ";");
+    };
     SQLService.prototype.update = function (table, id, field, type, value) {
         switch (type) {
             case "integer": {
@@ -85,6 +92,16 @@ var SQLService = (function () {
                 return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE id='" + id + "';");
             }
         }
+    };
+    SQLService.prototype.getOID = function (table) {
+        return db.query("SELECT attrelid FROM pg_attribute WHERE attrelid = 'mycube.t" + table + "'::regclass;");
+    };
+    SQLService.prototype.getColumnCount = function (table) {
+        return db.query("select count(column_name) from information_schema.columns where table_name='t" + table + "';");
+        //return db.query("select count(*) from information_schema.columns where table_name='mycube.t" + table + "';")
+    };
+    SQLService.prototype.getIsLabel = function (oid, field) {
+        return db.query("SELECT col_description(" + oid + "," + field + ");");
     };
     return SQLService;
 }());

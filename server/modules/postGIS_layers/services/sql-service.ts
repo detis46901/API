@@ -63,8 +63,11 @@ class SQLService {
         return db.query(`SELECT UpdateGeometrySRID('mycube', 't` + table + `','geom',4326);`)
     }
 
-    addColumn(table: string, field: string, type: string): Promise<any> {
-        return db.query('ALTER TABLE mycube.t' + table + ' ADD "' + field + '" ' + type)
+    addColumn(table: string, field: string, type: string, label: boolean): Promise<any> {
+        db.query('ALTER TABLE mycube.t' + table + ' ADD "' + field + '" ' + type)
+        if (label == true) {db.query(`COMMENT ON COLUMN mycube.t` + table + '."' + field + `" IS '` + field + `';`)}        
+        return  db.query("SELECT col_description(41644,3);")
+        
     }
 
     deleteTable(table: string): Promise<any> {
@@ -95,6 +98,9 @@ class SQLService {
     addComment(table:string, featureID:string, comment:string, userid: number): Promise<any> {
         return db.query("INSERT INTO mycube.c" + table + '(userid, comment, featureid) VALUES (' + userid + ",'" + comment + "'," + featureID + ")")
     }
+    deleteComment(table:string, id:string): Promise<any> {
+        return db.query("DELETE FROM mycube.c" + table + ' WHERE id=' + id + ";")
+    }
     update(table: string, id: string, field: string, type: string, value: any) {
         switch (type) {
             case "integer": {
@@ -111,8 +117,18 @@ class SQLService {
             }
         }
     }
+    getOID(table: string) {
+        return db.query("SELECT attrelid FROM pg_attribute WHERE attrelid = 'mycube.t" + table + "'::regclass;")
+    }
 
+    getColumnCount(table: string) {
+        return db.query("select count(column_name) from information_schema.columns where table_name='t" + table + "';")
+        //return db.query("select count(*) from information_schema.columns where table_name='mycube.t" + table + "';")
+    }
 
+    getIsLabel(oid: number, field:number) {
+        return db.query("SELECT col_description(" + oid + "," + field + ");")
+    }
 }
 
 export = SQLService;

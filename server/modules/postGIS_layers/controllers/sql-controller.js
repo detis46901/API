@@ -47,7 +47,8 @@ router.get('/addColumn', token_auth, function (req, res) {
     var table = req.query.table;
     var field = req.query.field;
     var type = req.query.type;
-    service.addColumn(table, field, type).then(function (result) {
+    var label = req.query.label;
+    service.addColumn(table, field, type, label).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
@@ -99,6 +100,16 @@ router.get('/addcomment', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/deletecomment', token_auth, function (req, res) {
+    console.log("deleteComment");
+    var table = req.query.table;
+    var id = req.query.id;
+    service.deleteComment(table, id).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 // router.post('/create', (req, res) => {
 //     var request = <App.User>req.body;
 //     console.log(request)
@@ -144,6 +155,40 @@ router.get('/setSRID', token_auth, function (req, res) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
+    });
+});
+// router.delete('/delete', (req, res) => {
+//     var ID = <number>req.query.ID;
+//     console.log (ID);
+//     service.delete(ID).then((result) => {
+//         res.send(result);
+//     }).catch((error) => {
+//         res.send(error);
+//     });
+//});
+router.get('/getOID', token_auth, function (req, res) {
+    var table = req.query.table;
+    service.getOID(table).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
+router.get('/getColumnCount', token_auth, function (req, res) {
+    var table = req.query.table;
+    service.getColumnCount(table).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+    router.get('/getIsLabel', token_auth, function (req, res) {
+        var oid = req.query.oid;
+        var field = req.query.field;
+        service.getIsLabel(oid, field).then(function (result) {
+            res.send(result);
+        }).catch(function (error) {
+            res.send(error);
+        });
     });
 });
 module.exports = router;
