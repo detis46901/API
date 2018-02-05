@@ -66,8 +66,8 @@ var PageService = (function () {
             return PageInstance.save();
         }));
     };
-    PageService.prototype.delete = function (rowID) {
-        return PageModel.Model.findById(rowID).then(function (PageInstance) {
+    PageService.prototype.delete = function (ID) {
+        return PageModel.Model.findById(ID).then(function (PageInstance) {
             return PageInstance.destroy();
         });
     };

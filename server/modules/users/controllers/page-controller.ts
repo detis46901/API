@@ -66,9 +66,9 @@ router.put('/update', token_auth, (req, res) => {
 });
 
 router.delete('/delete', token_auth, (req, res) => {    
-    var rowID = <number>req.query.rowID;
+    var ID = <number>req.query.ID;
 
-    service.delete(rowID).then((result) => {
+    service.delete(ID).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);

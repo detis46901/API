@@ -85,9 +85,9 @@ class PageService {
         }));
     }
 
-    delete(rowID: number) {
+    delete(ID: number) {
 
-        return PageModel.Model.findById(rowID).then((PageInstance) => {
+        return PageModel.Model.findById(ID).then((PageInstance) => {
 
             return PageInstance.destroy();
 

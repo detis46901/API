@@ -50,8 +50,8 @@ router.put('/update', token_auth, function (req, res) {
     });
 });
 router.delete('/delete', token_auth, function (req, res) {
-    var rowID = req.query.rowID;
-    service.delete(rowID).then(function (result) {
+    var ID = req.query.ID;
+    service.delete(ID).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
