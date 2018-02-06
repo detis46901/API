@@ -1,6 +1,8 @@
 "use strict";
 var LayerPermissionModel = require('../models/layers-permission-model');
 var LayerModel = require('../models/layers-model');
+var UserModel = require('../../users/models/user-model');
+var GroupModel = require('../../users/models/group-model');
 var LayerPermissionService = (function () {
     function LayerPermissionService() {
     }
@@ -20,7 +22,7 @@ var LayerPermissionService = (function () {
                 ]
             };
         }
-        findOptions.include = [LayerModel.Model];
+        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
     };
     LayerPermissionService.prototype.getByUser = function (userID) {
@@ -36,7 +38,7 @@ var LayerPermissionService = (function () {
                 ]
             };
         }
-        findOptions.include = [LayerModel.Model];
+        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
     };
     LayerPermissionService.prototype.getByGroup = function (groupID) {
@@ -52,7 +54,7 @@ var LayerPermissionService = (function () {
                 ]
             };
         }
-        findOptions.include = [LayerModel.Model];
+        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
     };
     LayerPermissionService.prototype.get = function (ID) {

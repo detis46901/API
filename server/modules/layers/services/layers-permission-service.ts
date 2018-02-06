@@ -1,6 +1,8 @@
 import Sequelize = require('sequelize');
 import LayerPermissionModel = require('../models/layers-permission-model');
 import LayerModel = require('../models/layers-model')
+import UserModel = require('../../users/models/user-model')
+import GroupModel = require('../../users/models/group-model')
 
 
 class LayerPermissionService {
@@ -24,7 +26,7 @@ class LayerPermissionService {
             }
         }
 
-        findOptions.include = [LayerModel.Model]
+        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
     }
 
@@ -44,7 +46,7 @@ class LayerPermissionService {
             }
         }
 
-        findOptions.include = [LayerModel.Model]
+        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
     }
 
@@ -64,7 +66,7 @@ class LayerPermissionService {
             }
         }
 
-        findOptions.include = [LayerModel.Model]
+        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
     }
 
