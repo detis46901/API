@@ -47,6 +47,7 @@
         userpageID?: number;
         layerID?: number;
         style: JSON;
+        layerOrder: number;
     }
 
     interface Group extends IModelBase {
