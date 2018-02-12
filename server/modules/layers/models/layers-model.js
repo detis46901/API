@@ -53,6 +53,10 @@ var sequalizeModel = db.define('layer', {
         validate: {
             len: [1, 200]
         }
+    },
+    defaultStyle: {
+        type: Sequelize.JSON,
+        allowNull: true
     }
 });
 sequalizeModel.belongsTo(ServerModel.Model);

@@ -16,7 +16,6 @@ router.get('/list', token_auth, (req, res) => {
 
 router.get('/one', token_auth, (req, res) => {
     var LayerID = <number>req.query.rowid;
-    
     service.get(LayerID).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -27,7 +26,6 @@ router.get('/one', token_auth, (req, res) => {
 
 router.get('/getpagelayers', token_auth, (req, res) => {
     var PageID = <number>req.query.pageID;
-    
     service.getPageLayers(PageID).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -38,7 +36,6 @@ router.get('/getpagelayers', token_auth, (req, res) => {
 
 router.get('/userlist', token_auth, (req, res) => {
     var userid = <number>req.query.userid;
-    
     service.getUserLayer(userid).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -49,7 +46,6 @@ router.get('/userlist', token_auth, (req, res) => {
 
 router.get('/getbylayer', token_auth, (req, res) => {
     var layerID = <number>req.query.layerID;
-
     service.getByLayer(layerID).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -58,7 +54,7 @@ router.get('/getbylayer', token_auth, (req, res) => {
 })
 
 router.post('/create', token_auth, (req, res) => {   
-    var request = <App.Layer>req.body;
+    var request = <App.UserPageLayer>req.body;
     
     service.create(request).then((result) => {
         res.send(result);
@@ -69,7 +65,7 @@ router.post('/create', token_auth, (req, res) => {
 });
 
 router.put('/update', token_auth, (req, res) => {
-    var request = <App.Layer>req.body;
+    var request = <App.UserPageLayer>req.body;
 
     service.update(request).then((result) => {
         res.send(result);

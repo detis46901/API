@@ -1,8 +1,10 @@
 "use strict";
+var Sequelize = require('sequelize');
 var LayerPermissionModel = require('../models/layers-permission-model');
 var LayerModel = require('../models/layers-model');
 var UserModel = require('../../users/models/user-model');
 var GroupModel = require('../../users/models/group-model');
+var Op = Sequelize.or;
 var LayerPermissionService = (function () {
     function LayerPermissionService() {
     }
@@ -53,6 +55,24 @@ var LayerPermissionService = (function () {
                     { groupID: groupID }
                 ]
             };
+        }
+        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
+        return LayerPermissionModel.Model.findAll(findOptions);
+    };
+    LayerPermissionService.prototype.getByUserAndGroup = function (userID, groups) {
+        var op = Sequelize.or;
+        console.log("Groups in function = " + groups);
+        var findOptions = {
+            order: [
+                'ID'
+            ]
+        };
+        if (userID) {
+            findOptions.where = {
+                $or: [
+                    { groupID: { $or: [groups] } },
+                    { userID: userID }
+                ] };
         }
         findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);

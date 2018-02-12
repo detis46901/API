@@ -3,6 +3,7 @@ import LayerPermissionModel = require('../models/layers-permission-model');
 import LayerModel = require('../models/layers-model')
 import UserModel = require('../../users/models/user-model')
 import GroupModel = require('../../users/models/group-model')
+const Op = Sequelize.or
 
 
 class LayerPermissionService {
@@ -68,6 +69,27 @@ class LayerPermissionService {
 
         findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
+    }
+
+    getByUserAndGroup(userID: number, groups:number[]): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
+        const op = Sequelize.or
+        console.log("Groups in function = " + groups)
+        var findOptions: Sequelize.FindOptions = {
+            order: [
+                'ID'
+            ]
+        }
+
+        if (userID) {
+            findOptions.where = {
+                $or: [
+                {groupID: {$or:[groups]}},
+                {userID: userID}
+        ]}
+        }
+
+        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
+        return LayerPermissionModel.Model.findAll(findOptions)
     }
 
     get(ID: number): Promise<LayerPermissionModel.LayerPermissionInstance> {

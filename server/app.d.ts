@@ -24,6 +24,7 @@
         layerDescription?: string;
         layerGeom?: string;
         serverID?: string;
+        defaultStyle?: JSON;
     }
 
     interface LayerPermission extends IModelBase {
@@ -45,6 +46,7 @@
         layerON?: boolean;
         userpageID?: number;
         layerID?: number;
+        style: JSON;
     }
 
     interface Group extends IModelBase {

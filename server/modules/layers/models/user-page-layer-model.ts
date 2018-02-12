@@ -14,11 +14,11 @@ export interface UserPageLayerModel extends Sequelize.Model<UserPageLayerInstanc
 var sequalizeModel = db.define<UserPageLayerInstance, App.UserPageLayer>('user_page_layer', <any>{
     ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     layerON: {
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.BOOLEAN},
     layerOrder: {
-        type: Sequelize.INTEGER
-    }
-    }
+        type: Sequelize.INTEGER},
+    style: {
+        type: Sequelize.JSON}
 });
 
 sequalizeModel.belongsTo(UserModel.Model)

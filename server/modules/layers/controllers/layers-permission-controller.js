@@ -37,22 +37,18 @@ router.get('/getbygroup', token_auth, function (req, res) {
         res.send(error);
     });
 });
-//non-functional 1/30/18
 router.get('/getbyusergroups', token_auth, function (req, res) {
     var finalResponse = new Array();
+    var groups = new Array();
     groupMemberService.getByUser(req.query.userID).then(function (result) {
-        for (var _i = 0, result_1 = result; _i < result_1.length; _i++) {
-            var gm = result_1[_i];
-            service.getByGroup(gm.groupID).then(function (perms) {
-                for (var _i = 0, perms_1 = perms; _i < perms_1.length; _i++) {
-                    var perm = perms_1[_i];
-                    finalResponse.push(perm);
-                }
-                //console.log("\nfinalResponse: "+finalResponse+"\n")
-            });
+        for (var i = 0; i < result.length; i++) {
+            var gg = new Array();
+            groups.push(result[i].groupID);
         }
-        //console.log("\nfinalResponse: "+finalResponse+"\n")
-        //res.send(finalResponse)  
+        console.log("groups = " + groups);
+        service.getByUserAndGroup(req.query.userID, groups).then(function (final) {
+            res.send(final);
+        });
     });
 });
 router.get('/one', token_auth, function (req, res) {

@@ -30,21 +30,22 @@ var sequalizeModel = db.define('server', {
         }
     }
 });
-sequalizeModel.sync({ force: true })
-    .then(function () {
-    sequalizeModel.create({
-        serverName: "IndianaMap",
-        serverType: "ArcGIS",
-        serverURL: "http://maps.indiana.edu/arcgis/rest/services"
-    });
-})
-    .then(function () {
-    sequalizeModel.create({
-        serverName: "Kokomo Geoserver",
-        serverType: "Geoserver",
-        serverURL: "http://foster2.cityofkokomo.org:8080/geoserver/wms"
-    });
-});
+sequalizeModel.sync({ force: false });
+// user this to initialize the database
+// sequalizeModel.sync({force: true})
+// .then(() => {
+// sequalizeModel.create({
+//     serverName: "IndianaMap",
+//     serverType: "ArcGIS",
+//     serverURL: "http://maps.indiana.edu/arcgis/rest/services"
+// })})
+// .then(() => {
+// sequalizeModel.create({
+//     serverName: "Kokomo Geoserver",
+//     serverType: "Geoserver",
+//     serverURL: "http://foster2.cityofkokomo.org:8080/geoserver/wms"  
+// })
+//     })
 exports.Model = sequalizeModel;
 
 //# sourceMappingURL=../../../source-maps/modules/layers/models/servers-model.js.map

@@ -39,7 +39,6 @@ var sequalizeModel = db.define<LayerInstance, App.Layer>('layer', <any>{
           len: [1, 200]
       }
   },
-  
      layerFormat: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -60,6 +59,10 @@ var sequalizeModel = db.define<LayerInstance, App.Layer>('layer', <any>{
         validate: {
             len: [1, 200]
         }
+    },
+    defaultStyle: {
+        type: Sequelize.JSON,
+        allowNull: true
     }
 });
 
