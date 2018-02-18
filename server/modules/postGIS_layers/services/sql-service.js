@@ -22,7 +22,7 @@ var SQLService = (function () {
     //     return UserModel.Model.findAll(findOptions);
     // }
     SQLService.prototype.get = function (table) {
-        return db.query("SELECT *,ST_Length(ST_Transform(geom,2965)), ST_Area(ST_Transform(geom,2965)) from mycube.t" + table);
+        return db.query("SELECT *,ST_Length(ST_Transform(geom,2965)), ST_Area(ST_Transform(geom,2965)) from mycube.t" + table + ' ORDER BY id');
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
     };
     SQLService.prototype.getsheets = function (table) {
@@ -34,7 +34,9 @@ var SQLService = (function () {
                 //header information
                 responsehtml += "<tr>";
                 schema.forEach(function (schemaelement) {
-                    responsehtml += "<th>" + [schemaelement['field']] + "</th>";
+                    if (schemaelement['field'] != 'geom') {
+                        responsehtml += "<th>" + [schemaelement['field']] + "</th>";
+                    }
                 });
                 responsehtml += "<th>Length (ft)</th>";
                 responsehtml += "<th>Area (sqft)</th>";
@@ -45,14 +47,12 @@ var SQLService = (function () {
                     data.forEach(function (dataelement) {
                         responsehtml += "<tr>";
                         schema.forEach(function (schemaelement) {
-                            // if (schemaelement['field'] == 'geom') {
-                            //     console.log(dataelement[schemaelement['field']]['type'])
-                            //     if (dataelement[schemaelement['field']]['type'] == "LineString") {
-                            //         console.log(dataelement['id'])
-                            //         this.getlength(table, dataelement['id']).then((result) => {responsehtml += result[0][0]['st_length']})
-                            //     } 
-                            // }
-                            responsehtml += "<td>" + dataelement[schemaelement['field']] + "</td>";
+                            if (schemaelement['field'] != 'geom') {
+                                if (!dataelement[schemaelement['field']]) {
+                                    dataelement[schemaelement['field']] = "";
+                                }
+                                responsehtml += "<td>" + dataelement[schemaelement['field']] + "</td>";
+                            }
                         });
                         responsehtml += "<td>" + dataelement['st_length'] + '</td>';
                         responsehtml += "<td>" + dataelement['st_area'] + '</td>';
