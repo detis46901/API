@@ -25,6 +25,30 @@ var SQLService = (function () {
         return db.query("SELECT * from mycube.t" + table);
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
     };
+    SQLService.prototype.getsheets = function (table) {
+        var _this = this;
+        var promise = new Promise(function (resolve, reject) {
+            var responsehtml = "<html><body><table>";
+            _this.getschema(table).then(function (schemaarray) {
+                var schema = schemaarray[0];
+                console.log(schema);
+                _this.get(table).then(function (dataarray) {
+                    var data = (dataarray[0]);
+                    data.forEach(function (dataelement) {
+                        responsehtml += "<tr>";
+                        schema.forEach(function (schemaelement) {
+                            //if (schemaelement['field'] == 'geom') {console.log(dataelement[schemaelement['field']]['type'])}
+                            responsehtml += "<td>" + dataelement[schemaelement['field']] + "</td>";
+                        });
+                        responsehtml += "</tr>";
+                    });
+                    responsehtml += "</table></body></html>";
+                    resolve(responsehtml);
+                });
+            });
+        });
+        return promise;
+    };
     SQLService.prototype.create = function (table) {
         //     db.query(`CREATE SEQUENCE public."test3_ID_seq"
         //     INCREMENT 1

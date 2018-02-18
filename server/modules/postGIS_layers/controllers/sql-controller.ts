@@ -28,6 +28,18 @@ router.get('/all', token_auth, (req, res) => {
 
 });
 
+router.get('/getsheets', token_auth, (req, res) => {
+
+    var table = <string>req.query.table;
+    
+    service.getsheets(table).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+
+});
+
 router.get('/getschema', token_auth, (req, res) => {
     
         var table = <string>req.query.table;

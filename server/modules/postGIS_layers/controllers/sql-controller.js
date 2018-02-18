@@ -19,6 +19,14 @@ router.get('/all', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/getsheets', token_auth, function (req, res) {
+    var table = req.query.table;
+    service.getsheets(table).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.get('/getschema', token_auth, function (req, res) {
     var table = req.query.table;
     service.getschema(table).then(function (result) {

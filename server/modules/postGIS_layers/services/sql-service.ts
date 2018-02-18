@@ -31,6 +31,30 @@ class SQLService {
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
     }
 
+    getsheets(table: string): Promise<any> {
+        let promise = new Promise((resolve, reject) => {
+            let responsehtml: string = "<html><body><table>"
+            this.getschema(table).then((schemaarray) => {
+                let schema = schemaarray[0]
+                console.log(schema)
+                this.get(table).then((dataarray) => {
+                    let data = (dataarray[0])
+                    data.forEach(dataelement => {
+                        responsehtml += "<tr>"
+                        schema.forEach(schemaelement => {
+                            //if (schemaelement['field'] == 'geom') {console.log(dataelement[schemaelement['field']]['type'])}
+                            responsehtml += "<td>" + dataelement[schemaelement['field']] + "</td>"
+                        });
+                        responsehtml += "</tr>"
+                    });
+                    responsehtml += "</table></body></html>"
+                    resolve(responsehtml)
+                })
+            })
+        })
+        return promise
+    }
+    
     create(table: string): Promise<any> {
     //     db.query(`CREATE SEQUENCE public."test3_ID_seq"
     //     INCREMENT 1
