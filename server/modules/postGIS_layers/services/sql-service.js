@@ -22,7 +22,7 @@ var SQLService = (function () {
     //     return UserModel.Model.findAll(findOptions);
     // }
     SQLService.prototype.get = function (table) {
-        return db.query("SELECT * from mycube.t" + table);
+        return db.query("SELECT *,ST_Length(ST_Transform(geom,2965)), ST_Area(ST_Transform(geom,2965)) from mycube.t" + table);
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
     };
     SQLService.prototype.getsheets = function (table) {
@@ -36,15 +36,26 @@ var SQLService = (function () {
                 schema.forEach(function (schemaelement) {
                     responsehtml += "<th>" + [schemaelement['field']] + "</th>";
                 });
+                responsehtml += "<th>Length (ft)</th>";
+                responsehtml += "<th>Area (sqft)</th>";
                 responsehtml += "</tr>";
                 _this.get(table).then(function (dataarray) {
                     var data = (dataarray[0]);
+                    console.log(data);
                     data.forEach(function (dataelement) {
                         responsehtml += "<tr>";
                         schema.forEach(function (schemaelement) {
-                            //if (schemaelement['field'] == 'geom') {console.log(dataelement[schemaelement['field']]['type'])}
+                            // if (schemaelement['field'] == 'geom') {
+                            //     console.log(dataelement[schemaelement['field']]['type'])
+                            //     if (dataelement[schemaelement['field']]['type'] == "LineString") {
+                            //         console.log(dataelement['id'])
+                            //         this.getlength(table, dataelement['id']).then((result) => {responsehtml += result[0][0]['st_length']})
+                            //     } 
+                            // }
                             responsehtml += "<td>" + dataelement[schemaelement['field']] + "</td>";
                         });
+                        responsehtml += "<td>" + dataelement['st_length'] + '</td>';
+                        responsehtml += "<td>" + dataelement['st_area'] + '</td>';
                         responsehtml += "</tr>";
                     });
                     responsehtml += "</table></body></html>";
@@ -53,6 +64,9 @@ var SQLService = (function () {
             });
         });
         return promise;
+    };
+    SQLService.prototype.getlength = function (table, id) {
+        return db.query('SELECT ST_Length(ST_Transform(geom,2965)) from mycube.t' + table + ' WHERE id=' + id + ';');
     };
     SQLService.prototype.create = function (table) {
         //     db.query(`CREATE SEQUENCE public."test3_ID_seq"

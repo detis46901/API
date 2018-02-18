@@ -27,7 +27,7 @@ class SQLService {
     // }
 
     get(table: string): Promise<any> {
-        return db.query("SELECT * from mycube.t" + table)
+        return db.query("SELECT *,ST_Length(ST_Transform(geom,2965)), ST_Area(ST_Transform(geom,2965)) from mycube.t" + table)
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
     }
 
@@ -41,16 +41,28 @@ class SQLService {
                 schema.forEach(schemaelement => {
                     responsehtml += "<th>" + [schemaelement['field']] + "</th>"
                 });
+                responsehtml += "<th>Length (ft)</th>"
+                responsehtml += "<th>Area (sqft)</th>"
                 responsehtml += "</tr>"
 
                 this.get(table).then((dataarray) => {
                     let data = (dataarray[0])
+                    console.log(data)
                     data.forEach(dataelement => {
                         responsehtml += "<tr>"
                         schema.forEach(schemaelement => {
-                            //if (schemaelement['field'] == 'geom') {console.log(dataelement[schemaelement['field']]['type'])}
+                            // if (schemaelement['field'] == 'geom') {
+                            //     console.log(dataelement[schemaelement['field']]['type'])
+                            //     if (dataelement[schemaelement['field']]['type'] == "LineString") {
+                            //         console.log(dataelement['id'])
+
+                            //         this.getlength(table, dataelement['id']).then((result) => {responsehtml += result[0][0]['st_length']})
+                            //     } 
+                            // }
                             responsehtml += "<td>" + dataelement[schemaelement['field']] + "</td>"
                         });
+                        responsehtml += "<td>" + dataelement['st_length'] + '</td>'
+                        responsehtml += "<td>" + dataelement['st_area'] + '</td>'
                         responsehtml += "</tr>"
                     });
                     responsehtml += "</table></body></html>"
@@ -61,6 +73,10 @@ class SQLService {
         return promise
     }
     
+    getlength(table: string, id: number): Promise<any> {
+        return db.query('SELECT ST_Length(ST_Transform(geom,2965)) from mycube.t' + table + ' WHERE id=' + id + ';')
+    }
+
     create(table: string): Promise<any> {
     //     db.query(`CREATE SEQUENCE public."test3_ID_seq"
     //     INCREMENT 1
