@@ -82,7 +82,6 @@
         ID?: number;
         userID?: number;
         comment?: string;
-        
     }
 }
 
