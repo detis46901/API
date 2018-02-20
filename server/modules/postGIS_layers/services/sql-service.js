@@ -48,7 +48,7 @@ var SQLService = (function () {
                         responsehtml += "<tr>";
                         schema.forEach(function (schemaelement) {
                             if (schemaelement['field'] != 'geom') {
-                                if (!dataelement[schemaelement['field']]) {
+                                if (!dataelement[schemaelement['field']] || dataelement[schemaelement['field']] == "null") {
                                     dataelement[schemaelement['field']] = "";
                                 }
                                 responsehtml += "<td>" + dataelement[schemaelement['field']] + "</td>";
@@ -123,6 +123,9 @@ var SQLService = (function () {
     SQLService.prototype.update = function (table, id, field, type, value) {
         switch (type) {
             case "integer": {
+                return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';");
+            }
+            case "double precision": {
                 return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';");
             }
             case "text": {
