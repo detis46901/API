@@ -46,7 +46,7 @@ class LayerService {
             LayerInstance.layerFormat = request.layerFormat;
             LayerInstance.layerDescription = request.layerDescription;
             LayerInstance.layerGeom = request.layerGeom;
-
+            LayerInstance.defaultStyle = request.defaultStyle;
             return LayerInstance.save();
         }));
     }

@@ -62,7 +62,8 @@ var sequalizeModel = db.define<LayerInstance, App.Layer>('layer', <any>{
     },
     defaultStyle: {
         type: Sequelize.JSON,
-        allowNull: true
+        allowNull: true,
+        defaultValue: '{"load":{"color":"#000000","width":2},"current":{"color":"#000000","width":4}}'
     }
 });
 
