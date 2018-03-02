@@ -8,7 +8,8 @@ import ParentController = require('./modules/parent-controller');
 import AuthenticateController = require('./modules/users/controllers/authenticate-controller');
 import GroupController = require ('./modules/users/controllers/group-controller');
 import UserController = require('./modules/users/controllers/user-controller');
-import GroupMemberController = require('./modules/users/controllers/group-member-controller')
+import GroupMemberController = require('./modules/users/controllers/group-member-controller');
+import NotificationController = require('./modules/users/controllers/notification-controller');
 import LayerController = require('./modules/layers/controllers/layers-controller');
 import PageController = require('./modules/users/controllers/page-controller');
 import UserPageLayerController = require('./modules/layers/controllers/user-page-layer-controller');
@@ -36,7 +37,8 @@ app.use('/api/users', UserController);
 app.use('/api/layer', LayerController);
 app.use('/api/authenticate', AuthenticateController);
 app.use('/api/group', GroupController);
-app.use('/api/groupmember', GroupMemberController)
+app.use('/api/groupmember', GroupMemberController);
+app.use('/api/notification', NotificationController);
 app.use('/api/layerpermission', LayerPermissionController);
 app.use('/api/userpagelayer', UserPageLayerController);
 app.use('/api/userpage', PageController);

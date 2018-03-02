@@ -35,7 +35,6 @@ class UserService {
     }
 
     update(request: App.User): Promise<UserModel.UserInstance> {
-        
         return <any>(UserModel.Model.findById(request.ID).then((UserInstance) => {
 
             UserInstance.firstName = request.firstName;
@@ -52,7 +51,6 @@ class UserService {
     }
 
     delete(ID: number) {
-
         return UserModel.Model.findById(ID).then((UserInstance) => {
 
             return UserInstance.destroy();

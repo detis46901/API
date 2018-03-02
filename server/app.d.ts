@@ -62,6 +62,16 @@
         userID: number;
     }
 
+    interface Notification extends IModelBase {
+        ID: number;
+        userID: number;
+        name: string;
+        description: string;
+        link: string;
+        priority: number;
+        read: boolean;
+    }
+
     interface UserPage extends IModelBase {
         ID?: number;
         userID?: number;

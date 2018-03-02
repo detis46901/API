@@ -1,6 +1,6 @@
 import dbConnection = require('../../../core/db-connection');
 import Sequelize = require('sequelize');
-import GroupMemberModel = require('./group-members-model');
+import GroupMemberModel = require('./group-member-model');
 
 var db = dbConnection();
 
