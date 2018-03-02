@@ -19,6 +19,21 @@ var NotificationService = (function () {
         }
         return NotificationModel.Model.findAll(findOptions);
     };
+    NotificationService.prototype.getByUser = function (userID) {
+        var findOptions = {
+            order: [
+                'userID'
+            ]
+        };
+        if (userID) {
+            findOptions.where = {
+                $and: [
+                    { userID: userID }
+                ]
+            };
+        }
+        return NotificationModel.Model.findAll(findOptions);
+    };
     NotificationService.prototype.get = function (rowID) {
         return NotificationModel.Model.findById(rowID);
     };

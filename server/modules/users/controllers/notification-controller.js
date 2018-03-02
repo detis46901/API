@@ -11,6 +11,14 @@ router.get('/list', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/getbyuser', token_auth, function (req, res) {
+    var userID = req.query.userID;
+    service.getByUser(userID).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.get('/one', token_auth, function (req, res) {
     var Notif = req.query.rowid;
     service.get(Notif).then(function (result) {
