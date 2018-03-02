@@ -23,6 +23,24 @@ class NotificationService {
         return NotificationModel.Model.findAll(findOptions);
     }
 
+    getByUser(userID: number): any {
+        var findOptions: Sequelize.FindOptions = {
+            order: [
+                'userID'
+            ]
+        };
+
+        if (userID) {
+            findOptions.where = {
+                $and: [
+                    {userID: userID}
+                ]
+            }
+        }
+
+        return NotificationModel.Model.findAll(findOptions);
+    }
+
     get(rowID: number): Promise<NotificationModel.NotificationInstance> {
         return NotificationModel.Model.findById(rowID);
     }

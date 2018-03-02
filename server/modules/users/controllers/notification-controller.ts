@@ -14,6 +14,15 @@ router.get('/list', token_auth, (req, res) => {
     
 });
 
+router.get('/getbyuser', token_auth, (req, res) => {
+    var userID = <number>req.query.userID;
+    service.getByUser(userID).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+})
+
 router.get('/one', token_auth, (req, res) => {
     var Notif = <number>req.query.rowid;
     
