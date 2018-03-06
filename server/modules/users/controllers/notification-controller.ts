@@ -14,7 +14,7 @@ router.get('/list', token_auth, (req, res) => {
     
 });
 
-router.get('/getbyuser', (req, res) => {
+router.get('/getbyuser', token_auth, (req, res) => {
     var userID = <number>req.query.userID;
     service.getByUser(userID).then((result) => {
         res.send(result);
