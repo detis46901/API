@@ -70,6 +70,8 @@
         link: string;
         priority: number;
         read: boolean;
+        objectType: string;
+        sourceID: number;
     }
 
     interface UserPage extends IModelBase {

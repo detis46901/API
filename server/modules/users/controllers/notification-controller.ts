@@ -23,10 +23,28 @@ router.get('/getbyuser', token_auth, (req, res) => {
     });
 })
 
+router.get('/getbytype', token_auth, (req, res) => {
+    var type = <string>req.query.objectType;
+    service.getByType(type).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+})
+
+router.get('/getbysource', token_auth, (req, res) => {
+    var sourceID = <number>req.query.sourceID;
+    service.getBySource(sourceID).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+})
+
 router.get('/one', token_auth, (req, res) => {
-    var Notif = <number>req.query.rowid;
+    var notif = <number>req.query.rowid;
     
-    service.get(Notif).then((result) => {
+    service.get(notif).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);

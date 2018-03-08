@@ -34,6 +34,36 @@ var NotificationService = (function () {
         }
         return NotificationModel.Model.findAll(findOptions);
     };
+    NotificationService.prototype.getByType = function (objectType) {
+        var findOptions = {
+            order: [
+                'objectType'
+            ]
+        };
+        if (objectType) {
+            findOptions.where = {
+                $and: [
+                    { objectType: objectType }
+                ]
+            };
+        }
+        return NotificationModel.Model.findAll(findOptions);
+    };
+    NotificationService.prototype.getBySource = function (sourceID) {
+        var findOptions = {
+            order: [
+                'sourceID'
+            ]
+        };
+        if (sourceID) {
+            findOptions.where = {
+                $and: [
+                    { sourceID: sourceID }
+                ]
+            };
+        }
+        return NotificationModel.Model.findAll(findOptions);
+    };
     NotificationService.prototype.get = function (rowID) {
         return NotificationModel.Model.findById(rowID);
     };

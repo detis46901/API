@@ -19,9 +19,25 @@ router.get('/getbyuser', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/getbytype', token_auth, function (req, res) {
+    var type = req.query.objectType;
+    service.getByType(type).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
+router.get('/getbysource', token_auth, function (req, res) {
+    var sourceID = req.query.sourceID;
+    service.getBySource(sourceID).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.get('/one', token_auth, function (req, res) {
-    var Notif = req.query.rowid;
-    service.get(Notif).then(function (result) {
+    var notif = req.query.rowid;
+    service.get(notif).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);

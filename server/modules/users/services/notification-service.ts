@@ -41,6 +41,42 @@ class NotificationService {
         return NotificationModel.Model.findAll(findOptions);
     }
 
+    getByType(objectType: string): any {
+        var findOptions: Sequelize.FindOptions = {
+            order: [
+                'objectType'
+            ]
+        };
+
+        if (objectType) {
+            findOptions.where = {
+                $and: [
+                    {objectType: objectType}
+                ]
+            }
+        }
+
+        return NotificationModel.Model.findAll(findOptions);
+    }
+
+    getBySource(sourceID: number): any {
+        var findOptions: Sequelize.FindOptions = {
+            order: [
+                'sourceID'
+            ]
+        };
+
+        if (sourceID) {
+            findOptions.where = {
+                $and: [
+                    {sourceID: sourceID}
+                ]
+            }
+        }
+
+        return NotificationModel.Model.findAll(findOptions);
+    }
+
     get(rowID: number): Promise<NotificationModel.NotificationInstance> {
         return NotificationModel.Model.findById(rowID);
     }

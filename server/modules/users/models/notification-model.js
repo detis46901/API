@@ -23,7 +23,15 @@ var sequalizeModel = db.define('notification', {
     },
     read: {
         type: Sequelize.BOOLEAN,
-        required: true,
+        required: true
+    },
+    objectType: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    sourceID: {
+        type: Sequelize.INTEGER,
+        allowNull: true
     }
 });
 sequalizeModel.belongsTo(UserModel.Model);
