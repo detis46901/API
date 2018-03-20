@@ -61,7 +61,6 @@ var LayerPermissionService = (function () {
     };
     LayerPermissionService.prototype.getByUserAndGroup = function (userID, groups) {
         var op = Sequelize.or;
-        console.log("Groups in function = " + groups);
         var findOptions = {
             order: [
                 'ID'

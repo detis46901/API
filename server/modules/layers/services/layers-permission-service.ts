@@ -73,7 +73,6 @@ class LayerPermissionService {
 
     getByUserAndGroup(userID: number, groups:number[]): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
         const op = Sequelize.or
-        console.log("Groups in function = " + groups)
         var findOptions: Sequelize.FindOptions = {
             order: [
                 'ID'

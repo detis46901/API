@@ -109,7 +109,6 @@ router.get('/addcomment', token_auth, function (req, res) {
     });
 });
 router.get('/deletecomment', token_auth, function (req, res) {
-    console.log("deleteComment");
     var table = req.query.table;
     var id = req.query.id;
     service.deleteComment(table, id).then(function (result) {
@@ -118,15 +117,6 @@ router.get('/deletecomment', token_auth, function (req, res) {
         res.send(error);
     });
 });
-// router.post('/create', (req, res) => {
-//     var request = <App.User>req.body;
-//     console.log(request)
-//     service.create(request).then((result) => {
-//         res.send(result);
-//     }).catch((error) => {
-//         res.send(error);
-//     });
-// });
 router.get('/addRecord', token_auth, function (req, res) {
     var table = req.query.table;
     var geometry = req.query.geometry;

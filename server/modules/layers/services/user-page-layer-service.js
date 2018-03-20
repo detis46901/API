@@ -79,11 +79,11 @@ var UserPageLayerService = (function () {
             UserPageLayerInstance.layerID = request.layerID;
             UserPageLayerInstance.userID = request.userID;
             UserPageLayerInstance.layerON = request.layerON;
+            UserPageLayerInstance.style = request.style;
             return UserPageLayerInstance.save();
         }));
     };
     UserPageLayerService.prototype.delete = function (ID) {
-        console.log("Deleting user page layer");
         return UserPageLayerModel.Model.findById(ID).then(function (UserPageLayerInstance) {
             return UserPageLayerInstance.destroy();
         });

@@ -45,7 +45,6 @@ router.get('/getbyusergroups', token_auth, function (req, res) {
             var gg = new Array();
             groups.push(result[i].groupID);
         }
-        console.log("groups = " + groups);
         service.getByUserAndGroup(req.query.userID, groups).then(function (final) {
             res.send(final);
         });

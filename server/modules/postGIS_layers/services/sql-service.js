@@ -43,7 +43,6 @@ var SQLService = (function () {
                 responsehtml += "</tr>";
                 _this.get(table).then(function (dataarray) {
                     var data = (dataarray[0]);
-                    console.log(data);
                     data.forEach(function (dataelement) {
                         responsehtml += "<tr>";
                         schema.forEach(function (schemaelement) {

@@ -56,7 +56,7 @@ var sequalizeModel = db.define<UserInstance, App.User>('user', <any>{
     }
 });
 
-console.log("\n\n"+sequalizeModel+"\n\n")
+//console.log("\n\n"+sequalizeModel+"\n\n")
 
 var flag = 0;
 

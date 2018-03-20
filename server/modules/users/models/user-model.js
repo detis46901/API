@@ -48,7 +48,7 @@ var sequalizeModel = db.define('user', {
         }
     }
 });
-console.log("\n\n" + sequalizeModel + "\n\n");
+//console.log("\n\n"+sequalizeModel+"\n\n")
 var flag = 0;
 sequalizeModel.findAll({}).then(function (result) {
     if (result == null)

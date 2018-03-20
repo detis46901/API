@@ -71,41 +71,5 @@ router.get('/updateGeometry', token_auth, (req, res) => {
         res.send(result)
     })
 })
-// router.post('/create', (req, res) => {
-    
-//     var request = <App.User>req.body;
-//     console.log(request)
-//     service.create(request).then((result) => {
-//         res.send(result);
-//     }).catch((error) => {
-//         res.send(error);
-//     });
-
-// });
-
-// router.put('/update', (req, res) => {
-    
-//     var request = <App.User>req.body;
-
-//     service.update(request).then((result) => {
-//         res.send(result);
-//     }).catch((error) => {
-//         res.send(error);
-//     });
-
-// });
-
-// router.delete('/delete', (req, res) => {
-    
-//     var ID = <number>req.query.ID;
-//     console.log (ID);
-//     service.delete(ID).then((result) => {
-//         res.send(result);
-//     }).catch((error) => {
-//         res.send(error);
-//     });
-
-//});
-
 
 export = router;

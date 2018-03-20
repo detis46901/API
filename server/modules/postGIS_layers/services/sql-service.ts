@@ -48,7 +48,6 @@ class SQLService {
 
                 this.get(table).then((dataarray) => {
                     let data = (dataarray[0])
-                    console.log(data)
                     data.forEach(dataelement => {
                         responsehtml += "<tr>"
                         schema.forEach(schemaelement => {

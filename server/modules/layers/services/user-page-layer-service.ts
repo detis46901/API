@@ -101,13 +101,13 @@ class UserPageLayerService {
             UserPageLayerInstance.layerID = request.layerID;
             UserPageLayerInstance.userID = request.userID;
             UserPageLayerInstance.layerON = request.layerON;
+            UserPageLayerInstance.style = request.style;
 
             return UserPageLayerInstance.save();
         }));
     }
 
     delete(ID: number) {
-        console.log("Deleting user page layer")
         return UserPageLayerModel.Model.findById(ID).then((UserPageLayerInstance) => {
 
             return UserPageLayerInstance.destroy();
