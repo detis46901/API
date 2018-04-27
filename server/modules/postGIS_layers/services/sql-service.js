@@ -77,10 +77,10 @@ var SQLService = (function () {
         //   ALTER TABLE public."test3_ID_seq"
         //     OWNER TO geoadmin;
         //   `)
-        return db.query("CREATE TABLE mycube.t" + table + " (\n            ID    SERIAL PRIMARY KEY,\n            geom   geometry\n        );\n        ");
+        return db.query("CREATE TABLE mycube.t" + table + " (\n                ID    SERIAL PRIMARY KEY,\n                geom   geometry\n            );\n        ");
     };
     SQLService.prototype.createCommentTable = function (table) {
-        return db.query("CREATE TABLE mycube.c" + table + " (\n            ID   SERIAL PRIMARY KEY,\n            userID integer,\n            comment text,\n            geom geometry,\n            featureID integer,\n            createdAt timestamp with time zone default now());\n            ");
+        return db.query("CREATE TABLE mycube.c" + table + " (\n            ID   SERIAL PRIMARY KEY,\n            userID integer,\n            comment text,\n            geom geometry,\n            geomChanged boolean,\n            photo bytea,\n            featureID integer,\n            createdAt timestamp with time zone default now());\n            ");
     };
     SQLService.prototype.setSRID = function (table) {
         return db.query("SELECT UpdateGeometrySRID('mycube', 't" + table + "','geom',4326);");

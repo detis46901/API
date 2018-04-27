@@ -82,9 +82,9 @@ class SQLService {
     //     OWNER TO geoadmin;
     //   `)
         return db.query(`CREATE TABLE mycube.t` + table + ` (
-            ID    SERIAL PRIMARY KEY,
-            geom   geometry
-        );
+                ID    SERIAL PRIMARY KEY,
+                geom   geometry
+            );
         `)
     }
 
@@ -94,6 +94,8 @@ class SQLService {
             userID integer,
             comment text,
             geom geometry,
+            geomChanged boolean,
+            photo bytea,
             featureID integer,
             createdAt timestamp with time zone default now());
             `)
