@@ -94,7 +94,7 @@ class SQLService {
             userID integer,
             comment text,
             geom geometry,
-            geomChanged boolean,
+            featureChange boolean,
             photo bytea,
             featureID integer,
             createdAt timestamp with time zone default now());
