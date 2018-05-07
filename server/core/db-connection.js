@@ -35,6 +35,7 @@ function createConnection() {
         dialectOptions: {
             ssl: config.ssl
         },
+        logging: false
     });
     return sequelize;
 }
