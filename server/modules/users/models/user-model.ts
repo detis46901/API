@@ -3,7 +3,7 @@ import Sequelize = require('sequelize');
 import GroupMemberModel = require('./group-member-model');
 
 var db = dbConnection();
-
+var bcrypt = require('bcrypt');
 
 export interface UserInstance extends Sequelize.Instance<UserInstance, App.User>, App.User { }
 export interface UserModel extends Sequelize.Model<UserInstance, App.User> { }
@@ -67,10 +67,14 @@ sequalizeModel.findAll({
 });
 
 if(flag == 1) {
+    var pw;
+    bcrypt.hash("admin", 10, (err, hash) => {
+        pw = hash
+    })
     sequalizeModel.create({
         firstName: 'John',
         lastName: 'Doe',
-        password: 'c8108df8eaad2bf5004850ab32c9fa23',
+        password: pw,
         active: false,
         email: 'john.doe@email.com',
         administrator: true

@@ -2,6 +2,7 @@
 var dbConnection = require('../../../core/db-connection');
 var Sequelize = require('sequelize');
 var db = dbConnection();
+var bcrypt = require('bcrypt');
 var sequalizeModel = db.define('user', {
     ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     firstName: {
@@ -55,10 +56,14 @@ sequalizeModel.findAll({}).then(function (result) {
         flag = 1; //Create default user if there isn't one yet
 });
 if (flag == 1) {
+    var pw;
+    bcrypt.hash("admin", 10, function (err, hash) {
+        pw = hash;
+    });
     sequalizeModel.create({
         firstName: 'John',
         lastName: 'Doe',
-        password: 'c8108df8eaad2bf5004850ab32c9fa23',
+        password: pw,
         active: false,
         email: 'john.doe@email.com',
         administrator: true
