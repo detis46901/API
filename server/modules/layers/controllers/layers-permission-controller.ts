@@ -14,7 +14,6 @@ router.get('/list', token_auth, (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-    
 });
 
 router.get('/getbyuser', token_auth, (req, res) => {
