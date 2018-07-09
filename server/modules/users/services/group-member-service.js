@@ -25,6 +25,7 @@ var GroupMemberService = (function () {
         return GroupMemberModel.Model.findAll(findOptions);
     };
     GroupMemberService.prototype.getByGroup = function (groupID) {
+        console.log(groupID);
         var findOptions = {
             order: [
                 'ID'
