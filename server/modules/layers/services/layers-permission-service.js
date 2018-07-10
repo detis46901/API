@@ -44,6 +44,7 @@ var LayerPermissionService = (function () {
         return LayerPermissionModel.Model.findAll(findOptions);
     };
     LayerPermissionService.prototype.getByGroup = function (groupID) {
+        console.log(groupID);
         var findOptions = {
             order: [
                 'ID'
