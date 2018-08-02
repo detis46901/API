@@ -15,34 +15,34 @@ class PageService {
         if (userID) {
             findOptions.where = {
                 $and: [
-                    { userID: userID}
+                    { userID: userID }
                 ]
             }
         }
-        
+
         return PageModel.Model.findAll(findOptions);
     }
 
     getActiveByUserID(userID: string): Promise<PageModel.PageInstance[]> {
-        
-                var findOptions: Sequelize.FindOptions = {
-                    order: [
-                        'pageOrder'
-                    ]
-                };
-        
-                if (userID) {
-                    findOptions.where = {
-                        $and: [
-                            { userID: userID},
-                            { active: true}
-                        ]
-                    }
-                }
-                
-                return PageModel.Model.findAll(findOptions);
+
+        var findOptions: Sequelize.FindOptions = {
+            order: [
+                'pageOrder'
+            ]
+        };
+
+        if (userID) {
+            findOptions.where = {
+                $and: [
+                    { userID: userID },
+                    { active: true }
+                ]
             }
-        
+        }
+
+        return PageModel.Model.findAll(findOptions);
+    }
+
     getDefault(userID: string): Promise<PageModel.PageInstance[]> {
 
         var findOptions: Sequelize.FindOptions = {
@@ -54,12 +54,12 @@ class PageService {
         if (userID) {
             findOptions.where = {
                 $and: [
-                    { userID: userID},
-                    { default: true}
+                    { userID: userID },
+                    { default: true }
                 ]
             }
         }
-        
+
         return PageModel.Model.findAll(findOptions);
     }
 
@@ -72,7 +72,7 @@ class PageService {
     }
 
     update(request: App.UserPage): Promise<PageModel.PageInstance> {
-        
+
         return <any>(PageModel.Model.findById(request.ID).then((PageInstance) => {
 
             PageInstance.userID = request.userID;

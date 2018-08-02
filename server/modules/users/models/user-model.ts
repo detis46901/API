@@ -31,11 +31,11 @@ var sequalizeModel = db.define<UserInstance, App.User>('user', <any>{
         validate: {
             len: [1, 200]
         }
-    }, 
+    },
     active: {
         type: Sequelize.BOOLEAN,
         validate: {
-            is: ["[a-z]",'i'] //only allow letters //1/3/18 why is this here? letter validation for a boolean type?
+            is: ["[a-z]", 'i'] //only allow letters //1/3/18 why is this here? letter validation for a boolean type?
         }
     },
     email: { //consider adding isEmail: true when this is ready for deployment
@@ -51,7 +51,7 @@ var sequalizeModel = db.define<UserInstance, App.User>('user', <any>{
     administrator: {
         type: Sequelize.BOOLEAN,
         validate: {
-            is: ["[a-z]",'i'] //1/3/18^^^
+            is: ["[a-z]", 'i'] //1/3/18^^^
         }
     }
 });
@@ -61,12 +61,12 @@ var sequalizeModel = db.define<UserInstance, App.User>('user', <any>{
 var flag = 0;
 
 sequalizeModel.findAll({
-}).then(function(result) {
-    if(result == null)
+}).then(function (result) {
+    if (result == null)
         flag = 1; //Create default user if there isn't one yet
 });
 
-if(flag == 1) {
+if (flag == 1) {
     var pw;
     bcrypt.hash("admin", 10, (err, hash) => {
         pw = hash
@@ -83,5 +83,5 @@ if(flag == 1) {
 
 //sequalizeModel.hasOne(GroupMemberModel.Model)
 
-sequalizeModel.sync() 
+sequalizeModel.sync()
 export var Model = sequalizeModel;

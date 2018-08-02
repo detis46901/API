@@ -10,7 +10,7 @@ export interface GroupMemberModel extends Sequelize.Model<GroupMemberInstance, A
 
 
 var sequalizeModel = db.define<GroupMemberInstance, App.GroupMember>('group_member', <any>{
-    ID: { 
+    ID: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
@@ -26,6 +26,6 @@ sequalizeModel.belongsTo(UserModel.Model);
 //     userID: 102
 // })
 
-sequalizeModel.sync()    
+sequalizeModel.sync()
 //sequalizeModel.sync()
 export var Model = sequalizeModel;

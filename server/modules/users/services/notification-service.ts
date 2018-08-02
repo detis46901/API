@@ -19,7 +19,7 @@ class NotificationService {
                 ]
             }
         }
-        
+
         return NotificationModel.Model.findAll(findOptions);
     }
 
@@ -33,7 +33,7 @@ class NotificationService {
         if (userID) {
             findOptions.where = {
                 $and: [
-                    {userID: userID}
+                    { userID: userID }
                 ]
             }
         }
@@ -51,7 +51,7 @@ class NotificationService {
         if (objectType) {
             findOptions.where = {
                 $and: [
-                    {objectType: objectType}
+                    { objectType: objectType }
                 ]
             }
         }
@@ -69,7 +69,7 @@ class NotificationService {
         if (sourceID) {
             findOptions.where = {
                 $and: [
-                    {sourceID: sourceID}
+                    { sourceID: sourceID }
                 ]
             }
         }
@@ -86,7 +86,7 @@ class NotificationService {
     }
 
     update(request: App.Notification): Promise<NotificationModel.NotificationInstance> {
-        
+
         return <any>(NotificationModel.Model.findById(request.ID).then((NotificationInstance) => {
 
             NotificationInstance.userID = request.userID

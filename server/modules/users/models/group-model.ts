@@ -1,6 +1,6 @@
 import dbConnection = require('../../../core/db-connection');
 import Sequelize = require('sequelize');
-import GroupMemberModel = require('./group-members-model');
+import GroupMemberModel = require('./group-member-model');
 
 var db = dbConnection();
 
@@ -20,7 +20,7 @@ var sequalizeModel = db.define<GroupInstance, App.Group>('group', <any>{
     description: {
         type: Sequelize.STRING,
         validate: {
-            is: ["[a-z]",'i'] //only allow letters
+            is: ["[a-z]", 'i'] //only allow letters
         }
     }
 });
@@ -30,12 +30,12 @@ var sequalizeModel = db.define<GroupInstance, App.Group>('group', <any>{
 var flag = 0;
 
 sequalizeModel.findAll({
-}).then(function(result) {
-    if(result == null)
+}).then(function (result) {
+    if (result == null)
         flag = 1; //Create default group if there isn't one yet
 });
 
 //sequalizeModel.hasOne(GroupMemberModel.Model)
 
-sequalizeModel.sync()    
+sequalizeModel.sync()
 export var Model = sequalizeModel;

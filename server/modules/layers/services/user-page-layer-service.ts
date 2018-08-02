@@ -2,7 +2,7 @@ import Sequelize = require('sequelize');
 import UserPageLayerModel = require('../models/user-page-layer-model');
 import PageModel = require('../../users/models/page-model')
 import LayerModel = require('../models/layers-model')
-import ServerModel = require ('../models/servers-model')
+import ServerModel = require('../models/servers-model')
 import UserModel = require('../../users/models/user-model');
 
 class UserPageLayerService {
@@ -18,7 +18,7 @@ class UserPageLayerService {
         if (pageID) {
             findOptions.where = {
                 $and: [
-                    { pageID: pageID}
+                    { pageID: pageID }
                 ]
             }
         }
@@ -26,7 +26,7 @@ class UserPageLayerService {
         return UserPageLayerModel.Model.findAll(findOptions);
     }
 
-    
+
     getPageLayers(pageID: number): any {
         var findOptions: Sequelize.FindOptions = {
             order: [
@@ -37,16 +37,16 @@ class UserPageLayerService {
         if (pageID) {
             findOptions.where = {
                 $and: [
-                    { userPageID: pageID}
+                    { userPageID: pageID }
                 ]
             }
         }
 
 
-    
+
         findOptions.include = [PageModel.Model, LayerModel.Model]
 
-        return UserPageLayerModel.Model.findAll({order: ['ID'], where: {$and: [{ userPageID: pageID}]}, include: [{model: PageModel.Model}, {model: LayerModel.Model, include: [ServerModel.Model]}]})
+        return UserPageLayerModel.Model.findAll({ order: ['ID'], where: { $and: [{ userPageID: pageID }] }, include: [{ model: PageModel.Model }, { model: LayerModel.Model, include: [ServerModel.Model] }] })
     }
 
     getUserLayer(userID: number): any {
@@ -59,7 +59,7 @@ class UserPageLayerService {
         if (userID) {
             findOptions.where = {
                 $and: [
-                    { userID: userID}
+                    { userID: userID }
                 ]
             }
         }
@@ -78,7 +78,7 @@ class UserPageLayerService {
         if (layerID) {
             findOptions.where = {
                 $and: [
-                    {layerID: layerID}
+                    { layerID: layerID }
                 ]
             }
         }
@@ -95,7 +95,7 @@ class UserPageLayerService {
     }
 
     update(request: App.UserPageLayer): Promise<UserPageLayerModel.UserPageLayerInstance> {
-        
+
         return <any>(UserPageLayerModel.Model.findById(request.ID).then((UserPageLayerInstance) => {
 
             UserPageLayerInstance.layerID = request.layerID;
@@ -114,7 +114,6 @@ class UserPageLayerService {
 
         });
     }
-
 }
 
 export = UserPageLayerService;

@@ -20,7 +20,7 @@ class GroupService {
                 ]
             }
         }
-        
+
         return GroupModel.Model.findAll(findOptions);
     }
 
@@ -33,7 +33,7 @@ class GroupService {
     }
 
     update(request: App.Group): Promise<GroupModel.GroupInstance> {
-        
+
         return <any>(GroupModel.Model.findById(request.ID).then((GroupInstance) => {
 
             GroupInstance.name = request.name;

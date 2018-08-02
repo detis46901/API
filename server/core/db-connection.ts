@@ -50,7 +50,7 @@ function createConnection() {
         dialectOptions: {
             ssl: config.ssl
         },
-        logging:true
+        logging: true
         // SQLite only
         //storage: '../sqllite'
     });

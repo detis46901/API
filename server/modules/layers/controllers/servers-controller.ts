@@ -6,19 +6,19 @@ var router = express.Router();
 var service = new ServerService();
 
 router.get('/list', token_auth, (req, res) => {
-    
+
     service.getList(req.query.searchValue).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
-    
+
 });
 
 router.get('/one', token_auth, (req, res) => {
 
     var Server = <number>req.query.rowid;
-    
+
     service.get(Server).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -28,9 +28,9 @@ router.get('/one', token_auth, (req, res) => {
 });
 
 router.post('/create', token_auth, (req, res) => {
-    
+
     var request = <App.Server>req.body;
-    
+
     service.create(request).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -40,7 +40,7 @@ router.post('/create', token_auth, (req, res) => {
 });
 
 router.put('/update', token_auth, (req, res) => {
-    
+
     var request = <App.Server>req.body;
 
     service.update(request).then((result) => {
@@ -52,7 +52,7 @@ router.put('/update', token_auth, (req, res) => {
 });
 
 router.delete('/delete', token_auth, (req, res) => {
-    
+
     var ID = <number>req.query.ID;
 
     service.delete(ID).then((result) => {
@@ -60,8 +60,6 @@ router.delete('/delete', token_auth, (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-
 });
-
 
 export = router;

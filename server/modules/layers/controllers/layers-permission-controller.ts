@@ -17,7 +17,7 @@ router.get('/list', token_auth, (req, res) => {
 });
 
 router.get('/getbyuser', token_auth, (req, res) => {
-    var userid = <number>req.query.userid;   
+    var userid = <number>req.query.userid;
     service.getByUser(userid).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -48,7 +48,7 @@ router.get('/getbyusergroups', token_auth, (req, res) => {
     var finalResponse = new Array<any>();
     let groups = new Array<number>();
     groupMemberService.getByUser(req.query.userID).then((result) => {
-        for (let i=0; i<result.length; i++) {
+        for (let i = 0; i < result.length; i++) {
             let gg = new Array<number>()
             groups.push(result[i].groupID)
         }
@@ -61,7 +61,7 @@ router.get('/getbyusergroups', token_auth, (req, res) => {
 router.get('/one', token_auth, (req, res) => {
 
     var LayerID = <number>req.query.rowid;
-    
+
     service.get(LayerID).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -71,9 +71,9 @@ router.get('/one', token_auth, (req, res) => {
 });
 
 router.post('/create', token_auth, (req, res) => {
-    
+
     var request = <App.LayerPermission>req.body;
-    
+
     service.create(request).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -83,7 +83,7 @@ router.post('/create', token_auth, (req, res) => {
 });
 
 router.put('/update', token_auth, (req, res) => {
-    
+
     var request = <App.LayerPermission>req.body;
 
     service.update(request).then((result) => {
@@ -108,6 +108,5 @@ router.delete('/delete', token_auth, (req, res) => {
     //     })
     // }
 });
-
 
 export = router;

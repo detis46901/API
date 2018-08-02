@@ -22,7 +22,7 @@ class UserService {
                 ]
             }
         }
-        
+
         return UserModel.Model.findAll(findOptions);
     }
 

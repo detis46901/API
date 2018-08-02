@@ -45,15 +45,15 @@ router.post('/create', token_auth, function (req, res) {
                     request.password = hash;
                     service.create(request)
                         .then(function (result) {
-                        res.status(201).json({
-                            message: "User created."
+                            res.status(201).json({
+                                message: "User created."
+                            });
+                        }).catch(function (err) {
+                            res.status(500).json({
+                                error: err,
+                                message: "User could not be created. Check email to ensure it is in the correct format."
+                            });
                         });
-                    }).catch(function (err) {
-                        res.status(500).json({
-                            error: err,
-                            message: "User could not be created. Check email to ensure it is in the correct format."
-                        });
-                    });
                 }
             });
         }
@@ -84,16 +84,16 @@ router.put('/updatePassword', token_auth, function (req, res) {
                     req.body.currUser.password = hash;
                     service.update(req.body.currUser)
                         .then(function (result) {
-                        res.status(204).json({
-                            message: "Hash compare successful. Password updated.",
-                            user: req.body.currUser
+                            res.status(204).json({
+                                message: "Hash compare successful. Password updated.",
+                                user: req.body.currUser
+                            });
+                        }).catch(function (err) {
+                            res.status(500).json({
+                                error: err,
+                                message: "Password could not be changed."
+                            });
                         });
-                    }).catch(function (err) {
-                        res.status(500).json({
-                            error: err,
-                            message: "Password could not be changed."
-                        });
-                    });
                 }
             });
         }
@@ -124,8 +124,8 @@ router.post('/login', function (req, res) {
                     email: user[0].email,
                     ID: user[0].ID
                 }, process.env.JWT_SECRET_KEY, {
-                    expiresIn: "30 days"
-                });
+                        expiresIn: "30 days"
+                    });
                 return res.status(200).json({
                     message: "Token granted.",
                     token: login_token,
@@ -167,8 +167,8 @@ router.post('/generatekey', token_auth, function (req, res) {
                     firstName: user[0].firstName,
                     lastName: user[0].lastName
                 }, process.env.JWT_SECRET_KEY, {
-                    expiresIn: "30 days"
-                });
+                        expiresIn: "30 days"
+                    });
                 return res.status(200).json({
                     message: "Token granted.",
                     token: api_token,

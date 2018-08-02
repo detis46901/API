@@ -1,6 +1,6 @@
 //import UserService = require('../services/users-service');
 import AuthService = require('../services/authenticate-service')
-import UserModel = require ('../models/user-model')
+import UserModel = require('../models/user-model')
 
 var express = require('express');
 var router = express.Router();
@@ -12,13 +12,13 @@ router.get('/list', (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-    
+
 });
 
 router.get('/one', (req, res) => {
 
     var User = <number>req.query.rowid;
-    
+
     service.get(User).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -28,7 +28,7 @@ router.get('/one', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    
+
     var request = <App.User>req.body;
     var row = 0
     var admin = false
@@ -36,7 +36,7 @@ router.post('/', (req, res) => {
     service.getList(request.email, request.password).then((result) => {
         row = result[0].ID
         admin = result[0].administrator
-       if (result.length==0){res.send({}) } else  {res.send(JSON.stringify({ token: 'fake-jwt-token2', userid: row, admin: admin }));}
+        if (result.length == 0) { res.send({}) } else { res.send(JSON.stringify({ token: 'fake-jwt-token2', userid: row, admin: admin })); }
     }).catch((error) => {
         res.send(error);
     });
@@ -44,7 +44,7 @@ router.post('/', (req, res) => {
 });
 
 router.put('/update', (req, res) => {
-    
+
     var request = <App.User>req.body;
 
     service.update(request).then((result) => {
@@ -56,7 +56,7 @@ router.put('/update', (req, res) => {
 });
 
 router.delete('/delete', (req, res) => {
-    
+
     var rowID = <number>req.query.rowID;
 
     service.delete(rowID).then((result) => {
@@ -64,8 +64,6 @@ router.delete('/delete', (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-
 });
-
 
 export = router;

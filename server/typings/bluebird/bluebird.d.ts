@@ -25,8 +25,8 @@ declare class Promise<R> implements Promise.Thenable<R>, Promise.Inspection<R> {
 	/**
 	 * Promises/A+ `.then()` with progress handler. Returns a new promise chained from this promise. The new promise will be rejected or resolved dedefer on the passed `fulfilledHandler`, `rejectedHandler` and the state of this promise.
 	 */
-	then<U>(onFulfill: (value: R) => U|Promise.Thenable<U>, onReject: (error: any) => Promise.Thenable<U>, onProgress?: (note: any) => any): Promise<U>;
-	then<U>(onFulfill: (value: R) => U|Promise.Thenable<U>, onReject?: (error: any) => U, onProgress?: (note: any) => any): Promise<U>;
+	then<U>(onFulfill: (value: R) => U | Promise.Thenable<U>, onReject: (error: any) => Promise.Thenable<U>, onProgress?: (note: any) => any): Promise<U>;
+	then<U>(onFulfill: (value: R) => U | Promise.Thenable<U>, onReject?: (error: any) => U, onProgress?: (note: any) => any): Promise<U>;
 
 	/**
 	 * This is a catch-all exception handler, shortcut for calling `.then(null, handler)` on this promise. Any exception happening in a `.then`-chain will propagate to nearest `.catch` handler.
@@ -406,7 +406,7 @@ declare class Promise<R> implements Promise.Thenable<R>, Promise.Inspection<R> {
 	 *
 	 * If you pass a `receiver`, the `nodeFunction` will be called as a method on the `receiver`.
 	 */
-	static promisify<T>(func: (callback: (err:any, result: T) => void) => void, receiver?: any): () => Promise<T>;
+	static promisify<T>(func: (callback: (err: any, result: T) => void) => void, receiver?: any): () => Promise<T>;
 	static promisify<T, A1>(func: (arg1: A1, callback: (err: any, result: T) => void) => void, receiver?: any): (arg1: A1) => Promise<T>;
 	static promisify<T, A1, A2>(func: (arg1: A1, arg2: A2, callback: (err: any, result: T) => void) => void, receiver?: any): (arg1: A1, arg2: A2) => Promise<T>;
 	static promisify<T, A1, A2, A3>(func: (arg1: A1, arg2: A2, arg3: A3, callback: (err: any, result: T) => void) => void, receiver?: any): (arg1: A1, arg2: A2, arg3: A3) => Promise<T>;
@@ -464,7 +464,7 @@ declare class Promise<R> implements Promise.Thenable<R>, Promise.Inspection<R> {
 	static all<R>(values: Promise.Thenable<R[]>): Promise<R[]>;
 	// array with promises of value
 	static all<R>(values: Promise.Thenable<R>[]): Promise<R[]>;
-    // array with promises of different types
+	// array with promises of different types
 	static all<T1, T2>(values: [Promise.Thenable<T1>, Promise.Thenable<T2>]): Promise<[T1, T2]>;
 	static all<T1, T2, T3>(values: [Promise.Thenable<T1>, Promise.Thenable<T2>, Promise.Thenable<T3>]): Promise<[T1, T2, T3]>;
 	static all<T1, T2, T3, T4>(values: [Promise.Thenable<T1>, Promise.Thenable<T2>, Promise.Thenable<T3>, Promise.Thenable<T4>]): Promise<[T1, T2, T3, T4]>;
@@ -655,7 +655,7 @@ declare module Promise {
 		suffix?: string;
 		filter?: (name: string, func: Function, target?: any, passesDefaultFilter?: boolean) => boolean;
 		// The promisifier gets a reference to the original method and should return a function which returns a promise
-		promisifier?: (originalMethod: Function) => () => Thenable<any> ;
+		promisifier?: (originalMethod: Function) => () => Thenable<any>;
 	}
 
 	// Ideally, we'd define e.g. "export class RangeError extends Error {}",
@@ -671,8 +671,8 @@ declare module Promise {
 	export function OperationalError(): OperationalError;
 
 	export interface Thenable<R> {
-		then<U>(onFulfilled: (value: R) => U|Thenable<U>, onRejected: (error: any) => Thenable<U>): Thenable<U>;
-		then<U>(onFulfilled: (value: R) => U|Thenable<U>, onRejected?: (error: any) => U): Thenable<U>;
+		then<U>(onFulfilled: (value: R) => U | Thenable<U>, onRejected: (error: any) => Thenable<U>): Thenable<U>;
+		then<U>(onFulfilled: (value: R) => U | Thenable<U>, onRejected?: (error: any) => U): Thenable<U>;
 	}
 
 	export interface Resolver<R> {

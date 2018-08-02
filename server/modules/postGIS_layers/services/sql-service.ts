@@ -4,7 +4,7 @@ import dbConnection = require('../../../core/db-connection');
 var db = dbConnection();
 
 class SQLService {
-    
+
     // getList(searchValue: string): Promise<any[]> {
 
     //     var findOptions: Sequelize.FindOptions = {
@@ -22,7 +22,7 @@ class SQLService {
     //             ]
     //         }
     //     }
-        
+
     //     return UserModel.Model.findAll(findOptions);
     // }
 
@@ -40,7 +40,8 @@ class SQLService {
                 responsehtml += "<tr>"
                 schema.forEach(schemaelement => {
                     if (schemaelement['field'] != 'geom') {
-                    responsehtml += "<th>" + [schemaelement['field']] + "</th>"}
+                        responsehtml += "<th>" + [schemaelement['field']] + "</th>"
+                    }
                 });
                 responsehtml += "<th>Length (ft)</th>"
                 responsehtml += "<th>Area (sqft)</th>"
@@ -52,8 +53,9 @@ class SQLService {
                         responsehtml += "<tr>"
                         schema.forEach(schemaelement => {
                             if (schemaelement['field'] != 'geom') {
-                                if (!dataelement[schemaelement['field']]||dataelement[schemaelement['field']]=="null") {dataelement[schemaelement['field']] = ""}
-                            responsehtml += "<td>" + dataelement[schemaelement['field']] + "</td>"}
+                                if (!dataelement[schemaelement['field']] || dataelement[schemaelement['field']] == "null") { dataelement[schemaelement['field']] = "" }
+                                responsehtml += "<td>" + dataelement[schemaelement['field']] + "</td>"
+                            }
                         });
                         responsehtml += "<td>" + dataelement['st_length'] + '</td>'
                         responsehtml += "<td>" + dataelement['st_area'] + '</td>'
@@ -66,21 +68,21 @@ class SQLService {
         })
         return promise
     }
-    
+
     getlength(table: string, id: number): Promise<any> {
         return db.query('SELECT ST_Length(ST_Transform(geom,2965)) from mycube.t' + table + ' WHERE id=' + id + ';')
     }
 
     create(table: string): Promise<any> {
-    //     db.query(`CREATE SEQUENCE public."test3_ID_seq"
-    //     INCREMENT 1
-    //     MINVALUE 1
-    //     MAXVALUE 9223372036854775807
-    //     START 38
-    //     CACHE 1;
-    //   ALTER TABLE public."test3_ID_seq"
-    //     OWNER TO geoadmin;
-    //   `)
+        //     db.query(`CREATE SEQUENCE public."test3_ID_seq"
+        //     INCREMENT 1
+        //     MINVALUE 1
+        //     MAXVALUE 9223372036854775807
+        //     START 38
+        //     CACHE 1;
+        //   ALTER TABLE public."test3_ID_seq"
+        //     OWNER TO geoadmin;
+        //   `)
         return db.query(`CREATE TABLE mycube.t` + table + ` (
                 ID    SERIAL PRIMARY KEY,
                 geom   geometry
@@ -107,9 +109,9 @@ class SQLService {
 
     addColumn(table: string, field: string, type: string, label: boolean): Promise<any> {
         db.query('ALTER TABLE mycube.t' + table + ' ADD "' + field + '" ' + type)
-        if (label == true) {db.query(`COMMENT ON COLUMN mycube.t` + table + '."' + field + `" IS '` + field + `';`)}        
-        return  db.query("SELECT col_description(41644,3);")
-        
+        if (label == true) { db.query(`COMMENT ON COLUMN mycube.t` + table + '."' + field + `" IS '` + field + `';`) }
+        return db.query("SELECT col_description(41644,3);")
+
     }
 
     deleteTable(table: string): Promise<any> {
@@ -127,20 +129,20 @@ class SQLService {
     deleteRecord(table: string, id: string): Promise<any> {
         return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';")
     }
-    
-    getschema(table:string): Promise<any> {
+
+    getschema(table: string): Promise<any> {
         return db.query("SELECT column_name AS field, data_type as type FROM information_schema.columns WHERE table_schema = 'mycube' AND table_name = 't" + table + "'")
     }
-    getsingle(table:string, id:string): Promise<any> {
+    getsingle(table: string, id: string): Promise<any> {
         return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';")
     }
-    getcomments(table:string, id:string): Promise<any> {
+    getcomments(table: string, id: string): Promise<any> {
         return db.query("SELECT mycube.c" + table + '.*, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';")
     }
-    addComment(table:string, featureID:string, comment:string, userid: number): Promise<any> {
+    addComment(table: string, featureID: string, comment: string, userid: number): Promise<any> {
         return db.query("INSERT INTO mycube.c" + table + '(userid, comment, featureid) VALUES (' + userid + ",'" + comment + "'," + featureID + ")")
     }
-    deleteComment(table:string, id:string): Promise<any> {
+    deleteComment(table: string, id: string): Promise<any> {
         return db.query("DELETE FROM mycube.c" + table + ' WHERE id=' + id + ";")
     }
     update(table: string, id: string, field: string, type: string, value: any) {
@@ -152,7 +154,7 @@ class SQLService {
                 return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';")
             }
             case "text": {
-                return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE " + "id='" + id + "';") 
+                return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE " + "id='" + id + "';")
             }
             case "boolean": {
                 return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';")
@@ -171,7 +173,7 @@ class SQLService {
         //return db.query("select count(*) from information_schema.columns where table_name='mycube.t" + table + "';")
     }
 
-    getIsLabel(oid: number, field:number) {
+    getIsLabel(oid: number, field: number) {
         return db.query("SELECT col_description(" + oid + "," + field + ");")
     }
 }

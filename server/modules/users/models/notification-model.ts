@@ -22,7 +22,7 @@ var sequalizeModel = db.define<NotificationInstance, App.Notification>('notifica
     link: {
         type: Sequelize.STRING,
         allowNull: true
-    }, 
+    },
     priority: {
         type: Sequelize.INTEGER,
         allowNull: false
@@ -42,5 +42,5 @@ var sequalizeModel = db.define<NotificationInstance, App.Notification>('notifica
 });
 
 sequalizeModel.belongsTo(UserModel.Model)
-sequalizeModel.sync() 
+sequalizeModel.sync()
 export var Model = sequalizeModel;

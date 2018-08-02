@@ -72,7 +72,8 @@ var LayerPermissionService = (function () {
                 $or: [
                     { groupID: { $or: [groups] } },
                     { userID: userID }
-                ] };
+                ]
+            };
         }
         findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);

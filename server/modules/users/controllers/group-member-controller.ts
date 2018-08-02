@@ -12,11 +12,11 @@ router.get('/list', token_auth, (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-    
+
 });
 
 router.get('/getbyuser', token_auth, (req, res) => {
-    var userid = <number>req.query.userid;   
+    var userid = <number>req.query.userid;
     service.getByUser(userid).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -25,7 +25,7 @@ router.get('/getbyuser', token_auth, (req, res) => {
 });
 
 router.get('/getbygroup', token_auth, (req, res) => {
-    var groupid = <number>req.query.groupid;   
+    var groupid = <number>req.query.groupid;
     service.getByGroup(groupid).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -34,7 +34,7 @@ router.get('/getbygroup', token_auth, (req, res) => {
 });
 
 router.get('/one', token_auth, (req, res) => {
-    var request = <number>req.query.rowid;  
+    var request = <number>req.query.rowid;
     service.get(request).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -42,8 +42,8 @@ router.get('/one', token_auth, (req, res) => {
     });
 });
 
-router.post('/create', token_auth, (req, res) => {  
-    var request = <App.GroupMember>req.body;  
+router.post('/create', token_auth, (req, res) => {
+    var request = <App.GroupMember>req.body;
     service.create(request).then((result) => {
         res.send(result);
     }).catch((error) => {

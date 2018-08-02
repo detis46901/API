@@ -1,7 +1,7 @@
 import dbConnection = require('../../../core/db-connection');
 import Sequelize = require('sequelize');
 import PageModel = require('../../users/models/page-model');
-import LayerModel = require ('./layers-model');
+import LayerModel = require('./layers-model');
 import UserModel = require('../../users/models/user-model');
 
 var db = dbConnection();
@@ -14,16 +14,19 @@ export interface UserPageLayerModel extends Sequelize.Model<UserPageLayerInstanc
 var sequalizeModel = db.define<UserPageLayerInstance, App.UserPageLayer>('user_page_layer', <any>{
     ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     layerON: {
-        type: Sequelize.BOOLEAN},
+        type: Sequelize.BOOLEAN
+    },
     layerOrder: {
-        type: Sequelize.INTEGER},
+        type: Sequelize.INTEGER
+    },
     style: {
-        type: Sequelize.JSON}
+        type: Sequelize.JSON
+    }
 });
 
 sequalizeModel.belongsTo(UserModel.Model)
 sequalizeModel.belongsTo(PageModel.Model)
 sequalizeModel.belongsTo(LayerModel.Model)
-sequalizeModel.sync(); 
+sequalizeModel.sync();
 
 export var Model = sequalizeModel;

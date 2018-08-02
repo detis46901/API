@@ -3,7 +3,7 @@ import GroupMemberModel = require('../models/group-member-model');
 import UserModel = require('../models/user-model');
 import GroupModel = require('../models/group-model');
 
-class GroupMemberService { 
+class GroupMemberService {
     getList(searchValue: string): Promise<GroupMemberModel.GroupMemberInstance[]> {
         return GroupMemberModel.Model.findAll();
     }
@@ -19,7 +19,7 @@ class GroupMemberService {
         if (userID) {
             findOptions.where = {
                 $and: [
-                    { userID: userID}
+                    { userID: userID }
                 ]
             }
         }
@@ -39,7 +39,7 @@ class GroupMemberService {
         if (groupID) {
             findOptions.where = {
                 $and: [
-                    { groupID: groupID}
+                    { groupID: groupID }
                 ]
             }
         }
