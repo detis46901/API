@@ -22,7 +22,6 @@ class UserPageLayerService {
                 ]
             }
         }
-
         return UserPageLayerModel.Model.findAll(findOptions);
     }
 

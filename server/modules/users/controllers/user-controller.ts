@@ -111,6 +111,7 @@ router.put('/updatePassword', token_auth, (req, res) => {
 })
 
 router.post('/login', (req, res) => {
+    console.log(req.body)
     UserModel.Model.findAll({
         where: {email: req.body.email}
     }).then(user => {

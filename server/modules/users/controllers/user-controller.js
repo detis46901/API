@@ -105,6 +105,7 @@ router.put('/updatePassword', token_auth, function (req, res) {
     });
 });
 router.post('/login', function (req, res) {
+    console.log(req.body);
     UserModel.Model.findAll({
         where: { email: req.body.email }
     }).then(function (user) {

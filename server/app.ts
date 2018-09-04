@@ -1,5 +1,7 @@
 /// <reference path='_references.ts' />
-import express = require('express');
+import * as express from 'express'
+import { createServer, Server } from 'http'
+import * as socketIo from 'socket.io';
 import {urlencoded, json} from 'body-parser';
 import errorHandler = require('errorhandler');
 import cors = require('cors');
@@ -17,8 +19,15 @@ import LayerPermissionController = require('./modules/layers/controllers/layers-
 import ServerController = require('./modules/layers/controllers/servers-controller');
 import SQLController = require('./modules/postGIS_layers/controllers/sql-controller');
 import geoJSONController = require('./modules/postGIS_layers/controllers/geoJSON-controller');
+import { Socket, SocketOptions } from 'dgram';
+import { ChatServer} from './chat-server'
+
 
 var app = express();
+let server: Server
+let io: socketIo.Server
+// var allowedOrigins = "http://localhost:*";
+
 
 // Configuration
 app.set('port', 5000);
@@ -30,6 +39,7 @@ app.use(json());
 app.use(cors());
 app.use(express.static(join(__dirname, '/../client')));
 app.use(errorHandler());
+app.use(cors({credentials: true, origin: 'http://localhost:4200'}));
 
 // Routes
 //app.use('/api/parent', ParentController);
@@ -45,19 +55,21 @@ app.use('/api/userpage', PageController);
 app.use('/api/server', ServerController);
 app.use('/api/sql', SQLController);
 app.use('/api/geojson', geoJSONController);
-
-
+this.server = createServer(this.app)
+this.io = socketIo(this.server)
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
+let socketApp = new ChatServer().getApp()
 export var App = app;
 
 
-//import http = require('http');
-//http.createServer(function (req, res) {
-//    res.writeHead(200, { 'Content-Type': 'text/plain' });
-//    res.end('Hello World\n');
-//}).listen(1337, '127.0.0.1');
 
-//console.log('Server running at http://127.0.0.1:1337/');
+// //import http = require('http');
+// //http.createServer(function (req, res) {
+// //    res.writeHead(200, { 'Content-Type': 'text/plain' });
+// //    res.end('Hello World\n');
+// //}).listen(1337, '127.0.0.1');
+
+// //console.log('Server running at http://127.0.0.1:1337/');

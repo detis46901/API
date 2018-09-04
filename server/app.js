@@ -1,6 +1,8 @@
 "use strict";
 /// <reference path='_references.ts' />
 var express = require('express');
+var http_1 = require('http');
+var socketIo = require('socket.io');
 var body_parser_1 = require('body-parser');
 var errorHandler = require('errorhandler');
 var cors = require('cors');
@@ -17,7 +19,11 @@ var LayerPermissionController = require('./modules/layers/controllers/layers-per
 var ServerController = require('./modules/layers/controllers/servers-controller');
 var SQLController = require('./modules/postGIS_layers/controllers/sql-controller');
 var geoJSONController = require('./modules/postGIS_layers/controllers/geoJSON-controller');
+var chat_server_1 = require('./chat-server');
 var app = express();
+var server;
+var io;
+// var allowedOrigins = "http://localhost:*";
 // Configuration
 app.set('port', 5000);
 app.set('views', path_1.join(__dirname, '/views')); // critical to use path.join on windows
@@ -28,6 +34,7 @@ app.use(body_parser_1.json());
 app.use(cors());
 app.use(express.static(path_1.join(__dirname, '/../client')));
 app.use(errorHandler());
+app.use(cors({ credentials: true, origin: 'http://localhost:4200' }));
 // Routes
 //app.use('/api/parent', ParentController);
 app.use('/api/users', UserController);
@@ -42,15 +49,18 @@ app.use('/api/userpage', PageController);
 app.use('/api/server', ServerController);
 app.use('/api/sql', SQLController);
 app.use('/api/geojson', geoJSONController);
+this.server = http_1.createServer(this.app);
+this.io = socketIo(this.server);
 app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
 });
+var socketApp = new chat_server_1.ChatServer().getApp();
 exports.App = app;
-//import http = require('http');
-//http.createServer(function (req, res) {
-//    res.writeHead(200, { 'Content-Type': 'text/plain' });
-//    res.end('Hello World\n');
-//}).listen(1337, '127.0.0.1');
-//console.log('Server running at http://127.0.0.1:1337/'); 
+// //import http = require('http');
+// //http.createServer(function (req, res) {
+// //    res.writeHead(200, { 'Content-Type': 'text/plain' });
+// //    res.end('Hello World\n');
+// //}).listen(1337, '127.0.0.1');
+// //console.log('Server running at http://127.0.0.1:1337/'); 
 
 //# sourceMappingURL=source-maps/app.js.map
