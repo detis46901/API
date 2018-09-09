@@ -1,7 +1,7 @@
 var Model;
 var Instance;
 
-abstract class ParentService {    
+abstract class ParentService {
     get(rowID: number): Promise<any> {
         return Model.findById(rowID);
     }

@@ -14,10 +14,10 @@ router.get('/list', (req, res) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
-    });   
+    });
 });
 
-router.get('/one', (req, res) => {   
+router.get('/one', (req, res) => {
     service.get(req.query.rowid).then((result) => {
         res.send(result);
     }).catch((error) => {

@@ -11,7 +11,7 @@ router.get('/list', token_auth, (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-    
+
 });
 
 router.get('/getactivebyuserid', token_auth, (req, res) => {
@@ -20,7 +20,7 @@ router.get('/getactivebyuserid', token_auth, (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-    
+
 });
 
 router.get('/default', token_auth, (req, res) => {
@@ -29,12 +29,12 @@ router.get('/default', token_auth, (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-    
+
 });
 
 router.get('/one', token_auth, (req, res) => {
     var Page = <number>req.query.rowid;
-    
+
     service.get(Page).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -45,7 +45,7 @@ router.get('/one', token_auth, (req, res) => {
 
 router.post('/create', token_auth, (req, res) => {
     var request = <App.UserPage>req.body;
-    
+
     service.create(request).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -54,7 +54,7 @@ router.post('/create', token_auth, (req, res) => {
 
 });
 
-router.put('/update', token_auth, (req, res) => {   
+router.put('/update', token_auth, (req, res) => {
     var request = <App.UserPage>req.body;
 
     service.update(request).then((result) => {
@@ -65,7 +65,7 @@ router.put('/update', token_auth, (req, res) => {
 
 });
 
-router.delete('/delete', token_auth, (req, res) => {    
+router.delete('/delete', token_auth, (req, res) => {
     var ID = <number>req.query.ID;
 
     service.delete(ID).then((result) => {

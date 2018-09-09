@@ -11,7 +11,7 @@ router.get('/list', token_auth, (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-    
+
 });
 
 router.get('/getbyuser', token_auth, (req, res) => {
@@ -43,7 +43,7 @@ router.get('/getbysource', token_auth, (req, res) => {
 
 router.get('/one', token_auth, (req, res) => {
     var notif = <number>req.query.rowid;
-    
+
     service.get(notif).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -54,7 +54,7 @@ router.get('/one', token_auth, (req, res) => {
 
 router.post('/create', token_auth, (req, res) => {
     var request = <App.Notification>req.body;
-    
+
     service.create(request).then((result) => {
         res.send(result);
     }).catch((error) => {

@@ -1,1 +1,12 @@
-{"version":3,"sources":["modules/parent-service.ts"],"names":[],"mappings":"AAAA,IAAI,KAAK,CAAC;AACV,IAAI,QAAQ,CAAC;AAEb;IAAA;IAcA,CAAC;IAbG,2BAAG,GAAH,UAAI,KAAa;QACb,MAAM,CAAC,KAAK,CAAC,QAAQ,CAAC,KAAK,CAAC,CAAC;IACjC,CAAC;IAED,8BAAM,GAAN,UAAO,OAAY;QACf,MAAM,CAAC,KAAK,CAAC,MAAM,CAAC,OAAO,CAAC,CAAC;IACjC,CAAC;IAED,8BAAM,GAAN,UAAO,EAAU;QACb,MAAM,CAAC,KAAK,CAAC,QAAQ,CAAC,EAAE,CAAC,CAAC,IAAI,CAAC,UAAC,QAAQ;YACpC,MAAM,CAAC,QAAQ,CAAC,OAAO,EAAE,CAAC;QAC9B,CAAC,CAAC,CAAC;IACP,CAAC;IACL,oBAAC;AAAD,CAdA,AAcC,IAAA","file":"../../modules/parent-service.js","sourcesContent":["var Model;\r\nvar Instance;\r\n\r\nabstract class ParentService {    \r\n    get(rowID: number): Promise<any> {\r\n        return Model.findById(rowID);\r\n    }\r\n\r\n    create(request: any): Promise<any> {\r\n        return Model.create(request);\r\n    }\r\n\r\n    delete(ID: number) {\r\n        return Model.findById(ID).then((Instance) => {\r\n            return Instance.destroy();\r\n        });\r\n    }\r\n}"]}
+{
+    "version": 3,
+    "sources": [
+        "modules/parent-service.ts"
+    ],
+    "names": [],
+    "mappings": "AAAA,IAAI,KAAK,CAAC;AACV,IAAI,QAAQ,CAAC;AAEb;IAAA;IAcA,CAAC;IAbG,2BAAG,GAAH,UAAI,KAAa;QACb,MAAM,CAAC,KAAK,CAAC,QAAQ,CAAC,KAAK,CAAC,CAAC;IACjC,CAAC;IAED,8BAAM,GAAN,UAAO,OAAY;QACf,MAAM,CAAC,KAAK,CAAC,MAAM,CAAC,OAAO,CAAC,CAAC;IACjC,CAAC;IAED,8BAAM,GAAN,UAAO,EAAU;QACb,MAAM,CAAC,KAAK,CAAC,QAAQ,CAAC,EAAE,CAAC,CAAC,IAAI,CAAC,UAAC,QAAQ;YACpC,MAAM,CAAC,QAAQ,CAAC,OAAO,EAAE,CAAC;QAC9B,CAAC,CAAC,CAAC;IACP,CAAC;IACL,oBAAC;AAAD,CAdA,AAcC,IAAA",
+    "file": "../../modules/parent-service.js",
+    "sourcesContent": [
+        "var Model;\r\nvar Instance;\r\n\r\nabstract class ParentService {    \r\n    get(rowID: number): Promise<any> {\r\n        return Model.findById(rowID);\r\n    }\r\n\r\n    create(request: any): Promise<any> {\r\n        return Model.create(request);\r\n    }\r\n\r\n    delete(ID: number) {\r\n        return Model.findById(ID).then((Instance) => {\r\n            return Instance.destroy();\r\n        });\r\n    }\r\n}"
+    ]
+}

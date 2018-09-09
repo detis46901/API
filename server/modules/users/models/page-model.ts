@@ -27,18 +27,18 @@ var sequalizeModel = db.define<PageInstance, App.UserPage>('user_page', <any>{
     default: {
         type: Sequelize.BOOLEAN,
         validate: {
-            is: ["[a-z]",'i'] //only allow letters
+            is: ["[a-z]", 'i'] //only allow letters
         }
     },
     active: {
         type: Sequelize.BOOLEAN,
         validate: {
-            is: ["[a-z]",'i'] //only allow letters
+            is: ["[a-z]", 'i'] //only allow letters
         }
     },
 });
 
 sequalizeModel.belongsTo(UserModel.Model);
-sequalizeModel.sync()    
+sequalizeModel.sync()
 
 export var Model = sequalizeModel;

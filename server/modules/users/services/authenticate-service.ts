@@ -23,18 +23,18 @@ class AuthService {
 
     get(rowID: number): Promise<UserModel.UserInstance> {
         return UserModel.Model.findById(rowID);
-    }   
+    }
 
     getemail(email: string): Promise<UserModel.UserInstance> {
         return UserModel.Model.findById(email);
     }
-    
+
     create(request: App.User): Promise<UserModel.UserInstance> {
         return UserModel.Model.create(request)
     }
 
 
-    update(request: App.User): Promise<UserModel.UserInstance> {       
+    update(request: App.User): Promise<UserModel.UserInstance> {
         return <any>(UserModel.Model.findById(request.ID).then((UserInstance) => {
 
             UserInstance.firstName = request.firstName;

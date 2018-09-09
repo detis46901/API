@@ -26,20 +26,20 @@ var sequalizeModel = db.define<LayerInstance, App.Layer>('layer', <any>{
         }
     },
     layerService: {
-       type: Sequelize.STRING,
-       allowNull: false,
-       validate: {
-           len: [1, 200]
-       }
-   },
-   layerIdent: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-          len: [1, 200]
-      }
-  },
-     layerFormat: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+            len: [1, 200]
+        }
+    },
+    layerIdent: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+            len: [1, 200]
+        }
+    },
+    layerFormat: {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
@@ -66,8 +66,6 @@ var sequalizeModel = db.define<LayerInstance, App.Layer>('layer', <any>{
         defaultValue: '{"load":{"color":"#000000","width":2},"current":{"color":"#000000","width":4}}'
     }
 });
-
-
 
 sequalizeModel.belongsTo(ServerModel.Model);
 sequalizeModel.sync()

@@ -1,7 +1,6 @@
 import Sequelize = require('sequelize');
 import ServerModel = require('../models/servers-model');
 
-
 class ServerService {
 
     getList(ServerID: number): Promise<ServerModel.ServerInstance[]> {
@@ -33,7 +32,7 @@ class ServerService {
     }
 
     update(request: App.Server): Promise<ServerModel.ServerInstance> {
-        
+
         return <any>(ServerModel.Model.findById(request.ID).then((ServerInstance) => {
 
             ServerInstance.serverName = request.serverName;
@@ -52,7 +51,6 @@ class ServerService {
 
         });
     }
-
 }
 
 export = ServerService;

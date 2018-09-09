@@ -8,19 +8,19 @@ var service = new GroupService();
 //how to inherit from parent controller
 
 router.get('/list', token_auth, (req, res) => {
-    
+
     service.getList(req.query.searchValue).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
-    
+
 });
 
 router.get('/one', token_auth, (req, res) => {
 
     var User = <number>req.query.rowid;
-    
+
     service.get(User).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -30,9 +30,9 @@ router.get('/one', token_auth, (req, res) => {
 });
 
 router.post('/create', token_auth, (req, res) => {
-    
+
     var request = <App.Group>req.body;
-    
+
     service.create(request).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -42,7 +42,7 @@ router.post('/create', token_auth, (req, res) => {
 });
 
 router.put('/update', token_auth, (req, res) => {
-    
+
     var request = <App.Group>req.body;
 
     service.update(request).then((result) => {
@@ -55,7 +55,7 @@ router.put('/update', token_auth, (req, res) => {
 });
 
 router.delete('/delete', token_auth, (req, res) => {
-    
+
     var rowID = <number>req.query.ID;
 
     service.delete(rowID).then((result) => {
@@ -63,7 +63,6 @@ router.delete('/delete', token_auth, (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-
 });
 
 

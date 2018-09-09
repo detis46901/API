@@ -1,7 +1,6 @@
 import Sequelize = require('sequelize');
 import LayerModel = require('../models/layers-model');
-import ServerModel = require ('../models/servers-model')
-
+import ServerModel = require('../models/servers-model')
 
 class LayerService {
     getList(searchValue: string): Promise<LayerModel.LayerInstance[]> {
@@ -21,8 +20,8 @@ class LayerService {
                 ]
             }
         }
-        
-         findOptions.include = [ServerModel.Model]
+
+        findOptions.include = [ServerModel.Model]
         return LayerModel.Model.findAll(findOptions);
     }
 
@@ -35,7 +34,7 @@ class LayerService {
     }
 
     update(request: App.Layer): Promise<LayerModel.LayerInstance> {
-        
+
         return <any>(LayerModel.Model.findById(request.ID).then((LayerInstance) => {
 
             LayerInstance.layerName = request.layerName;
@@ -58,7 +57,6 @@ class LayerService {
 
         });
     }
-
 }
 
 export = LayerService;

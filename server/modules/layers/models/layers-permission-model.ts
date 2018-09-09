@@ -11,10 +11,10 @@ export interface LayerPermissionModel extends Sequelize.Model<LayerPermissionIns
 
 
 var sequalizeModel = db.define<LayerPermissionInstance, App.LayerPermission>('layer_permission', <any>{
-    ID: { 
+    ID: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true 
+        autoIncrement: true
     },
     edit: {
         allowNull: false,

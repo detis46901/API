@@ -17,12 +17,12 @@ router.get('/list', token_auth, (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-    
+
 });
 
 router.get('/one', token_auth, (req, res) => {
     var User = <number>req.query.rowid;
-    
+
     service.get(User).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -35,9 +35,9 @@ router.get('/one', token_auth, (req, res) => {
 router.post('/create', token_auth, (req, res) => {
     var request = <App.User>req.body;
     UserModel.Model.findAll({
-        where: { email: request.email}
+        where: { email: request.email }
     }).then(user => {
-        if(user.length >= 1) {
+        if (user.length >= 1) {
             return res.status(422).json({
                 message: "User already exists."
             })
@@ -45,64 +45,64 @@ router.post('/create', token_auth, (req, res) => {
             bcrypt.hash(request.password, 10, (err, hash) => {
                 if (err) {
                     return res.status(500).json({
-                        error:err,
-                        message:"Hash failed."
+                        error: err,
+                        message: "Hash failed."
                     })
                 } else {
                     request.password = hash
                     service.create(request)
-                    .then(result => {
-                        res.status(201).json({
-                            message: "User created."
-                        })
-                    }).catch(err => {
-                        res.status(500).json({
-                            error:err,
-                            message:"User could not be created. Check email to ensure it is in the correct format."
-                        })
-                    });
+                        .then(result => {
+                            res.status(201).json({
+                                message: "User created."
+                            })
+                        }).catch(err => {
+                            res.status(500).json({
+                                error: err,
+                                message: "User could not be created. Check email to ensure it is in the correct format."
+                            })
+                        });
                 }
             })
         }
     }).catch(err => {
         res.status(500).json({
-            message:"Model could not be created.",
-            error:err
+            message: "Model could not be created.",
+            error: err
         })
     })
 });
 
 router.put('/updatePassword', token_auth, (req, res) => {
     bcrypt.compare(req.body.oldPassword, req.body.password, (err, result) => {
-        if(err) { //bcrypt hashing error
+        if (err) { //bcrypt hashing error
             return res.status(500).json({
                 message: 'bcrypt hash comparison failure. Try again in a few minutes.'
             })
-        } else if(result) {
+        } else if (result) {
             bcrypt.hash(req.body.newPassword, 10, (err, hash) => {
-                if(err) {
+                if (err) {
                     return res.status(500).json({
-                        error:err,
-                        message:"Hash failed."
+                        error: err,
+                        message: "Hash failed."
                     })
                 } else {
                     req.body.password = hash
                     req.body.currUser.password = hash
                     service.update(<App.User>req.body.currUser)
-                    .then(result => {
-                        res.status(204).json({
-                            message: "Hash compare successful. Password updated.",
-                            user: req.body.currUser
+                        .then(result => {
+                            res.status(204).json({
+                                message: "Hash compare successful. Password updated.",
+                                user: req.body.currUser
+                            })
+                        }).catch(err => {
+                            res.status(500).json({
+                                error: err,
+                                message: "Password could not be changed."
+                            })
                         })
-                    }).catch(err => {
-                        res.status(500).json({
-                            error:err,
-                            message:"Password could not be changed."
-                        })
-                    })
                 }
-            })          
-        } else if(!result) {
+            })
+        } else if (!result) {
             return res.status(401).json({
                 message: 'Authorization failed.'
             })
@@ -113,24 +113,24 @@ router.put('/updatePassword', token_auth, (req, res) => {
 router.post('/login', (req, res) => {
     console.log(req.body)
     UserModel.Model.findAll({
-        where: {email: req.body.email}
+        where: { email: req.body.email }
     }).then(user => {
-        if(user.length < 1) { //If supplied email is not found as a user in the database
+        if (user.length < 1) { //If supplied email is not found as a user in the database
             return res.status(404).json({
                 message: 'User not found.'
             })
         }
         bcrypt.compare(req.body.password, user[0].password, (err, result) => {
-            if(err) { //bcrypt hashing error
+            if (err) { //bcrypt hashing error
                 return res.status(500).json({
                     message: 'bcrypt hash comparison failure. Try again in a few minutes.'
                 })
-            } else if(result) { //If input pw hash matches db pw hash
+            } else if (result) { //If input pw hash matches db pw hash
                 const login_token = jwt.sign(
                     {
                         email: user[0].email,
                         ID: user[0].ID
-                    }, 
+                    },
                     process.env.JWT_SECRET_KEY,
                     {
                         expiresIn: "30 days"
@@ -143,15 +143,15 @@ router.post('/login', (req, res) => {
                     userID: user[0].ID,
                     admin: user[0].administrator
                 });
-            } else if(!result) { //If hash comparison does not match
+            } else if (!result) { //If hash comparison does not match
                 return res.status(401).json({
                     message: 'Authorization failed.'
                 })
             }
-        })   
+        })
     }).catch(err => {
         return res.status(500).json({
-            error:err
+            error: err
         })
     });
 });
@@ -159,26 +159,26 @@ router.post('/login', (req, res) => {
 //This request generates an API key (JWT) to be used for Google Earth KML files and such. Not to be confused with login "session" JWT above.
 router.post('/generatekey', token_auth, (req, res) => {
     UserModel.Model.findAll({
-        where: {email: req.body.email}
+        where: { email: req.body.email }
     }).then(user => {
-        if(user.length < 1) { //If supplied email is not found as a user in the database
+        if (user.length < 1) { //If supplied email is not found as a user in the database
             return res.status(404).json({
                 message: 'User not found.'
             })
         }
         bcrypt.compare(req.body.password, user[0].password, (err, result) => {
-            if(err) { //bcrypt hashing error
+            if (err) { //bcrypt hashing error
                 return res.status(500).json({
                     message: 'bcrypt hash comparison failed.'//1/11/18 erroring here
                 })
             }
-            if(result) {
+            if (result) {
                 const api_token = jwt.sign(
                     {
                         email: user[0].email,
                         firstName: user[0].firstName, //Use first+last name combo instead of ID to ensure key is different than login key
                         lastName: user[0].lastName
-                    }, 
+                    },
                     process.env.JWT_SECRET_KEY,
                     {
                         expiresIn: "30 days"
@@ -190,15 +190,15 @@ router.post('/generatekey', token_auth, (req, res) => {
                     userID: user[0].ID,
                     admin: user[0].administrator
                 });
-            } else if(!result) { //If hash comparison does not match
+            } else if (!result) { //If hash comparison does not match
                 return res.status(401).json({
                     message: 'Authorization failed.'
                 })
             }
-        })   
+        })
     }).catch(err => {
         return res.status(500).json({
-            error:err
+            error: err
         })
     });
 })
