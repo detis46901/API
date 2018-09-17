@@ -103,6 +103,23 @@ var LayerPermissionService = (function () {
             return LayerPermissionInstance.destroy();
         });
     };
+    LayerPermissionService.prototype.deleteByLayer = function (layerID) {
+        var findOptions = {
+            order: [
+                'ID'
+            ]
+        };
+        if (layerID) {
+            findOptions.where = {
+                $and: [
+                    { layerID: layerID }
+                ]
+            };
+        }
+        return LayerPermissionModel.Model.find(findOptions).then(function (LayerPermissionInstance) {
+            return LayerPermissionInstance.destroy();
+        });
+    };
     return LayerPermissionService;
 }());
 module.exports = LayerPermissionService;

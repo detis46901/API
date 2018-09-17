@@ -50,7 +50,7 @@ var sequalizeModel = db.define<LayerInstance, App.Layer>('layer', <any>{
         type: Sequelize.STRING,
         allowNull: true,
         validate: {
-            len: [1, 200]
+            len: [1, 1000]
         }
     },
     layerGeom: {

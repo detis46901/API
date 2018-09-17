@@ -44,7 +44,7 @@ var sequalizeModel = db.define('layer', {
         type: Sequelize.STRING,
         allowNull: true,
         validate: {
-            len: [1, 200]
+            len: [1, 1000]
         }
     },
     layerGeom: {

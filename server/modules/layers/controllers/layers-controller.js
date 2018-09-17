@@ -1,9 +1,11 @@
 "use strict";
 var LayerService = require('../services/layers-service');
+var LayerPermissionService = require('../services/layers-permission-service');
 var token_auth = require('../../JWT_Checker/loginToken.js');
 var express = require('express');
 var router = express.Router();
 var service = new LayerService();
+var layerPermissionServce = new LayerPermissionService();
 router.get('/list', token_auth, function (req, res) {
     service.getList(req.query.searchValue).then(function (result) {
         res.send(result);
@@ -39,6 +41,11 @@ router.delete('/delete', token_auth, function (req, res) {
     //if(req.body.layerPerm.delete) {
     var ID = req.query.ID;
     service.delete(ID).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+    layerPermissionServce.deleteByLayer(ID).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);

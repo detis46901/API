@@ -126,6 +126,28 @@ class LayerPermissionService {
 
         });
     }
+
+    deleteByLayer(layerID: number) {
+
+        var findOptions: Sequelize.FindOptions = {
+            order: [
+                'ID'
+            ]
+        };
+
+        if (layerID) {
+            findOptions.where = {
+                $and: [
+                    { layerID: layerID }
+                ]
+            }
+        }
+
+        return LayerPermissionModel.Model.find(findOptions).then((LayerPermissionInstance) => {
+            return LayerPermissionInstance.destroy();
+
+        });
+    }
 }
 
 export = LayerPermissionService;

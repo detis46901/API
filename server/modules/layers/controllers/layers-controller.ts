@@ -1,9 +1,11 @@
 import LayerService = require('../services/layers-service');
+import LayerPermissionService = require('../services/layers-permission-service')
 import token_auth = require('../../JWT_Checker/loginToken.js');
 
 var express = require('express');
 var router = express.Router();
 var service = new LayerService();
+var layerPermissionServce = new LayerPermissionService();
 
 router.get('/list', token_auth, (req, res) => {
 
@@ -57,6 +59,13 @@ router.delete('/delete', token_auth, (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
+
+    layerPermissionServce.deleteByLayer(ID).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    })
+
     // } else {
     //     res.status(500).json({
     //         message:"You do not have permission to delete this permission entry."
