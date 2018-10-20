@@ -1,5 +1,6 @@
 import SQLService = require('../services/sql-service');
 import token_auth = require('../../JWT_Checker/loginToken.js');
+import comment = require ('../models/postGIS_layers.model')
 import { error } from 'util';
 
 var express = require('express');
@@ -127,13 +128,21 @@ router.get('/getcomments', token_auth, (req, res) => {
     });
 })
 
-router.get('/addcomment', token_auth, (req, res) => {
-    var table = <string>req.query.table;
-    var featureID = <string>req.query.featureID;
-    var comment = <string>req.query.comment
-    var userID = <number>req.query.userID
-    var createdAt = <Date>req.query.createdAt
-    service.addComment(table, featureID, comment, userID).then((result) => {
+router.post('/addcommentwithgeom', token_auth, (req, res) => {
+    var comment= <App.MyCubeComment>req.body;
+    console.log(comment)
+    var table = <number>comment.table;
+    service.addCommentWithGeom(comment).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+})
+router.post('/addcommentwithoutgeom', token_auth, (req, res) => {
+    var comment= <App.MyCubeComment>req.body;
+    console.log(comment)
+    var table = <number>comment.table;
+    service.addCommentWithoutGeom(comment).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);

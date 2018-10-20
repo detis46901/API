@@ -4,7 +4,6 @@ var ServerModel = require('./servers-model');
 
 var db = dbConnection();
 
-
 export interface LayerInstance extends Sequelize.Instance<LayerInstance, App.Layer>, App.Layer { }
 export interface LayerModel extends Sequelize.Model<LayerInstance, App.Layer> { }
 
@@ -63,7 +62,7 @@ var sequalizeModel = db.define<LayerInstance, App.Layer>('layer', <any>{
     defaultStyle: {
         type: Sequelize.JSON,
         allowNull: true,
-        defaultValue: '{"load":{"color":"#000000","width":2},"current":{"color":"#000000","width":4}}'
+        defaultValue: JSON.parse('{"load":{"color":"#000000","width":2},"current":{"color":"#000000","width":4}}')
     }
 });
 

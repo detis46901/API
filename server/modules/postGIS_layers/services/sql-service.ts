@@ -1,5 +1,6 @@
 import Sequelize = require('sequelize');
 import dbConnection = require('../../../core/db-connection');
+import comment = require('../models/postGIS_layers.model')
 
 var db = dbConnection();
 
@@ -98,6 +99,7 @@ class SQLService {
             geom geometry,
             featureChange boolean,
             photo bytea,
+            auto boolean,
             featureID integer,
             createdAt timestamp with time zone default now());
             `)
@@ -139,8 +141,11 @@ class SQLService {
     getcomments(table: string, id: string): Promise<any> {
         return db.query("SELECT mycube.c" + table + '.*, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';")
     }
-    addComment(table: string, featureID: string, comment: string, userid: number): Promise<any> {
-        return db.query("INSERT INTO mycube.c" + table + '(userid, comment, featureid) VALUES (' + userid + ",'" + comment + "'," + featureID + ")")
+    addCommentWithGeom(comment: App.MyCubeComment): Promise<any> {
+        return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, geom, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureID + "," + comment.auto + ")")
+        }
+    addCommentWithoutGeom(comment: App.MyCubeComment): Promise<any> {
+         return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "'," + comment.featureID + "," + comment.auto + ")")
     }
     deleteComment(table: string, id: string): Promise<any> {
         return db.query("DELETE FROM mycube.c" + table + ' WHERE id=' + id + ";")

@@ -113,6 +113,10 @@ class UserPageLayerService {
 
         });
     }
+
+    updateStyle(style:string) {
+        
+    }
 }
 
 export = UserPageLayerService;
