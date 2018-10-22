@@ -88,6 +88,8 @@ var UserPageLayerService = (function () {
             return UserPageLayerInstance.destroy();
         });
     };
+    UserPageLayerService.prototype.updateStyle = function (style) {
+    };
     return UserPageLayerService;
 }());
 module.exports = UserPageLayerService;
