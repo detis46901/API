@@ -101,6 +101,9 @@ var SQLService = (function () {
     SQLService.prototype.addRecord = function (table, geometry) {
         return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" + geometry + "'),4326)) RETURNING id;");
     };
+    SQLService.prototype.fixGeometry = function (table) {
+        return db.query("ALTER TABLE mycube.t" + table + " ALTER COLUMN geom type geometry(Geometry, 4326);");
+    };
     SQLService.prototype.deleteRecord = function (table, id) {
         return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';");
     };

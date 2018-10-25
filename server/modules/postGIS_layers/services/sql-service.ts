@@ -128,6 +128,11 @@ class SQLService {
         return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" + geometry + "'),4326)) RETURNING id;")
     }
 
+   fixGeometry(table: string) {
+       return db.query("ALTER TABLE mycube.t" + table + " ALTER COLUMN geom type geometry(Geometry, 4326);")
+   }
+   
+
     deleteRecord(table: string, id: string): Promise<any> {
         return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';")
     }

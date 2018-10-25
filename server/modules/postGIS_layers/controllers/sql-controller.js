@@ -134,6 +134,14 @@ router.get('/addRecord', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/fixGeometry', token_auth, function (req, res) {
+    var table = req.query.table;
+    service.fixGeometry(table).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.get('/deleteRecord', token_auth, function (req, res) {
     var table = req.query.table;
     var id = req.query.id;

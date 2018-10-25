@@ -40,7 +40,7 @@ app.use(cors());
 app.use(express.static(join(__dirname, '/../client')));
 app.use(errorHandler());
 app.use(cors({credentials: true, origin: 'http://localhost:4200'}));
-app.use(cors({credentials: true, origin: 'http://a.cityofkokomo.org'}));
+//app.use(cors({credentials: true, origin: 'http://a.cityofkokomo.org'}));
 
 // Routes
 //app.use('/api/parent', ParentController);

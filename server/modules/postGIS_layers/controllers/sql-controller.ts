@@ -167,7 +167,14 @@ router.get('/addRecord', token_auth, (req, res) => {
         res.send(error);
     });
 })
-
+router.get('/fixGeometry', token_auth, (req, res) => {
+    let table = <string>req.query.table;
+    service.fixGeometry(table).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error)
+    })
+})
 router.get('/deleteRecord', token_auth, (req, res) => {
     let table = <string>req.query.table;
     let id = <string>req.query.id;
