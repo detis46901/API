@@ -20,7 +20,8 @@ import ServerController = require('./modules/layers/controllers/servers-controll
 import SQLController = require('./modules/postGIS_layers/controllers/sql-controller');
 import geoJSONController = require('./modules/postGIS_layers/controllers/geoJSON-controller');
 import { Socket, SocketOptions } from 'dgram';
-import { ChatServer} from './chat-server'
+//import { ChatServer} from './chat-server'
+import { EventEmitter } from 'events'
 
 
 var app = express();
@@ -58,11 +59,14 @@ app.use('/api/sql', SQLController);
 app.use('/api/geojson', geoJSONController);
 this.server = createServer(this.app)
 this.io = socketIo(this.server)
+const emitter = new EventEmitter()
+// or 0 to turn off the limit
+emitter.setMaxListeners(0)
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
-let socketApp = new ChatServer().getApp()
+//let socketApp = new ChatServer().getApp()
 export var App = app;
 
 

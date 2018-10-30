@@ -19,7 +19,8 @@ var LayerPermissionController = require('./modules/layers/controllers/layers-per
 var ServerController = require('./modules/layers/controllers/servers-controller');
 var SQLController = require('./modules/postGIS_layers/controllers/sql-controller');
 var geoJSONController = require('./modules/postGIS_layers/controllers/geoJSON-controller');
-var chat_server_1 = require('./chat-server');
+//import { ChatServer} from './chat-server'
+var events_1 = require('events');
 var app = express();
 var server;
 var io;
@@ -52,10 +53,13 @@ app.use('/api/sql', SQLController);
 app.use('/api/geojson', geoJSONController);
 this.server = http_1.createServer(this.app);
 this.io = socketIo(this.server);
+var emitter = new events_1.EventEmitter();
+// or 0 to turn off the limit
+emitter.setMaxListeners(0);
 app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
 });
-var socketApp = new chat_server_1.ChatServer().getApp();
+//let socketApp = new ChatServer().getApp()
 exports.App = app;
 // //import http = require('http');
 // //http.createServer(function (req, res) {

@@ -185,12 +185,13 @@ router.get('/deleteRecord', token_auth, (req, res) => {
     })
 })
 
-router.get('/update', token_auth, (req, res) => {
-    var table = <string>req.query.table;
-    var id = <string>req.query.id;
-    var field = <string>req.query.field;
-    var type = <string>req.query.type;
-    var value = <any>req.query.value;
+router.put('/update', token_auth, (req, res) => {
+    console.log(req)
+    var table = <string>req.body.table;
+    var id = <string>req.body.id;
+    var field = <string>req.body.mycubefield.field;
+    var type = <string>req.body.mycubefield.type;
+    var value = <any>req.body.mycubefield.value;
 
     service.update(table, id, field, type, value).then((result) => {
         res.send(result);
