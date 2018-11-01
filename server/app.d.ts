@@ -43,7 +43,7 @@
     interface UserPageLayer extends IModelBase {
         ID?: number;
         userID?: number;
-        layerON?: boolean;
+        defaultON?: boolean;
         userpageID?: number;
         layerID?: number;
         style: JSON;

@@ -21,7 +21,7 @@ import SQLController = require('./modules/postGIS_layers/controllers/sql-control
 import geoJSONController = require('./modules/postGIS_layers/controllers/geoJSON-controller');
 import { Socket, SocketOptions } from 'dgram';
 //import { ChatServer} from './chat-server'
-import { EventEmitter } from 'events'
+require('events').EventEmitter.defaultMaxListeners = 15;
 
 
 var app = express();
@@ -40,7 +40,7 @@ app.use(json());
 app.use(cors());
 app.use(express.static(join(__dirname, '/../client')));
 app.use(errorHandler());
-app.use(cors({credentials: true, origin: 'http://localhost:4200'}));
+//app.use(cors({credentials: true, origin: 'http://localhost:4200'}));
 //app.use(cors({credentials: true, origin: 'http://a.cityofkokomo.org'}));
 
 // Routes
@@ -58,10 +58,7 @@ app.use('/api/server', ServerController);
 app.use('/api/sql', SQLController);
 app.use('/api/geojson', geoJSONController);
 this.server = createServer(this.app)
-this.io = socketIo(this.server)
-const emitter = new EventEmitter()
-// or 0 to turn off the limit
-emitter.setMaxListeners(0)
+//this.io = socketIo(this.server)
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
