@@ -13,7 +13,7 @@ export interface UserPageLayerModel extends Sequelize.Model<UserPageLayerInstanc
 
 var sequalizeModel = db.define<UserPageLayerInstance, App.UserPageLayer>('user_page_layer', <any>{
     ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-    layerON: {
+    defaultON: {
         type: Sequelize.BOOLEAN
     },
     layerOrder: {
