@@ -4,13 +4,6 @@ var token_auth = require('../../JWT_Checker/loginToken.js');
 var express = require('express');
 var router = express.Router();
 var service = new SQLService();
-// router.get('/list', (req, res) => {
-//     service.getList(req.query.searchValue).then((result) => {
-//         res.send(result);
-//     }).catch((error) => {
-//         res.send(error);
-//     });
-// });
 router.get('/all', token_auth, function (req, res) {
     var table = req.query.table;
     service.get(table).then(function (result) {
@@ -98,8 +91,6 @@ router.get('/getcomments', token_auth, function (req, res) {
 });
 router.post('/addcommentwithgeom', token_auth, function (req, res) {
     var comment = req.body;
-    console.log(comment);
-    var table = comment.table;
     service.addCommentWithGeom(comment).then(function (result) {
         res.send(result);
     }).catch(function (error) {
@@ -109,7 +100,6 @@ router.post('/addcommentwithgeom', token_auth, function (req, res) {
 router.post('/addcommentwithoutgeom', token_auth, function (req, res) {
     var comment = req.body;
     console.log(comment);
-    var table = comment.table;
     service.addCommentWithoutGeom(comment).then(function (result) {
         res.send(result);
     }).catch(function (error) {
@@ -152,7 +142,6 @@ router.get('/deleteRecord', token_auth, function (req, res) {
     });
 });
 router.put('/update', token_auth, function (req, res) {
-    console.log(req);
     var table = req.body.table;
     var id = req.body.id;
     var field = req.body.mycubefield.field;
@@ -172,15 +161,7 @@ router.get('/setSRID', token_auth, function (req, res) {
         res.send(error);
     });
 });
-// router.delete('/delete', (req, res) => {
-//     var ID = <number>req.query.ID;
-//     console.log (ID);
-//     service.delete(ID).then((result) => {
-//         res.send(result);
-//     }).catch((error) => {
-//         res.send(error);
-//     });
-//});
+//I don't think this is being used.  I used it when I was going to put the style in the description.  If found the JSON type instead.
 router.get('/getOID', token_auth, function (req, res) {
     var table = req.query.table;
     service.getOID(table).then(function (result) {
@@ -196,14 +177,14 @@ router.get('/getColumnCount', token_auth, function (req, res) {
     }).catch(function (error) {
         res.send(error);
     });
-    router.get('/getIsLabel', token_auth, function (req, res) {
-        var oid = req.query.oid;
-        var field = req.query.field;
-        service.getIsLabel(oid, field).then(function (result) {
-            res.send(result);
-        }).catch(function (error) {
-            res.send(error);
-        });
+});
+router.get('/getIsLabel', token_auth, function (req, res) {
+    var oid = req.query.oid;
+    var field = req.query.field;
+    service.getIsLabel(oid, field).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
     });
 });
 module.exports = router;

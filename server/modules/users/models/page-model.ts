@@ -36,6 +36,12 @@ var sequalizeModel = db.define<PageInstance, App.UserPage>('user_page', <any>{
             is: ["[a-z]", 'i'] //only allow letters
         }
     },
+    defaultLayer: {
+        type: Sequelize.INTEGER,
+        validate: {
+            min: 0
+        }
+    },
 });
 
 sequalizeModel.belongsTo(UserModel.Model);

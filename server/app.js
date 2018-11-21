@@ -2,7 +2,6 @@
 /// <reference path='_references.ts' />
 var express = require('express');
 var http_1 = require('http');
-var socketIo = require('socket.io');
 var body_parser_1 = require('body-parser');
 var errorHandler = require('errorhandler');
 var cors = require('cors');
@@ -52,7 +51,7 @@ app.use('/api/server', ServerController);
 app.use('/api/sql', SQLController);
 app.use('/api/geojson', geoJSONController);
 this.server = http_1.createServer(this.app);
-this.io = socketIo(this.server);
+//this.io = socketIo(this.server)
 app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
 });

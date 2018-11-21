@@ -30,6 +30,12 @@ var sequalizeModel = db.define('user_page', {
             is: ["[a-z]", 'i'] //only allow letters
         }
     },
+    defaultLayer: {
+        type: Sequelize.INTEGER,
+        validate: {
+            min: 0
+        }
+    },
 });
 sequalizeModel.belongsTo(UserModel.Model);
 sequalizeModel.sync();

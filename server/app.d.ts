@@ -81,6 +81,7 @@
         pageOrder: number;
         default: boolean;
         active?: boolean;
+        defaultLayer: number;
     }
 
     interface Server extends IModelBase {
