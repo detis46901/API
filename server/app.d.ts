@@ -43,7 +43,7 @@
     interface UserPageLayer extends IModelBase {
         ID?: number;
         userID?: number;
-        layerON?: boolean;
+        defaultON?: boolean;
         userpageID?: number;
         layerID?: number;
         style: JSON;
@@ -90,10 +90,15 @@
         serverURL?: string;
     }
 
-    interface Comments extends IModelBase {
-        ID?: number;
-        userID?: number;
-        comment?: string;
+    interface MyCubeComment extends IModelBase {
+        table: number;
+        id: number;
+        userID: number;
+        comment: string;
+        geom: string;
+        featureID: number;
+        auto: boolean;
+        createdat: Date;
     }
 }
 

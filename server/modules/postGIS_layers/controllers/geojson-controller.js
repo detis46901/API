@@ -19,6 +19,17 @@ router.get('/all', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/some', token_auth, function (req, res) {
+    var table = req.query.table;
+    var where = req.query.where;
+    service.getSome(table, where)
+        .then(function (result) {
+        res.send(result);
+    })
+        .catch(function (error) {
+        res.send(error);
+    });
+});
 router.get('/create', token_auth, function (req, res) {
     var table = req.query.table;
     service.create(table).then(function (result) {

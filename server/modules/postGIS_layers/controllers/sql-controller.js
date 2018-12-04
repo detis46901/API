@@ -96,13 +96,21 @@ router.get('/getcomments', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/addcomment', token_auth, function (req, res) {
-    var table = req.query.table;
-    var featureID = req.query.featureID;
-    var comment = req.query.comment;
-    var userID = req.query.userID;
-    var createdAt = req.query.createdAt;
-    service.addComment(table, featureID, comment, userID).then(function (result) {
+router.post('/addcommentwithgeom', token_auth, function (req, res) {
+    var comment = req.body;
+    console.log(comment);
+    var table = comment.table;
+    service.addCommentWithGeom(comment).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
+router.post('/addcommentwithoutgeom', token_auth, function (req, res) {
+    var comment = req.body;
+    console.log(comment);
+    var table = comment.table;
+    service.addCommentWithoutGeom(comment).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
@@ -126,6 +134,14 @@ router.get('/addRecord', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/fixGeometry', token_auth, function (req, res) {
+    var table = req.query.table;
+    service.fixGeometry(table).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.get('/deleteRecord', token_auth, function (req, res) {
     var table = req.query.table;
     var id = req.query.id;
@@ -135,12 +151,13 @@ router.get('/deleteRecord', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/update', token_auth, function (req, res) {
-    var table = req.query.table;
-    var id = req.query.id;
-    var field = req.query.field;
-    var type = req.query.type;
-    var value = req.query.value;
+router.put('/update', token_auth, function (req, res) {
+    console.log(req);
+    var table = req.body.table;
+    var id = req.body.id;
+    var field = req.body.mycubefield.field;
+    var type = req.body.mycubefield.type;
+    var value = req.body.mycubefield.value;
     service.update(table, id, field, type, value).then(function (result) {
         res.send(result);
     }).catch(function (error) {

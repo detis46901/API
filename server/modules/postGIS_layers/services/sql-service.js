@@ -80,7 +80,7 @@ var SQLService = (function () {
         return db.query("CREATE TABLE mycube.t" + table + " (\n                ID    SERIAL PRIMARY KEY,\n                geom   geometry\n            );\n        ");
     };
     SQLService.prototype.createCommentTable = function (table) {
-        return db.query("CREATE TABLE mycube.c" + table + " (\n            ID   SERIAL PRIMARY KEY,\n            userID integer,\n            comment text,\n            geom geometry,\n            featureChange boolean,\n            photo bytea,\n            featureID integer,\n            createdAt timestamp with time zone default now());\n            ");
+        return db.query("CREATE TABLE mycube.c" + table + " (\n            ID   SERIAL PRIMARY KEY,\n            userID integer,\n            comment text,\n            geom geometry,\n            featureChange boolean,\n            photo bytea,\n            auto boolean,\n            featureID integer,\n            createdAt timestamp with time zone default now());\n            ");
     };
     SQLService.prototype.setSRID = function (table) {
         return db.query("SELECT UpdateGeometrySRID('mycube', 't" + table + "','geom',4326);");
@@ -101,6 +101,9 @@ var SQLService = (function () {
     SQLService.prototype.addRecord = function (table, geometry) {
         return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" + geometry + "'),4326)) RETURNING id;");
     };
+    SQLService.prototype.fixGeometry = function (table) {
+        return db.query("ALTER TABLE mycube.t" + table + " ALTER COLUMN geom type geometry(Geometry, 4326);");
+    };
     SQLService.prototype.deleteRecord = function (table, id) {
         return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';");
     };
@@ -113,8 +116,11 @@ var SQLService = (function () {
     SQLService.prototype.getcomments = function (table, id) {
         return db.query("SELECT mycube.c" + table + '.*, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';");
     };
-    SQLService.prototype.addComment = function (table, featureID, comment, userid) {
-        return db.query("INSERT INTO mycube.c" + table + '(userid, comment, featureid) VALUES (' + userid + ",'" + comment + "'," + featureID + ")");
+    SQLService.prototype.addCommentWithGeom = function (comment) {
+        return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, geom, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureID + "," + comment.auto + ")");
+    };
+    SQLService.prototype.addCommentWithoutGeom = function (comment) {
+        return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "','" + comment.featureID + "'," + comment.auto + ")");
     };
     SQLService.prototype.deleteComment = function (table, id) {
         return db.query("DELETE FROM mycube.c" + table + ' WHERE id=' + id + ";");

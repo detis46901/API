@@ -27,6 +27,17 @@ router.get('/all', token_auth, (req, res) => {
 
 });
 
+router.get('/some', token_auth, (req, res) => {
+    var table = <string>req.query.table;
+    var where = <string>req.query.where;
+    service.getSome(table, where)
+        .then((result) => {
+            res.send(result);})
+        .catch((error) => {
+            res.send(error);
+    })
+})
+
 router.get('/create', token_auth, (req, res) => {
     
         var table = <string>req.query.table;

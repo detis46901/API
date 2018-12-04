@@ -78,7 +78,7 @@ var UserPageLayerService = (function () {
         return (UserPageLayerModel.Model.findById(request.ID).then(function (UserPageLayerInstance) {
             UserPageLayerInstance.layerID = request.layerID;
             UserPageLayerInstance.userID = request.userID;
-            UserPageLayerInstance.layerON = request.layerON;
+            UserPageLayerInstance.defaultON = request.defaultON;
             UserPageLayerInstance.style = request.style;
             return UserPageLayerInstance.save();
         }));

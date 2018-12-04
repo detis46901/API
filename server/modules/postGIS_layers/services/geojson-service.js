@@ -25,6 +25,9 @@ var SQLService = (function () {
         return db.query("SELECT jsonb_build_object(\n            'type',     'FeatureCollection',\n            'features', jsonb_agg(feature)\n        )\n        FROM (\n          SELECT jsonb_build_object(\n            'type',       'Feature',\n            'id',         id,\n            'geometry',   ST_AsGeoJSON(geom)::jsonb,\n            'properties', to_jsonb(row) - 'geom'\n          ) AS feature\n          FROM (SELECT * FROM mycube.t" + table + ") row) features;");
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
     };
+    SQLService.prototype.getSome = function (table, where) {
+        return db.query("SELECT jsonb_build_object(\n            'type',     'FeatureCollection',\n            'features', jsonb_agg(feature)\n        )\n        FROM (\n          SELECT jsonb_build_object(\n            'type',       'Feature',\n            'id',         id,\n            'geometry',   ST_AsGeoJSON(geom)::jsonb,\n            'properties', to_jsonb(row) - 'geom'\n          ) AS feature\n          FROM (SELECT * FROM mycube.t" + table + " WHERE " + where + " ORDER BY id) row) features;");
+    };
     SQLService.prototype.create = function (table) {
         //     db.query(`CREATE SEQUENCE public."test3_ID_seq"
         //     INCREMENT 1
