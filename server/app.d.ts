@@ -100,6 +100,40 @@
         auto: boolean;
         createdat: Date;
     }
+
+    interface Module extends IModelBase {
+        ID?: number;
+        identity: string;
+        name: string;
+        description: string;
+    }
+    interface ModuleInstances extends IModelBase {
+        ID?: number;
+        name: string;
+        description: string;
+        moduleID: number
+    }
+    interface ModulePermission extends IModelBase {
+        ID: number;
+        edit: boolean;
+        delete: boolean;
+        owner: boolean;
+        canGrant: boolean;
+        grantedBy?: number;
+        comments?: string;
+        userID: number;
+        moduleInstanceID: number;
+        groupID: number;
+    }
+    interface UserPageInstance extends IModelBase {
+        ID?: number;
+        userID?: number;
+        defaultON?: boolean;
+        userpageID?: number;
+        moduleInstanceID?: number;
+        style: JSON;
+        instanceOrder: number;
+    }
 }
 
 declare module 'app' {

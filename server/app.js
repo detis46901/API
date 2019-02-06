@@ -17,6 +17,10 @@ var LayerPermissionController = require('./modules/layers/controllers/layers-per
 var ServerController = require('./modules/layers/controllers/servers-controller');
 var SQLController = require('./modules/postGIS_layers/controllers/sql-controller');
 var geoJSONController = require('./modules/postGIS_layers/controllers/geoJSON-controller');
+var ModuleController = require('./modules/feature modules/controllers/module-controller');
+var ModuleInstancesController = require('./modules/feature modules/controllers/module-instances-controller');
+var ModulePermissionController = require('./modules/feature modules/controllers/module-permission-controller');
+var UserPageInstanceController = require('./modules/feature modules/controllers/user-page-instance-controller');
 var app = express();
 // Configuration
 app.set('port', 5000);
@@ -42,6 +46,10 @@ app.use('/api/userpage', PageController);
 app.use('/api/server', ServerController);
 app.use('/api/sql', SQLController);
 app.use('/api/geojson', geoJSONController);
+app.use('/api/module', ModuleController);
+app.use('/api/moduleinstance', ModuleInstancesController);
+app.use('/api/modulepermission', ModulePermissionController);
+app.use('/api/userpageinstance', UserPageInstanceController);
 app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
 });

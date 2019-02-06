@@ -17,6 +17,10 @@ import LayerPermissionController = require('./modules/layers/controllers/layers-
 import ServerController = require('./modules/layers/controllers/servers-controller');
 import SQLController = require('./modules/postGIS_layers/controllers/sql-controller');
 import geoJSONController = require('./modules/postGIS_layers/controllers/geoJSON-controller');
+import ModuleController = require('./modules/feature modules/controllers/module-controller')
+import ModuleInstancesController = require('./modules/feature modules/controllers/module-instances-controller')
+import ModulePermissionController = require('./modules/feature modules/controllers/module-permission-controller')
+import UserPageInstanceController = require('./modules/feature modules/controllers/user-page-instance-controller')
 
 var app = express();
 
@@ -45,6 +49,11 @@ app.use('/api/userpage', PageController);
 app.use('/api/server', ServerController);
 app.use('/api/sql', SQLController);
 app.use('/api/geojson', geoJSONController);
+app.use('/api/module', ModuleController);
+app.use('/api/moduleinstance', ModuleInstancesController);
+app.use('/api/modulepermission', ModulePermissionController)
+app.use('/api/userpageinstance', UserPageInstanceController)
+
 
 
 app.listen(app.get('port'), function() {
