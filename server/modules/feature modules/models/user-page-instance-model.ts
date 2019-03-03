@@ -16,9 +16,7 @@ var sequalizeModel = db.define<UserPageInstanceInstance, App.UserPageInstance>('
     defaultON: {
         type: Sequelize.BOOLEAN},
     instanceOrder: {
-        type: Sequelize.INTEGER},
-    style: {
-        type: Sequelize.JSON}
+        type: Sequelize.INTEGER}
 });
 
 sequalizeModel.belongsTo(UserModel.Model)

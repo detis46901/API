@@ -106,11 +106,14 @@
         identity: string;
         name: string;
         description: string;
+        defaultInstanceSettings: JSON;
+        defaultUserSettings: JSON;
     }
     interface ModuleInstances extends IModelBase {
         ID?: number;
         name: string;
         description: string;
+        settings: JSON;
         moduleID: number
     }
     interface ModulePermission extends IModelBase {
@@ -121,6 +124,7 @@
         canGrant: boolean;
         grantedBy?: number;
         comments?: string;
+        settings: JSON;
         userID: number;
         moduleInstanceID: number;
         groupID: number;
@@ -131,7 +135,6 @@
         defaultON?: boolean;
         userpageID?: number;
         moduleInstanceID?: number;
-        style: JSON;
         instanceOrder: number;
     }
 }

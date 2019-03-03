@@ -30,6 +30,7 @@ var ModuleInstancesService = (function () {
         return (ModuleInstancesModel.Model.findById(request.ID).then(function (ModuleInstance) {
             ModuleInstance.name = request.name;
             ModuleInstance.description = request.description;
+            ModuleInstance.settings = request.settings;
             return ModuleInstance.save();
         }));
     };

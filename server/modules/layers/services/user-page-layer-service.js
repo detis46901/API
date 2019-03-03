@@ -3,6 +3,7 @@ var UserPageLayerModel = require('../models/user-page-layer-model');
 var PageModel = require('../../users/models/page-model');
 var LayerModel = require('../models/layers-model');
 var ServerModel = require('../models/servers-model');
+var UserPageInstanceModel = require('../../feature modules/models/user-page-instance-model');
 var UserPageLayerService = (function () {
     function UserPageLayerService() {
     }
@@ -34,8 +35,8 @@ var UserPageLayerService = (function () {
                 ]
             };
         }
-        findOptions.include = [PageModel.Model, LayerModel.Model];
-        return UserPageLayerModel.Model.findAll({ order: ['ID'], where: { $and: [{ userPageID: pageID }] }, include: [{ model: PageModel.Model }, { model: LayerModel.Model, include: [ServerModel.Model] }] });
+        findOptions.include = [PageModel.Model, LayerModel.Model, UserPageInstanceModel.Model];
+        return UserPageLayerModel.Model.findAll({ order: ['ID'], where: { $and: [{ userPageID: pageID }] }, include: [{ model: PageModel.Model }, { model: UserPageInstanceModel.Model }, { model: LayerModel.Model, include: [ServerModel.Model] }] });
     };
     UserPageLayerService.prototype.getUserLayer = function (userID) {
         var findOptions = {

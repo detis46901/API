@@ -101,8 +101,7 @@ class UserPageInstanceService {
             UserPageInstanceInstance.moduleInstanceID = request.moduleInstanceID;
             UserPageInstanceInstance.userID = request.userID;
             UserPageInstanceInstance.defaultON = request.defaultON;
-            UserPageInstanceInstance.style = request.style;
-
+            
             return UserPageInstanceInstance.save();
         }));
     }

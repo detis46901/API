@@ -31,6 +31,14 @@ var sequalizeModel = db.define<ModuleInstance, App.Module>('module', <any>{
            len: [1, 200]
        }
    },
+   defaultInstanceSettings: {
+       type: Sequelize.JSON,
+       allowNull: true
+   },
+   defaultUserSettings: {
+       type: Sequelize.JSON,
+       allowNull: true
+   }
 });
 
 sequalizeModel.sync()

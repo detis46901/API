@@ -40,6 +40,10 @@ var sequalizeModel = db.define<ModulePermissionInstance, App.ModulePermission>('
     comments: {
         allowNull: true,
         type: Sequelize.STRING
+    },
+    settings: {
+        allowNull: true,
+        type: Sequelize.JSON
     }
 });
 

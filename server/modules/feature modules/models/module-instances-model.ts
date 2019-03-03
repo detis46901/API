@@ -25,6 +25,8 @@ var sequalizeModel = db.define<ModuleInstancesInstance, App.ModuleInstances>('mo
            len: [1, 200]
        }
    },
+   settings: {
+       type: Sequelize.JSON}
 });
 
 sequalizeModel.belongsTo(ModulesModel.Model)

@@ -34,6 +34,10 @@ var sequalizeModel = db.define('module_permission', {
     comments: {
         allowNull: true,
         type: Sequelize.STRING
+    },
+    settings: {
+        allowNull: true,
+        type: Sequelize.JSON
     }
 });
 sequalizeModel.belongsTo(UserModel.Model);

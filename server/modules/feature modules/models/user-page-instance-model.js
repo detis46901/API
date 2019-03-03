@@ -10,9 +10,7 @@ var sequalizeModel = db.define('user_page_instance', {
     defaultON: {
         type: Sequelize.BOOLEAN },
     instanceOrder: {
-        type: Sequelize.INTEGER },
-    style: {
-        type: Sequelize.JSON }
+        type: Sequelize.INTEGER }
 });
 sequalizeModel.belongsTo(UserModel.Model);
 sequalizeModel.belongsTo(PageModel.Model);

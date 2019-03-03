@@ -32,12 +32,13 @@ class ModuleInstancesService {
         return ModuleInstancesModel.Model.create(request);
     }
 
-    update(request: App.Module): Promise<ModuleInstancesModel.ModuleInstancesInstance> {
+    update(request: App.ModuleInstances): Promise<ModuleInstancesModel.ModuleInstancesInstance> {
         
         return <any>(ModuleInstancesModel.Model.findById(request.ID).then((ModuleInstance) => {
 
             ModuleInstance.name = request.name;
             ModuleInstance.description = request.description;
+            ModuleInstance.settings = request.settings
             return ModuleInstance.save();
         }));
     }

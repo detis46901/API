@@ -19,6 +19,8 @@ var sequalizeModel = db.define('module_instance', {
             len: [1, 200]
         }
     },
+    settings: {
+        type: Sequelize.JSON }
 });
 sequalizeModel.belongsTo(ModulesModel.Model);
 sequalizeModel.sync();

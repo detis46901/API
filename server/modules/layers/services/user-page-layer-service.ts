@@ -4,6 +4,7 @@ import PageModel = require('../../users/models/page-model')
 import LayerModel = require('../models/layers-model')
 import ServerModel = require ('../models/servers-model')
 import UserModel = require('../../users/models/user-model');
+import UserPageInstanceModel = require('../../feature modules/models/user-page-instance-model')
 
 class UserPageLayerService {
 
@@ -44,9 +45,9 @@ class UserPageLayerService {
 
 
     
-        findOptions.include = [PageModel.Model, LayerModel.Model]
+        findOptions.include = [PageModel.Model, LayerModel.Model, UserPageInstanceModel.Model]
 
-        return UserPageLayerModel.Model.findAll({order: ['ID'], where: {$and: [{ userPageID: pageID}]}, include: [{model: PageModel.Model}, {model: LayerModel.Model, include: [ServerModel.Model]}]})
+        return UserPageLayerModel.Model.findAll({order: ['ID'], where: {$and: [{ userPageID: pageID}]}, include: [{model: PageModel.Model}, {model: UserPageInstanceModel.Model}, {model: LayerModel.Model, include: [ServerModel.Model]}]})
     }
 
     getUserLayer(userID: number): any {

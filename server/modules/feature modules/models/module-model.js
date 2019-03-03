@@ -25,6 +25,14 @@ var sequalizeModel = db.define('module', {
             len: [1, 200]
         }
     },
+    defaultInstanceSettings: {
+        type: Sequelize.JSON,
+        allowNull: true
+    },
+    defaultUserSettings: {
+        type: Sequelize.JSON,
+        allowNull: true
+    }
 });
 sequalizeModel.sync();
 exports.Model = sequalizeModel;
