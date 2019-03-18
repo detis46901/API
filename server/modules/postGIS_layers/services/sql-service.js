@@ -87,9 +87,7 @@ var SQLService = (function () {
     };
     SQLService.prototype.addColumn = function (table, field, type, label) {
         db.query('ALTER TABLE mycube.t' + table + ' ADD "' + field + '" ' + type);
-        if (label == true) {
-            db.query("COMMENT ON COLUMN mycube.t" + table + '."' + field + "\" IS '" + field + "';");
-        }
+        //if (label == true) { db.query(`COMMENT ON COLUMN mycube.t` + table + '."' + field + `" IS '` + field + `';`) }
         return db.query("SELECT col_description(41644,3);");
     };
     SQLService.prototype.deleteTable = function (table) {

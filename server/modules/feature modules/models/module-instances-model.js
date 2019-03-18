@@ -14,10 +14,7 @@ var sequalizeModel = db.define('module_instance', {
     },
     description: {
         type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-            len: [1, 200]
-        }
+        allowNull: false
     },
     settings: {
         type: Sequelize.JSON }

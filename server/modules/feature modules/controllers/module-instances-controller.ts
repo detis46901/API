@@ -38,8 +38,7 @@ router.post('/create', token_auth, (req, res) => {
 });
 
 router.put('/update', token_auth, (req, res) => {  
-    var request = <App.Module>req.body;
-
+    var request = <App.ModuleInstances>req.body;
     service.update(request).then((result) => {
         res.send(result);
     }).catch((error) => {

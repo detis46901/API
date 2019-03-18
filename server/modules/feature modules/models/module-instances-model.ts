@@ -20,10 +20,7 @@ var sequalizeModel = db.define<ModuleInstancesInstance, App.ModuleInstances>('mo
     },
     description: {
        type: Sequelize.STRING,
-       allowNull: false,
-       validate: {
-           len: [1, 200]
-       }
+       allowNull: false
    },
    settings: {
        type: Sequelize.JSON}

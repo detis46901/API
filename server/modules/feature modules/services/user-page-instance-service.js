@@ -56,13 +56,13 @@ var UserPageInstanceService = (function () {
     UserPageInstanceService.prototype.getByInstance = function (instanceID) {
         var findOptions = {
             order: [
-                'InstanceID'
+                'ID'
             ]
         };
         if (instanceID) {
             findOptions.where = {
                 $and: [
-                    { instanceID: instanceID }
+                    { moduleInstanceID: instanceID }
                 ]
             };
         }

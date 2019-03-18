@@ -4,6 +4,7 @@ var ModulePermissionModel = require('../models/module-permission-model');
 var ModuleInstance = require('../models/module-instances-model');
 var UserModel = require('../../users/models/user-model');
 var GroupModel = require('../../users/models/group-model');
+var ModulesModel = require('../models/module-model');
 var Op = Sequelize.or;
 var ModulePermissionService = (function () {
     function ModulePermissionService() {
@@ -41,7 +42,7 @@ var ModulePermissionService = (function () {
             };
         }
         findOptions.include = [ModuleInstance.Model, UserModel.Model, GroupModel.Model];
-        return ModulePermissionModel.Model.findAll(findOptions);
+        return ModulePermissionModel.Model.findAll({ include: [{ model: ModuleInstance.Model, include: [ModulesModel.Model] }, { model: UserModel.Model }, { model: GroupModel.Model }] });
     };
     ModulePermissionService.prototype.getByGroup = function (groupID) {
         console.log(groupID);
@@ -58,7 +59,7 @@ var ModulePermissionService = (function () {
             };
         }
         findOptions.include = [ModuleInstance.Model, UserModel.Model, GroupModel.Model];
-        return ModulePermissionModel.Model.findAll(findOptions);
+        return ModulePermissionModel.Model.findAll({ include: [{ model: ModuleInstance.Model, include: [ModulesModel.Model] }, { model: UserModel.Model }, { model: GroupModel.Model }] });
     };
     ModulePermissionService.prototype.getByUserAndGroup = function (userID, groups) {
         var op = Sequelize.or;
@@ -74,7 +75,7 @@ var ModulePermissionService = (function () {
                     { userID: userID }
                 ] };
         }
-        findOptions.include = [ModuleInstance.Model, UserModel.Model, GroupModel.Model];
+        findOptions.include = [{ model: ModuleInstance.Model, include: [ModulesModel.Model] }, { model: UserModel.Model }, { model: GroupModel.Model }];
         return ModulePermissionModel.Model.findAll(findOptions);
     };
     ModulePermissionService.prototype.get = function (ID) {

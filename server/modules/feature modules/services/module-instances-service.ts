@@ -1,5 +1,6 @@
 import Sequelize = require('sequelize');
 import ModuleInstancesModel = require('../models/module-instances-model');
+import ModuleModel = require('../models/module-model')
 
 
 class ModuleInstancesService {
@@ -21,15 +22,20 @@ class ModuleInstancesService {
             }
         }
         
+        findOptions.include = [ModuleModel.Model];
         return ModuleInstancesModel.Model.findAll(findOptions);
     }
 
     get(rowID: number): Promise<ModuleInstancesModel.ModuleInstancesInstance> {
-        return ModuleInstancesModel.Model.findById(rowID);
+        var findOptions: Sequelize.FindOptions = {}
+        findOptions.include = [ModuleModel.Model];
+        return ModuleInstancesModel.Model.findById(rowID, findOptions);
     }
 
     create(request: App.ModuleInstances): Promise<ModuleInstancesModel.ModuleInstancesInstance> {
-        return ModuleInstancesModel.Model.create(request);
+        var findOptions: Sequelize.FindOptions = {}
+        findOptions.include = [ModuleModel.Model];
+        return ModuleInstancesModel.Model.create(request, findOptions);
     }
 
     update(request: App.ModuleInstances): Promise<ModuleInstancesModel.ModuleInstancesInstance> {

@@ -71,14 +71,14 @@ class UserPageInstanceService {
     getByInstance(instanceID: number): any {
         var findOptions: Sequelize.FindOptions = {
             order: [
-                'InstanceID'
+                'ID'
             ]
         };
 
         if (instanceID) {
             findOptions.where = {
                 $and: [
-                    {instanceID: instanceID}
+                    {moduleInstanceID: instanceID}
                 ]
             }
         }

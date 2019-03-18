@@ -3,6 +3,7 @@ import ModulePermissionModel = require('../models/module-permission-model');
 import ModuleInstance = require('../models/module-instances-model')
 import UserModel = require('../../users/models/user-model')
 import GroupModel = require('../../users/models/group-model')
+import ModulesModel = require('../models/module-model')
 const Op = Sequelize.or
 
 
@@ -48,7 +49,7 @@ class ModulePermissionService {
         }
 
         findOptions.include = [ModuleInstance.Model, UserModel.Model, GroupModel.Model];
-        return ModulePermissionModel.Model.findAll(findOptions);
+        return ModulePermissionModel.Model.findAll({include: [{model: ModuleInstance.Model, include:[ModulesModel.Model]}, {model: UserModel.Model}, {model: GroupModel.Model}]});
     }
 
     getByGroup(groupID: number): Promise<ModulePermissionModel.ModulePermissionInstance[]> {
@@ -68,7 +69,7 @@ class ModulePermissionService {
         }
 
         findOptions.include = [ModuleInstance.Model, UserModel.Model, GroupModel.Model];
-        return ModulePermissionModel.Model.findAll(findOptions);
+        return ModulePermissionModel.Model.findAll({include: [{model: ModuleInstance.Model, include:[ModulesModel.Model]}, {model: UserModel.Model}, {model: GroupModel.Model}]});
     }
 
     getByUserAndGroup(userID: number, groups:number[]): Promise<ModulePermissionModel.ModulePermissionInstance[]> {
@@ -87,7 +88,7 @@ class ModulePermissionService {
         ]}
         }
 
-        findOptions.include = [ModuleInstance.Model, UserModel.Model, GroupModel.Model];
+        findOptions.include =[{model: ModuleInstance.Model, include:[ModulesModel.Model]}, {model: UserModel.Model}, {model: GroupModel.Model}];
         return ModulePermissionModel.Model.findAll(findOptions)
     }
 

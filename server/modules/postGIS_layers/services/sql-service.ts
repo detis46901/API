@@ -1,6 +1,4 @@
-import Sequelize = require('sequelize');
 import dbConnection = require('../../../core/db-connection');
-import comment = require('../models/postGIS_layers.model')
 
 var db = dbConnection();
 
@@ -111,7 +109,7 @@ class SQLService {
 
     addColumn(table: string, field: string, type: string, label: boolean): Promise<any> {
         db.query('ALTER TABLE mycube.t' + table + ' ADD "' + field + '" ' + type)
-        if (label == true) { db.query(`COMMENT ON COLUMN mycube.t` + table + '."' + field + `" IS '` + field + `';`) }
+        //if (label == true) { db.query(`COMMENT ON COLUMN mycube.t` + table + '."' + field + `" IS '` + field + `';`) }
         return db.query("SELECT col_description(41644,3);")
 
     }
