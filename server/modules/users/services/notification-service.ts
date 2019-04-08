@@ -14,8 +14,8 @@ class NotificationService {
 
         if (searchValue) {
             findOptions.where = {
-                $or: [
-                    { name: { $iLike: `%${searchValue}%` } }
+                [Sequelize.Op.or]: [
+                    { name: { [Sequelize.Op.iLike]: `%${searchValue}%` } }
                 ]
             }
         }
@@ -32,7 +32,7 @@ class NotificationService {
 
         if (userID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     {userID: userID}
                 ]
             }
@@ -50,7 +50,7 @@ class NotificationService {
 
         if (objectType) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     {objectType: objectType}
                 ]
             }
@@ -68,7 +68,7 @@ class NotificationService {
 
         if (sourceID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     {sourceID: sourceID}
                 ]
             }
@@ -78,7 +78,7 @@ class NotificationService {
     }
 
     get(rowID: number): Promise<NotificationModel.NotificationInstance> {
-        return NotificationModel.Model.findById(rowID);
+        return NotificationModel.Model.findByPk(rowID);
     }
 
     create(request: App.Notification): Promise<NotificationModel.NotificationInstance> {
@@ -87,7 +87,7 @@ class NotificationService {
 
     update(request: App.Notification): Promise<NotificationModel.NotificationInstance> {
         
-        return <any>(NotificationModel.Model.findById(request.ID).then((NotificationInstance) => {
+        return <any>(NotificationModel.Model.findByPk(request.ID).then((NotificationInstance) => {
 
             NotificationInstance.userID = request.userID
             NotificationInstance.name = request.name
@@ -102,7 +102,7 @@ class NotificationService {
 
     delete(ID: number) {
 
-        return NotificationModel.Model.findById(ID).then((NotificationInstance) => {
+        return NotificationModel.Model.findByPk(ID).then((NotificationInstance) => {
 
             return NotificationInstance.destroy();
 

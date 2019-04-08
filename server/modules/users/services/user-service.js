@@ -1,4 +1,5 @@
 "use strict";
+var Sequelize = require('sequelize');
 var UserModel = require('../models/user-model');
 //import ParentService = require('../../parent-service');
 var UserService = (function () {
@@ -11,24 +12,26 @@ var UserService = (function () {
             ]
         };
         if (searchValue) {
-            findOptions.where = {
-                $or: [
-                    { firstName: { $iLike: "%" + searchValue + "%" } },
-                    { lastName: { $iLike: "%" + searchValue + "%" } },
-                    { email: { $iLike: "%" + searchValue + "%" } },
-                ]
-            };
+            findOptions.where = (_a = {},
+                _a[Sequelize.Op.or] = [
+                    { firstName: (_b = {}, _b[Sequelize.Op.iLike] = "%" + searchValue + "%", _b) },
+                    { lastName: (_c = {}, _c[Sequelize.Op.iLike] = "%" + searchValue + "%", _c) },
+                    { email: (_d = {}, _d[Sequelize.Op.iLike] = "%" + searchValue + "%", _d) },
+                ],
+                _a
+            );
         }
         return UserModel.Model.findAll(findOptions);
+        var _a, _b, _c, _d;
     };
     UserService.prototype.get = function (rowID) {
-        return UserModel.Model.findById(rowID);
+        return UserModel.Model.findByPk(rowID);
     };
     UserService.prototype.create = function (request) {
         return UserModel.Model.create(request);
     };
     UserService.prototype.update = function (request) {
-        return (UserModel.Model.findById(request.ID).then(function (UserInstance) {
+        return (UserModel.Model.findByPk(request.ID).then(function (UserInstance) {
             UserInstance.firstName = request.firstName;
             UserInstance.lastName = request.lastName;
             UserInstance.email = request.email;
@@ -41,7 +44,7 @@ var UserService = (function () {
         }));
     };
     UserService.prototype.delete = function (ID) {
-        return UserModel.Model.findById(ID).then(function (UserInstance) {
+        return UserModel.Model.findByPk(ID).then(function (UserInstance) {
             return UserInstance.destroy();
         });
     };

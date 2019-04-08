@@ -14,7 +14,7 @@ class ServerService {
 
         // if (ServerID) {
         //     findOptions.where = {
-        //         $and: [
+        //         [Sequelize.Op.and]: [
         //             { ServerID: ServerID}
         //         ]
         //     }
@@ -25,7 +25,7 @@ class ServerService {
     }
 
     get(rowID: number): Promise<ServerModel.ServerInstance> {
-        return ServerModel.Model.findById(rowID);
+        return ServerModel.Model.findByPk(rowID);
     }
 
     create(request: App.Server): Promise<ServerModel.ServerInstance> {
@@ -34,7 +34,7 @@ class ServerService {
 
     update(request: App.Server): Promise<ServerModel.ServerInstance> {
         
-        return <any>(ServerModel.Model.findById(request.ID).then((ServerInstance) => {
+        return <any>(ServerModel.Model.findByPk(request.ID).then((ServerInstance) => {
 
             ServerInstance.serverName = request.serverName;
             ServerInstance.serverType = request.serverType;
@@ -46,7 +46,7 @@ class ServerService {
 
     delete(ID: number) {
 
-        return ServerModel.Model.findById(ID).then((ServerInstance) => {
+        return ServerModel.Model.findByPk(ID).then((ServerInstance) => {
 
             return ServerInstance.destroy();
 

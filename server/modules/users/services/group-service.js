@@ -1,4 +1,5 @@
 "use strict";
+var Sequelize = require('sequelize');
 var GroupModel = require('../models/group-model');
 var GroupService = (function () {
     function GroupService() {
@@ -6,35 +7,37 @@ var GroupService = (function () {
     GroupService.prototype.getList = function (searchValue) {
         var findOptions = {
             order: [
-                'group'
+                'name'
             ]
         };
         if (searchValue) {
-            findOptions.where = {
-                $or: [
-                    { firstName: { $iLike: "%" + searchValue + "%" } },
-                    { lastName: { $iLike: "%" + searchValue + "%" } },
-                    { email: { $iLike: "%" + searchValue + "%" } },
-                ]
-            };
+            findOptions.where = (_a = {},
+                _a[Sequelize.Op.or] = [
+                    { firstName: (_b = {}, _b[Sequelize.Op.iLike] = "%" + searchValue + "%", _b) },
+                    { lastName: (_c = {}, _c[Sequelize.Op.iLike] = "%" + searchValue + "%", _c) },
+                    { email: (_d = {}, _d[Sequelize.Op.iLike] = "%" + searchValue + "%", _d) },
+                ],
+                _a
+            );
         }
         return GroupModel.Model.findAll(findOptions);
+        var _a, _b, _c, _d;
     };
     GroupService.prototype.get = function (rowID) {
-        return GroupModel.Model.findById(rowID);
+        return GroupModel.Model.findByPk(rowID);
     };
     GroupService.prototype.create = function (request) {
         return GroupModel.Model.create(request);
     };
     GroupService.prototype.update = function (request) {
-        return (GroupModel.Model.findById(request.ID).then(function (GroupInstance) {
+        return (GroupModel.Model.findByPk(request.ID).then(function (GroupInstance) {
             GroupInstance.name = request.name;
             GroupInstance.description = request.description;
             return GroupInstance.save();
         }));
     };
     GroupService.prototype.delete = function (rowID) {
-        return GroupModel.Model.findById(rowID).then(function (GroupInstance) {
+        return GroupModel.Model.findByPk(rowID).then(function (GroupInstance) {
             return GroupInstance.destroy();
         });
     };

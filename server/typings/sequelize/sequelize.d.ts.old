@@ -2936,8 +2936,8 @@ declare module "sequelize" {
          * Where Complex nested query
          */
         interface WhereNested {
-            $and: Array<WhereOptions | WhereLogic>;
-            $or: Array<WhereOptions | WhereLogic>;
+            [Sequelize.Op.and]: Array<WhereOptions | WhereLogic>;
+            [Sequelize.Op.or]: Array<WhereOptions | WhereLogic>;
         }
 
         /**
@@ -2969,8 +2969,8 @@ declare module "sequelize" {
             $lte: number | string | Date;
             $lt: number | string | Date;
             $like: string | WherePGStatement;
-            $iLike: string | WherePGStatement;
-            $ilike: string | WherePGStatement;
+            [Sequelize.Op.iLike]: string | WherePGStatement;
+            [Sequelize.Op.iLike]: string | WherePGStatement;
             $notLike: string | WherePGStatement;
             $notILike: string | WherePGStatement;
             $between: [number, number];
@@ -3682,7 +3682,7 @@ declare module "sequelize" {
              * ```sql
              * WHERE attr1 > 50 AND attr2 <= 45 AND attr3 IN (1,2,3) AND attr4 != 5
              * ```
-             * Possible options are: `$ne, $in, $not, $notIn, $gte, $gt, $lte, $lt, $like, $ilike/$iLike, $notLike,
+             * Possible options are: `$ne, $in, $not, $notIn, $gte, $gt, $lte, $lt, $like, [Sequelize.Op.iLike]/[Sequelize.Op.iLike], $notLike,
              * $notILike, '..'/$between, '!..'/$notBetween, '&&'/$overlap, '@>'/$contains, '<@'/$contained`
              *
              * __Queries using OR__
@@ -3712,7 +3712,7 @@ declare module "sequelize" {
              * Search for a single instance by its primary key. This applies LIMIT 1, so the listener will
              * always be called with a single instance.
              */
-            findById(identifier?: number | string, options?: FindOptions): Promise<TInstance>;
+            findByPk(identifier?: number | string, options?: FindOptions): Promise<TInstance>;
             findByPrimary(identifier?: number | string, options?: FindOptions): Promise<TInstance>;
 
             /**

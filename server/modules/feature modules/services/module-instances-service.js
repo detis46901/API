@@ -1,4 +1,5 @@
 "use strict";
+var Sequelize = require('sequelize');
 var ModuleInstancesModel = require('../models/module-instances-model');
 var ModuleModel = require('../models/module-model');
 var ModuleInstancesService = (function () {
@@ -11,21 +12,23 @@ var ModuleInstancesService = (function () {
             ]
         };
         if (searchValue) {
-            findOptions.where = {
-                $or: [
-                    { firstName: { $iLike: "%" + searchValue + "%" } },
-                    { lastName: { $iLike: "%" + searchValue + "%" } },
-                    { email: { $iLike: "%" + searchValue + "%" } },
-                ]
-            };
+            findOptions.where = (_a = {},
+                _a[Sequelize.Op.or] = [
+                    { firstName: (_b = {}, _b[Sequelize.Op.iLike] = "%" + searchValue + "%", _b) },
+                    { lastName: (_c = {}, _c[Sequelize.Op.iLike] = "%" + searchValue + "%", _c) },
+                    { email: (_d = {}, _d[Sequelize.Op.iLike] = "%" + searchValue + "%", _d) },
+                ],
+                _a
+            );
         }
         findOptions.include = [ModuleModel.Model];
         return ModuleInstancesModel.Model.findAll(findOptions);
+        var _a, _b, _c, _d;
     };
     ModuleInstancesService.prototype.get = function (rowID) {
         var findOptions = {};
         findOptions.include = [ModuleModel.Model];
-        return ModuleInstancesModel.Model.findById(rowID, findOptions);
+        return ModuleInstancesModel.Model.findByPk(rowID, findOptions);
     };
     ModuleInstancesService.prototype.create = function (request) {
         var findOptions = {};
@@ -33,7 +36,7 @@ var ModuleInstancesService = (function () {
         return ModuleInstancesModel.Model.create(request, findOptions);
     };
     ModuleInstancesService.prototype.update = function (request) {
-        return (ModuleInstancesModel.Model.findById(request.ID).then(function (ModuleInstance) {
+        return (ModuleInstancesModel.Model.findByPk(request.ID).then(function (ModuleInstance) {
             ModuleInstance.name = request.name;
             ModuleInstance.description = request.description;
             ModuleInstance.settings = request.settings;
@@ -41,7 +44,7 @@ var ModuleInstancesService = (function () {
         }));
     };
     ModuleInstancesService.prototype.delete = function (ID) {
-        return ModuleInstancesModel.Model.findById(ID).then(function (ModuleInstance) {
+        return ModuleInstancesModel.Model.findByPk(ID).then(function (ModuleInstance) {
             return ModuleInstance.destroy();
         });
     };

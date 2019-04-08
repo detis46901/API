@@ -1,4 +1,5 @@
 "use strict";
+var Sequelize = require('sequelize');
 var LayerModel = require('../models/layers-model');
 var ServerModel = require('../models/servers-model');
 var LayerService = (function () {
@@ -11,25 +12,27 @@ var LayerService = (function () {
             ]
         };
         if (searchValue) {
-            findOptions.where = {
-                $or: [
-                    { firstName: { $iLike: "%" + searchValue + "%" } },
-                    { lastName: { $iLike: "%" + searchValue + "%" } },
-                    { email: { $iLike: "%" + searchValue + "%" } },
-                ]
-            };
+            findOptions.where = (_a = {},
+                _a[Sequelize.Op.or] = [
+                    { firstName: (_b = {}, _b[Sequelize.Op.iLike] = "%" + searchValue + "%", _b) },
+                    { lastName: (_c = {}, _c[Sequelize.Op.iLike] = "%" + searchValue + "%", _c) },
+                    { email: (_d = {}, _d[Sequelize.Op.iLike] = "%" + searchValue + "%", _d) },
+                ],
+                _a
+            );
         }
         findOptions.include = [ServerModel.Model];
         return LayerModel.Model.findAll(findOptions);
+        var _a, _b, _c, _d;
     };
     LayerService.prototype.get = function (rowID) {
-        return LayerModel.Model.findById(rowID);
+        return LayerModel.Model.findByPk(rowID);
     };
     LayerService.prototype.create = function (request) {
         return LayerModel.Model.create(request);
     };
     LayerService.prototype.update = function (request) {
-        return (LayerModel.Model.findById(request.ID).then(function (LayerInstance) {
+        return (LayerModel.Model.findByPk(request.ID).then(function (LayerInstance) {
             LayerInstance.layerName = request.layerName;
             LayerInstance.layerType = request.layerType;
             LayerInstance.serverID = request.serverID;
@@ -43,7 +46,7 @@ var LayerService = (function () {
         }));
     };
     LayerService.prototype.delete = function (ID) {
-        return LayerModel.Model.findById(ID).then(function (LayerInstance) {
+        return LayerModel.Model.findByPk(ID).then(function (LayerInstance) {
             return LayerInstance.destroy();
         });
     };

@@ -14,10 +14,10 @@ class SQLService {
 
     //     if (searchValue) {
     //         findOptions.where = {
-    //             $or: [
-    //                 { firstName: { $iLike: `%${searchValue}%` } },
-    //                 { lastName: { $iLike: `%${searchValue}%` } },
-    //                 { email: { $iLike: `%${searchValue}%` } },
+    //             [Sequelize.Op.or]: [
+    //                 { firstName: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
+    //                 { lastName: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
+    //                 { email: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
     //             ]
     //         }
     //     }

@@ -13,10 +13,10 @@ class ModuleService {
 
         if (searchValue) {
             findOptions.where = {
-                $or: [
-                    { firstName: { $iLike: `%${searchValue}%` } },
-                    { lastName: { $iLike: `%${searchValue}%` } },
-                    { email: { $iLike: `%${searchValue}%` } },
+                [Sequelize.Op.or]: [
+                    { firstName: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
+                    { lastName: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
+                    { email: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
                 ]
             }
         }
@@ -25,7 +25,7 @@ class ModuleService {
     }
 
     get(rowID: number): Promise<ModuleModel.ModuleInstance> {
-        return ModuleModel.Model.findById(rowID);
+        return ModuleModel.Model.findByPk(rowID);
     }
 
     create(request: App.Module): Promise<ModuleModel.ModuleInstance> {
@@ -34,7 +34,7 @@ class ModuleService {
 
     update(request: App.Module): Promise<ModuleModel.ModuleInstance> {
         
-        return <any>(ModuleModel.Model.findById(request.ID).then((ModuleInstance) => {
+        return <any>(ModuleModel.Model.findByPk(request.ID).then((ModuleInstance) => {
 
             ModuleInstance.identity = request.identity;
             ModuleInstance.name = request.name;
@@ -45,7 +45,7 @@ class ModuleService {
 
     delete(ID: number) {
 
-        return ModuleModel.Model.findById(ID).then((ModuleInstance) => {
+        return ModuleModel.Model.findByPk(ID).then((ModuleInstance) => {
             return ModuleInstance.destroy();
 
         });

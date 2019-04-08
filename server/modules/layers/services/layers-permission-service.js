@@ -18,14 +18,16 @@ var LayerPermissionService = (function () {
             ]
         };
         if (layerID) {
-            findOptions.where = {
-                $and: [
+            findOptions.where = (_a = {},
+                _a[Sequelize.Op.and] = [
                     { layerID: layerID }
-                ]
-            };
+                ],
+                _a
+            );
         }
         findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
+        var _a;
     };
     LayerPermissionService.prototype.getByUser = function (userID) {
         var findOptions = {
@@ -34,14 +36,16 @@ var LayerPermissionService = (function () {
             ]
         };
         if (userID) {
-            findOptions.where = {
-                $and: [
+            findOptions.where = (_a = {},
+                _a[Sequelize.Op.and] = [
                     { userID: userID }
-                ]
-            };
+                ],
+                _a
+            );
         }
         findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
+        var _a;
     };
     LayerPermissionService.prototype.getByGroup = function (groupID) {
         console.log(groupID);
@@ -51,40 +55,44 @@ var LayerPermissionService = (function () {
             ]
         };
         if (groupID) {
-            findOptions.where = {
-                $and: [
+            findOptions.where = (_a = {},
+                _a[Sequelize.Op.and] = [
                     { groupID: groupID }
-                ]
-            };
+                ],
+                _a
+            );
         }
         findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
+        var _a;
     };
     LayerPermissionService.prototype.getByUserAndGroup = function (userID, groups) {
-        var op = Sequelize.or;
         var findOptions = {
             order: [
                 'ID'
             ]
         };
         if (userID) {
-            findOptions.where = {
-                $or: [
-                    { groupID: { $or: [groups] } },
+            findOptions.where = (_a = {},
+                _a[Sequelize.Op.or] = [
+                    { groupID: (_b = {}, _b[Sequelize.Op.or] = [groups], _b) },
                     { userID: userID }
-                ] };
+                ],
+                _a
+            );
         }
         findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
+        var _a, _b;
     };
     LayerPermissionService.prototype.get = function (ID) {
-        return LayerPermissionModel.Model.findById(ID);
+        return LayerPermissionModel.Model.findByPk(ID);
     };
     LayerPermissionService.prototype.create = function (request) {
         return LayerPermissionModel.Model.create(request);
     };
     LayerPermissionService.prototype.update = function (request) {
-        return (LayerPermissionModel.Model.findById(request.ID).then(function (LayerPermissionInstance) {
+        return (LayerPermissionModel.Model.findByPk(request.ID).then(function (LayerPermissionInstance) {
             //Probably should disallow foreign key editing. Create new entry if need new user/layer permission.
             //LayerPermissionInstance.layerID = request.layerID;
             //LayerPermissionInstance.userID = request.userID;
@@ -98,7 +106,7 @@ var LayerPermissionService = (function () {
         }));
     };
     LayerPermissionService.prototype.delete = function (ID) {
-        return LayerPermissionModel.Model.findById(ID).then(function (LayerPermissionInstance) {
+        return LayerPermissionModel.Model.findByPk(ID).then(function (LayerPermissionInstance) {
             return LayerPermissionInstance.destroy();
         });
     };

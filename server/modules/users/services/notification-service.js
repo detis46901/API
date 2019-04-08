@@ -1,4 +1,5 @@
 "use strict";
+var Sequelize = require('sequelize');
 var NotificationModel = require('../models/notification-model');
 //import ParentService = require('../../parent-service');
 var NotificationService = (function () {
@@ -11,13 +12,15 @@ var NotificationService = (function () {
             ]
         };
         if (searchValue) {
-            findOptions.where = {
-                $or: [
-                    { name: { $iLike: "%" + searchValue + "%" } }
-                ]
-            };
+            findOptions.where = (_a = {},
+                _a[Sequelize.Op.or] = [
+                    { name: (_b = {}, _b[Sequelize.Op.iLike] = "%" + searchValue + "%", _b) }
+                ],
+                _a
+            );
         }
         return NotificationModel.Model.findAll(findOptions);
+        var _a, _b;
     };
     NotificationService.prototype.getByUser = function (userID) {
         var findOptions = {
@@ -26,13 +29,15 @@ var NotificationService = (function () {
             ]
         };
         if (userID) {
-            findOptions.where = {
-                $and: [
+            findOptions.where = (_a = {},
+                _a[Sequelize.Op.and] = [
                     { userID: userID }
-                ]
-            };
+                ],
+                _a
+            );
         }
         return NotificationModel.Model.findAll(findOptions);
+        var _a;
     };
     NotificationService.prototype.getByType = function (objectType) {
         var findOptions = {
@@ -41,13 +46,15 @@ var NotificationService = (function () {
             ]
         };
         if (objectType) {
-            findOptions.where = {
-                $and: [
+            findOptions.where = (_a = {},
+                _a[Sequelize.Op.and] = [
                     { objectType: objectType }
-                ]
-            };
+                ],
+                _a
+            );
         }
         return NotificationModel.Model.findAll(findOptions);
+        var _a;
     };
     NotificationService.prototype.getBySource = function (sourceID) {
         var findOptions = {
@@ -56,22 +63,24 @@ var NotificationService = (function () {
             ]
         };
         if (sourceID) {
-            findOptions.where = {
-                $and: [
+            findOptions.where = (_a = {},
+                _a[Sequelize.Op.and] = [
                     { sourceID: sourceID }
-                ]
-            };
+                ],
+                _a
+            );
         }
         return NotificationModel.Model.findAll(findOptions);
+        var _a;
     };
     NotificationService.prototype.get = function (rowID) {
-        return NotificationModel.Model.findById(rowID);
+        return NotificationModel.Model.findByPk(rowID);
     };
     NotificationService.prototype.create = function (request) {
         return NotificationModel.Model.create(request);
     };
     NotificationService.prototype.update = function (request) {
-        return (NotificationModel.Model.findById(request.ID).then(function (NotificationInstance) {
+        return (NotificationModel.Model.findByPk(request.ID).then(function (NotificationInstance) {
             NotificationInstance.userID = request.userID;
             NotificationInstance.name = request.name;
             NotificationInstance.description = request.description;
@@ -82,7 +91,7 @@ var NotificationService = (function () {
         }));
     };
     NotificationService.prototype.delete = function (ID) {
-        return NotificationModel.Model.findById(ID).then(function (NotificationInstance) {
+        return NotificationModel.Model.findByPk(ID).then(function (NotificationInstance) {
             return NotificationInstance.destroy();
         });
     };

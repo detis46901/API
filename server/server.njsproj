@@ -73,7 +73,6 @@
     <TypeScriptCompile Include="typings\method-override\method-override.d.ts" />
     <TypeScriptCompile Include="typings\mocha\mocha.d.ts" />
     <TypeScriptCompile Include="typings\node\node.d.ts" />
-    <TypeScriptCompile Include="typings\sequelize\sequelize.d.ts" />
     <TypeScriptCompile Include="typings\tsd.d.ts" />
     <TypeScriptCompile Include="typings\validator\validator.d.ts" />
     <TypeScriptCompile Include="_references.ts" />

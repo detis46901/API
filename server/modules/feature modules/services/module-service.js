@@ -1,4 +1,5 @@
 "use strict";
+var Sequelize = require('sequelize');
 var ModuleModel = require('../models/module-model');
 var ModuleService = (function () {
     function ModuleService() {
@@ -10,24 +11,26 @@ var ModuleService = (function () {
             ]
         };
         if (searchValue) {
-            findOptions.where = {
-                $or: [
-                    { firstName: { $iLike: "%" + searchValue + "%" } },
-                    { lastName: { $iLike: "%" + searchValue + "%" } },
-                    { email: { $iLike: "%" + searchValue + "%" } },
-                ]
-            };
+            findOptions.where = (_a = {},
+                _a[Sequelize.Op.or] = [
+                    { firstName: (_b = {}, _b[Sequelize.Op.iLike] = "%" + searchValue + "%", _b) },
+                    { lastName: (_c = {}, _c[Sequelize.Op.iLike] = "%" + searchValue + "%", _c) },
+                    { email: (_d = {}, _d[Sequelize.Op.iLike] = "%" + searchValue + "%", _d) },
+                ],
+                _a
+            );
         }
         return ModuleModel.Model.findAll(findOptions);
+        var _a, _b, _c, _d;
     };
     ModuleService.prototype.get = function (rowID) {
-        return ModuleModel.Model.findById(rowID);
+        return ModuleModel.Model.findByPk(rowID);
     };
     ModuleService.prototype.create = function (request) {
         return ModuleModel.Model.create(request);
     };
     ModuleService.prototype.update = function (request) {
-        return (ModuleModel.Model.findById(request.ID).then(function (ModuleInstance) {
+        return (ModuleModel.Model.findByPk(request.ID).then(function (ModuleInstance) {
             ModuleInstance.identity = request.identity;
             ModuleInstance.name = request.name;
             ModuleInstance.description = request.description;
@@ -35,7 +38,7 @@ var ModuleService = (function () {
         }));
     };
     ModuleService.prototype.delete = function (ID) {
-        return ModuleModel.Model.findById(ID).then(function (ModuleInstance) {
+        return ModuleModel.Model.findByPk(ID).then(function (ModuleInstance) {
             return ModuleInstance.destroy();
         });
     };

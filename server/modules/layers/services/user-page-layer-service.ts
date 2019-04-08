@@ -18,7 +18,7 @@ class UserPageLayerService {
 
         if (pageID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { pageID: pageID}
                 ]
             }
@@ -37,7 +37,7 @@ class UserPageLayerService {
 
         if (pageID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { userPageID: pageID}
                 ]
             }
@@ -47,7 +47,7 @@ class UserPageLayerService {
     
         findOptions.include = [PageModel.Model, LayerModel.Model, UserPageInstanceModel.Model]
 
-        return UserPageLayerModel.Model.findAll({order: ['ID'], where: {$and: [{ userPageID: pageID}]}, include: [{model: PageModel.Model}, {model: UserPageInstanceModel.Model}, {model: LayerModel.Model, include: [ServerModel.Model]}]})
+        return UserPageLayerModel.Model.findAll({order: ['ID'], where: {[Sequelize.Op.and]: [{ userPageID: pageID}]}, include: [{model: PageModel.Model}, {model: UserPageInstanceModel.Model}, {model: LayerModel.Model, include: [ServerModel.Model]}]})
     }
 
     getUserLayer(userID: number): any {
@@ -59,13 +59,13 @@ class UserPageLayerService {
 
         if (userID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { userID: userID}
                 ]
             }
         }
 
-        //return UserPageLayerModel.Model.findAll({order: ['ID'], where: {$and: [{ userID: userID}]}, include: [{model: UserModel.Model}, {model: LayerModel.Model}, {model: PageModel.Model}]});
+        //return UserPageLayerModel.Model.findAll({order: ['ID'], where: {[Sequelize.Op.and]: [{ userID: userID}]}, include: [{model: UserModel.Model}, {model: LayerModel.Model}, {model: PageModel.Model}]});
         return UserPageLayerModel.Model.findAll(findOptions);
     }
 
@@ -78,7 +78,7 @@ class UserPageLayerService {
 
         if (layerID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     {layerID: layerID}
                 ]
             }
@@ -88,7 +88,7 @@ class UserPageLayerService {
     }
 
     get(rowID: number): Promise<UserPageLayerModel.UserPageLayerInstance> {
-        return UserPageLayerModel.Model.findById(rowID);
+        return UserPageLayerModel.Model.findByPk(rowID);
     }
 
     create(request: App.UserPageLayer): Promise<UserPageLayerModel.UserPageLayerInstance> {
@@ -97,7 +97,7 @@ class UserPageLayerService {
 
     update(request: App.UserPageLayer): Promise<UserPageLayerModel.UserPageLayerInstance> {
         
-        return <any>(UserPageLayerModel.Model.findById(request.ID).then((UserPageLayerInstance) => {
+        return <any>(UserPageLayerModel.Model.findByPk(request.ID).then((UserPageLayerInstance) => {
 
             UserPageLayerInstance.layerID = request.layerID;
             UserPageLayerInstance.userID = request.userID;
@@ -109,7 +109,7 @@ class UserPageLayerService {
     }
 
     delete(ID: number) {
-        return UserPageLayerModel.Model.findById(ID).then((UserPageLayerInstance) => {
+        return UserPageLayerModel.Model.findByPk(ID).then((UserPageLayerInstance) => {
 
             return UserPageLayerInstance.destroy();
 

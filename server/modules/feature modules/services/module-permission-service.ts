@@ -22,7 +22,7 @@ class ModulePermissionService {
 
         if (instanceID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { moduleInstanceID: instanceID}
                 ]
             }
@@ -42,7 +42,7 @@ class ModulePermissionService {
 
         if (userID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { userID: userID}
                 ]
             }
@@ -62,7 +62,7 @@ class ModulePermissionService {
 
         if (groupID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { groupID: groupID}
                 ]
             }
@@ -82,8 +82,8 @@ class ModulePermissionService {
 
         if (userID) {
             findOptions.where = {
-                $or: [
-                {groupID: {$or:[groups]}},
+                [Sequelize.Op.or]: [
+                {groupID: {[Sequelize.Op.or]:[groups]}},
                 {userID: userID}
         ]}
         }
@@ -93,7 +93,7 @@ class ModulePermissionService {
     }
 
     get(ID: number): Promise<ModulePermissionModel.ModulePermissionInstance> {
-        return ModulePermissionModel.Model.findById(ID);
+        return ModulePermissionModel.Model.findByPk(ID);
     }
 
     create(request: App.ModulePermission): Promise<ModulePermissionModel.ModulePermissionInstance> {
@@ -102,7 +102,7 @@ class ModulePermissionService {
 
     update(request: App.ModulePermission): Promise<ModulePermissionModel.ModulePermissionInstance> {
         
-        return <any>(ModulePermissionModel.Model.findById(request.ID).then((ModulePermissionInstance) => {
+        return <any>(ModulePermissionModel.Model.findByPk(request.ID).then((ModulePermissionInstance) => {
 
             ModulePermissionInstance.edit = request.edit;
             ModulePermissionInstance.delete = request.delete;
@@ -117,7 +117,7 @@ class ModulePermissionService {
 
     delete(ID: number) {
 
-        return ModulePermissionModel.Model.findById(ID).then((ModulePermissionInstance) => {
+        return ModulePermissionModel.Model.findByPk(ID).then((ModulePermissionInstance) => {
             return ModulePermissionInstance.destroy();
 
         });

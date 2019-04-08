@@ -14,10 +14,10 @@ class LayerService {
 
         if (searchValue) {
             findOptions.where = {
-                $or: [
-                    { firstName: { $iLike: `%${searchValue}%` } },
-                    { lastName: { $iLike: `%${searchValue}%` } },
-                    { email: { $iLike: `%${searchValue}%` } },
+                [Sequelize.Op.or]: [
+                    { firstName: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
+                    { lastName: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
+                    { email: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
                 ]
             }
         }
@@ -27,7 +27,7 @@ class LayerService {
     }
 
     get(rowID: number): Promise<LayerModel.LayerInstance> {
-        return LayerModel.Model.findById(rowID);
+        return LayerModel.Model.findByPk(rowID);
     }
 
     create(request: App.Layer): Promise<LayerModel.LayerInstance> {
@@ -36,7 +36,7 @@ class LayerService {
 
     update(request: App.Layer): Promise<LayerModel.LayerInstance> {
         
-        return <any>(LayerModel.Model.findById(request.ID).then((LayerInstance) => {
+        return <any>(LayerModel.Model.findByPk(request.ID).then((LayerInstance) => {
 
             LayerInstance.layerName = request.layerName;
             LayerInstance.layerType = request.layerType;
@@ -53,7 +53,7 @@ class LayerService {
 
     delete(ID: number) {
 
-        return LayerModel.Model.findById(ID).then((LayerInstance) => {
+        return LayerModel.Model.findByPk(ID).then((LayerInstance) => {
             return LayerInstance.destroy();
 
         });

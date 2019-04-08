@@ -18,7 +18,7 @@ class GroupMemberService {
 
         if (userID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { userID: userID}
                 ]
             }
@@ -38,7 +38,7 @@ class GroupMemberService {
 
         if (groupID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { groupID: groupID}
                 ]
             }
@@ -49,7 +49,7 @@ class GroupMemberService {
     }
 
     get(rowID: number): Promise<GroupMemberModel.GroupMemberInstance> {
-        return GroupMemberModel.Model.findById(rowID);
+        return GroupMemberModel.Model.findByPk(rowID);
     }
 
     create(request: App.GroupMember): Promise<GroupMemberModel.GroupMemberInstance> {
@@ -57,7 +57,7 @@ class GroupMemberService {
     }
 
     delete(ID: number) {
-        return GroupMemberModel.Model.findById(ID).then((GroupMemberInstance) => {
+        return GroupMemberModel.Model.findByPk(ID).then((GroupMemberInstance) => {
             return GroupMemberInstance.destroy();
         });
     }

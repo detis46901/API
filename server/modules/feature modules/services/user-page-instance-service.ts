@@ -17,7 +17,7 @@ class UserPageInstanceService {
 
         if (pageID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { pageID: pageID}
                 ]
             }
@@ -36,7 +36,7 @@ class UserPageInstanceService {
 
         if (pageID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { userPageID: pageID}
                 ]
             }
@@ -46,7 +46,7 @@ class UserPageInstanceService {
     
         findOptions.include = [PageModel.Model, InstanceModel.Model]
 
-        return UserPageInstanceModel.Model.findAll({order: ['ID'], where: {$and: [{ userPageID: pageID}]}, include: [{model: PageModel.Model}, {model: InstanceModel.Model, include: [ModuleModel.Model]}]})
+        return UserPageInstanceModel.Model.findAll({order: ['ID'], where: {[Sequelize.Op.and]: [{ userPageID: pageID}]}, include: [{model: PageModel.Model}, {model: InstanceModel.Model, include: [ModuleModel.Model]}]})
     }
 
     getUserInstance(userID: number): any {
@@ -58,13 +58,13 @@ class UserPageInstanceService {
 
         if (userID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { userID: userID}
                 ]
             }
         }
 
-        //return UserPageLayerModel.Model.findAll({order: ['ID'], where: {$and: [{ userID: userID}]}, include: [{model: UserModel.Model}, {model: LayerModel.Model}, {model: PageModel.Model}]});
+        //return UserPageLayerModel.Model.findAll({order: ['ID'], where: {[Sequelize.Op.and]: [{ userID: userID}]}, include: [{model: UserModel.Model}, {model: LayerModel.Model}, {model: PageModel.Model}]});
         return UserPageInstanceModel.Model.findAll(findOptions);
     }
 
@@ -77,7 +77,7 @@ class UserPageInstanceService {
 
         if (instanceID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     {moduleInstanceID: instanceID}
                 ]
             }
@@ -87,7 +87,7 @@ class UserPageInstanceService {
     }
 
     get(rowID: number): Promise<UserPageInstanceModel.UserPageInstanceInstance> {
-        return UserPageInstanceModel.Model.findById(rowID);
+        return UserPageInstanceModel.Model.findByPk(rowID);
     }
 
     create(request: App.UserPageInstance): Promise<UserPageInstanceModel.UserPageInstanceInstance> {
@@ -96,7 +96,7 @@ class UserPageInstanceService {
 
     update(request: App.UserPageInstance): Promise<UserPageInstanceModel.UserPageInstanceInstance> {
         
-        return <any>(UserPageInstanceModel.Model.findById(request.ID).then((UserPageInstanceInstance) => {
+        return <any>(UserPageInstanceModel.Model.findByPk(request.ID).then((UserPageInstanceInstance) => {
 
             UserPageInstanceInstance.moduleInstanceID = request.moduleInstanceID;
             UserPageInstanceInstance.userID = request.userID;
@@ -107,7 +107,7 @@ class UserPageInstanceService {
     }
 
     delete(ID: number) {
-        return UserPageInstanceModel.Model.findById(ID).then((UserPageInstanceInstance) => {
+        return UserPageInstanceModel.Model.findByPk(ID).then((UserPageInstanceInstance) => {
 
             return UserPageInstanceInstance.destroy();
 

@@ -15,10 +15,10 @@ class SQLService {
 
     //     if (searchValue) {
     //         findOptions.where = {
-    //             $or: [
-    //                 { firstName: { $iLike: `%${searchValue}%` } },
-    //                 { lastName: { $iLike: `%${searchValue}%` } },
-    //                 { email: { $iLike: `%${searchValue}%` } },
+    //             [Sequelize.Op.or]: [
+    //                 { firstName: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
+    //                 { lastName: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
+    //                 { email: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
     //             ]
     //         }
     //     }
@@ -99,7 +99,7 @@ class SQLService {
 
 //     update(request: App.User): Promise<UserModel.UserInstance> {
         
-//         return <any>(UserModel.Model.findById(request.ID).then((UserInstance) => {
+//         return <any>(UserModel.Model.findByPk(request.ID).then((UserInstance) => {
 
 //             UserInstance.firstName = request.firstName;
 //             UserInstance.lastName = request.lastName;
@@ -117,7 +117,7 @@ class SQLService {
 
 //     delete(ID: number) {
 
-//         return UserModel.Model.findById(ID).then((UserInstance) => {
+//         return UserModel.Model.findByPk(ID).then((UserInstance) => {
 
 //             return UserInstance.destroy();
 

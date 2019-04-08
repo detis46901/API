@@ -7,16 +7,16 @@ class GroupService {
 
         var findOptions: Sequelize.FindOptions = {
             order: [
-                'group'
+                'name'
             ]
         };
 
         if (searchValue) {
             findOptions.where = {
-                $or: [
-                    { firstName: { $iLike: `%${searchValue}%` } },
-                    { lastName: { $iLike: `%${searchValue}%` } },
-                    { email: { $iLike: `%${searchValue}%` } },
+                [Sequelize.Op.or]: [
+                    { firstName: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
+                    { lastName: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
+                    { email: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
                 ]
             }
         }
@@ -25,7 +25,7 @@ class GroupService {
     }
 
     get(rowID: number): Promise<GroupModel.GroupInstance> {
-        return GroupModel.Model.findById(rowID);
+        return GroupModel.Model.findByPk(rowID);
     }
 
     create(request: App.Group): Promise<GroupModel.GroupInstance> {
@@ -34,7 +34,7 @@ class GroupService {
 
     update(request: App.Group): Promise<GroupModel.GroupInstance> {
         
-        return <any>(GroupModel.Model.findById(request.ID).then((GroupInstance) => {
+        return <any>(GroupModel.Model.findByPk(request.ID).then((GroupInstance) => {
 
             GroupInstance.name = request.name;
             GroupInstance.description = request.description;
@@ -45,7 +45,7 @@ class GroupService {
 
     delete(rowID: number) {
 
-        return GroupModel.Model.findById(rowID).then((GroupInstance) => {
+        return GroupModel.Model.findByPk(rowID).then((GroupInstance) => {
 
             return GroupInstance.destroy();
 

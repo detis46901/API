@@ -12,7 +12,7 @@ class AuthService {
 
         if (email != null && password != null) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { password: `${password}` },
                     { email: `${email}` },
                 ]
@@ -22,11 +22,11 @@ class AuthService {
     }
 
     get(rowID: number): Promise<UserModel.UserInstance> {
-        return UserModel.Model.findById(rowID);
+        return UserModel.Model.findByPk(rowID);
     }   
 
     getemail(email: string): Promise<UserModel.UserInstance> {
-        return UserModel.Model.findById(email);
+        return UserModel.Model.findByPk(email);
     }
     
     create(request: App.User): Promise<UserModel.UserInstance> {
@@ -35,7 +35,7 @@ class AuthService {
 
 
     update(request: App.User): Promise<UserModel.UserInstance> {       
-        return <any>(UserModel.Model.findById(request.ID).then((UserInstance) => {
+        return <any>(UserModel.Model.findByPk(request.ID).then((UserInstance) => {
 
             UserInstance.firstName = request.firstName;
             UserInstance.lastName = request.lastName;
@@ -45,7 +45,7 @@ class AuthService {
     }
 
     delete(rowID: number) {
-        return UserModel.Model.findById(rowID).then((UserInstance) => {
+        return UserModel.Model.findByPk(rowID).then((UserInstance) => {
 
             return UserInstance.destroy();
 

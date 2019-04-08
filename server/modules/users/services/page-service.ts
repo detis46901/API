@@ -4,7 +4,7 @@ import PageModel = require('../models/page-model');
 
 class PageService {
 
-    getList(userID: string): Promise<PageModel.PageInstance[]> {
+    getList(userID: number): Promise<PageModel.PageInstance[]> {
 
         var findOptions: Sequelize.FindOptions = {
             order: [
@@ -14,7 +14,7 @@ class PageService {
 
         if (userID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { userID: userID}
                 ]
             }
@@ -23,7 +23,7 @@ class PageService {
         return PageModel.Model.findAll(findOptions);
     }
 
-    getActiveByUserID(userID: string): Promise<PageModel.PageInstance[]> {
+    getActiveByUserID(userID: number): Promise<PageModel.PageInstance[]> {
         
                 var findOptions: Sequelize.FindOptions = {
                     order: [
@@ -33,17 +33,17 @@ class PageService {
         
                 if (userID) {
                     findOptions.where = {
-                        $and: [
-                            { userID: userID},
+                        [Sequelize.Op.and]: [
+                            { userID: 1},
                             { active: true}
                         ]
                     }
                 }
-                
+                console.log(userID)
                 return PageModel.Model.findAll(findOptions);
             }
         
-    getDefault(userID: string): Promise<PageModel.PageInstance[]> {
+    getDefault(userID: number): Promise<PageModel.PageInstance[]> {
 
         var findOptions: Sequelize.FindOptions = {
             order: [
@@ -53,7 +53,7 @@ class PageService {
 
         if (userID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { userID: userID},
                     { default: true}
                 ]
@@ -64,7 +64,7 @@ class PageService {
     }
 
     get(rowID: number): Promise<PageModel.PageInstance> {
-        return PageModel.Model.findById(rowID);
+        return PageModel.Model.findByPk(rowID);
     }
 
     create(request: App.UserPage): Promise<PageModel.PageInstance> {
@@ -73,7 +73,7 @@ class PageService {
 
     update(request: App.UserPage): Promise<PageModel.PageInstance> {
         
-        return <any>(PageModel.Model.findById(request.ID).then((PageInstance) => {
+        return <any>(PageModel.Model.findByPk(request.ID).then((PageInstance) => {
 
             PageInstance.userID = request.userID;
             PageInstance.page = request.page;
@@ -87,7 +87,7 @@ class PageService {
 
     delete(ID: number) {
 
-        return PageModel.Model.findById(ID).then((PageInstance) => {
+        return PageModel.Model.findByPk(ID).then((PageInstance) => {
 
             return PageInstance.destroy();
 

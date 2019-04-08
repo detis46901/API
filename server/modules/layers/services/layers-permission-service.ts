@@ -21,7 +21,7 @@ class LayerPermissionService {
 
         if (layerID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { layerID: layerID}
                 ]
             }
@@ -41,7 +41,7 @@ class LayerPermissionService {
 
         if (userID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { userID: userID}
                 ]
             }
@@ -61,7 +61,7 @@ class LayerPermissionService {
 
         if (groupID) {
             findOptions.where = {
-                $and: [
+                [Sequelize.Op.and]: [
                     { groupID: groupID}
                 ]
             }
@@ -72,7 +72,6 @@ class LayerPermissionService {
     }
 
     getByUserAndGroup(userID: number, groups:number[]): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
-        const op = Sequelize.or
         var findOptions: Sequelize.FindOptions = {
             order: [
                 'ID'
@@ -81,8 +80,8 @@ class LayerPermissionService {
 
         if (userID) {
             findOptions.where = {
-                $or: [
-                {groupID: {$or:[groups]}},
+                [Sequelize.Op.or]: [
+                {groupID: {[Sequelize.Op.or]:[groups]}},
                 {userID: userID}
         ]}
         }
@@ -92,7 +91,7 @@ class LayerPermissionService {
     }
 
     get(ID: number): Promise<LayerPermissionModel.LayerPermissionInstance> {
-        return LayerPermissionModel.Model.findById(ID);
+        return LayerPermissionModel.Model.findByPk(ID);
     }
 
     create(request: App.LayerPermission): Promise<LayerPermissionModel.LayerPermissionInstance> {
@@ -101,7 +100,7 @@ class LayerPermissionService {
 
     update(request: App.LayerPermission): Promise<LayerPermissionModel.LayerPermissionInstance> {
         
-        return <any>(LayerPermissionModel.Model.findById(request.ID).then((LayerPermissionInstance) => {
+        return <any>(LayerPermissionModel.Model.findByPk(request.ID).then((LayerPermissionInstance) => {
 
             //Probably should disallow foreign key editing. Create new entry if need new user/layer permission.
             //LayerPermissionInstance.layerID = request.layerID;
@@ -120,7 +119,7 @@ class LayerPermissionService {
 
     delete(ID: number) {
 
-        return LayerPermissionModel.Model.findById(ID).then((LayerPermissionInstance) => {
+        return LayerPermissionModel.Model.findByPk(ID).then((LayerPermissionInstance) => {
             return LayerPermissionInstance.destroy();
 
         });

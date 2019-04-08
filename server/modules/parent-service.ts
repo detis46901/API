@@ -3,7 +3,7 @@ var Instance;
 
 abstract class ParentService {    
     get(rowID: number): Promise<any> {
-        return Model.findById(rowID);
+        return Model.findByPk(rowID);
     }
 
     create(request: any): Promise<any> {
@@ -11,7 +11,7 @@ abstract class ParentService {
     }
 
     delete(ID: number) {
-        return Model.findById(ID).then((Instance) => {
+        return Model.findByPk(ID).then((Instance) => {
             return Instance.destroy();
         });
     }

@@ -4,13 +4,13 @@ var ParentService = (function () {
     function ParentService() {
     }
     ParentService.prototype.get = function (rowID) {
-        return Model.findById(rowID);
+        return Model.findByPk(rowID);
     };
     ParentService.prototype.create = function (request) {
         return Model.create(request);
     };
     ParentService.prototype.delete = function (ID) {
-        return Model.findById(ID).then(function (Instance) {
+        return Model.findByPk(ID).then(function (Instance) {
             return Instance.destroy();
         });
     };
