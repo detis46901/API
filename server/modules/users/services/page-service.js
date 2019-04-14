@@ -30,7 +30,7 @@ var PageService = (function () {
         if (userID) {
             findOptions.where = (_a = {},
                 _a[Sequelize.Op.and] = [
-                    { userID: 1 },
+                    { userID: userID },
                     { active: true }
                 ],
                 _a

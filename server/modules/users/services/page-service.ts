@@ -34,7 +34,7 @@ class PageService {
                 if (userID) {
                     findOptions.where = {
                         [Sequelize.Op.and]: [
-                            { userID: 1},
+                            { userID: userID},
                             { active: true}
                         ]
                     }
