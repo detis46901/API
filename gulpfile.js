@@ -94,7 +94,7 @@ function startServer(cb) {
             'DB_PORT':5432,
             'DB_SSL':false
       },
-      nodeArgs: ['--inspect'],
+      nodeArgs: ['--inspect=127.0.0.1:9228'],
       ext: 'js'
    }).on('start', function () {
       if (!started) {
