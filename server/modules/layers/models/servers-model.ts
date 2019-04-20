@@ -36,6 +36,29 @@ var sequalizeModel = db.define<ServerInstance, App.Server>('server', <any> {
 
 sequalizeModel.sync({force: false})
 
+sequalizeModel.findAll({
+}).then(function(result) {
+    console.log(result)
+    if (!result[0]){
+    console.log("Creating servers")
+    sequalizeModel.create({
+            serverName: "IndianaMap",
+            serverType: "ArcGIS WMS",
+            serverURL: "http://maps.indiana.edu/arcgis/rest/services"
+        })
+        .then(() => {
+        sequalizeModel.create({
+            serverName: "Kokomo Geoserver",
+            serverType: "Geoserver WMS",
+            serverURL: "http://a.cityofkokomo.org:8080/geoserver/wms"  
+        })
+})
+    }
+else {
+    console.log('Users already exist')
+}
+});
+
         // user this to initialize the database
         // sequalizeModel.sync({force: true})
         // .then(() => {

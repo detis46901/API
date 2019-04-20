@@ -57,31 +57,33 @@ var sequalizeModel = db.define<UserInstance, App.User>('user', <any>{
 });
 
 //console.log("\n\n"+sequalizeModel+"\n\n")
+sequalizeModel.sync() 
+
 
 var flag = 0;
 
 sequalizeModel.findAll({
 }).then(function(result) {
-    if(result == null)
-        flag = 1; //Create default user if there isn't one yet
-});
-
-if(flag == 1) {
+    console.log(result)
+    if (!result[0]){
+    console.log("Creating standard user")
     var pw;
     bcrypt.hash("admin", 10, (err, hash) => {
         pw = hash
-    })
-    sequalizeModel.create({
-        firstName: 'John',
-        lastName: 'Doe',
-        password: pw,
-        active: false,
-        email: 'john.doe@email.com',
-        administrator: true
+        console.log(pw)
+        sequalizeModel.create({
+            firstName: 'Generic',
+            lastName: 'Administrator',
+            password: pw,
+            active: false,
+            email: 'administrator@gmail.com',
+            administrator: true
+        })
     })
 }
+else {
+    console.log('Users already exist')
+}
+});
 
-//sequalizeModel.hasOne(GroupMemberModel.Model)
-
-sequalizeModel.sync() 
 export var Model = sequalizeModel;

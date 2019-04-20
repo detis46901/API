@@ -50,27 +50,30 @@ var sequalizeModel = db.define('user', {
     }
 });
 //console.log("\n\n"+sequalizeModel+"\n\n")
+sequalizeModel.sync();
 var flag = 0;
 sequalizeModel.findAll({}).then(function (result) {
-    if (result == null)
-        flag = 1; //Create default user if there isn't one yet
+    console.log(result);
+    if (!result[0]) {
+        console.log("Creating standard user");
+        var pw;
+        bcrypt.hash("admin", 10, function (err, hash) {
+            pw = hash;
+            console.log(pw);
+            sequalizeModel.create({
+                firstName: 'Generic',
+                lastName: 'Administrator',
+                password: pw,
+                active: false,
+                email: 'administrator@gmail.com',
+                administrator: true
+            });
+        });
+    }
+    else {
+        console.log('Users already exist');
+    }
 });
-if (flag == 1) {
-    var pw;
-    bcrypt.hash("admin", 10, function (err, hash) {
-        pw = hash;
-    });
-    sequalizeModel.create({
-        firstName: 'John',
-        lastName: 'Doe',
-        password: pw,
-        active: false,
-        email: 'john.doe@email.com',
-        administrator: true
-    });
-}
-//sequalizeModel.hasOne(GroupMemberModel.Model)
-sequalizeModel.sync();
 exports.Model = sequalizeModel;
 
 //# sourceMappingURL=../../../source-maps/modules/users/models/user-model.js.map

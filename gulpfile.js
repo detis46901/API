@@ -88,7 +88,7 @@ function startServer(cb) {
             'NODE_ENV': 'development',
             'JWT_SECRET_KEY': 'coffee trip axel bark', //Insert JWT Secret here
             'DB_HOST':'pgis-kokomo.cdxshbbvmooi.us-east-2.rds.amazonaws.com', //Insert Database hostname here
-            'DB_NAME':'cube_prod', //Insert Database name here
+            'DB_NAME':'cube_demo', //Insert Database name here
             'DB_USERNAME':'geoadmin', //Insert Database username here
             'DB_PASSWORD':'G30s3rv3r', //Insert Database password here
             'DB_PORT':5432,
