@@ -84,13 +84,13 @@ function startServer(cb) {
    return nodemon({
       script: config.mainServerFile,
       ignore: ["client/*"],
-      env: { 
-            'NODE_ENV': 'development',
+      env: { // You can set environment variables here.  I'm not using these.  They need to be set in '/server/core/environment.ts'
+            'NODE_ENV': '',
             'JWT_SECRET_KEY': '', //Insert JWT Secret here
-            'DB_HOST': '', //Insert Database hostname here
-            'DB_NAME': '', //Insert Database name here
-            'DB_USERNAME': '', //Insert Database username here
-            'DB_PASSWORD': '', //Insert Database password here
+            'DB_HOST':'', //Insert Database hostname here
+            'DB_NAME':'', //Insert Database name here
+            'DB_USERNAME':'', //Insert Database username here
+            'DB_PASSWORD':'', //Insert Database password here
             'DB_PORT':5432,
             'DB_SSL':false
       },

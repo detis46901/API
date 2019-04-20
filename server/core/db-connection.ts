@@ -1,4 +1,5 @@
 ﻿import Sequelize = require('sequelize');
+import Environment = require('./environment')
 
 interface IDbConfig {
     host: string;
@@ -13,12 +14,12 @@ interface IDbConfig {
 function getDbConfig() {
 
     var config: IDbConfig = {
-        host: process.env.DB_HOST, //''127.0.0.1', //for localhost
-        database: process.env.DB_NAME,
-        username: process.env.DB_USERNAME, //7/6/17 - db password
-        password: process.env.DB_PASSWORD,
-        port: Number.parseInt(process.env.DB_PORT),
-        ssl: (process.env.DB_SSL == 'true'),
+        host: Environment.environment.DB_HOST, //''127.0.0.1', //for localhost
+        database: Environment.environment.DB_NAME,
+        username: Environment.environment.DB_USERNAME, //7/6/17 - db password
+        password: Environment.environment.DB_PASSWORD,
+        port: Environment.environment.DB_PORT,
+        ssl: (Environment.environment.DB_SSL == true),
         newdb: true
     };
     return config;

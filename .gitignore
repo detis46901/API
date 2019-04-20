@@ -24,6 +24,8 @@ npm-debug.log
 testem.log
 /typings
 gulpfile.js
+/server/core/environment.js
+/server/core/environment.ts
 
 # e2e
 /e2e/*.js
