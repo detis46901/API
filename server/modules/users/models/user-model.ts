@@ -70,7 +70,6 @@ sequalizeModel.findAll({
     var pw;
     bcrypt.hash("admin", 10, (err, hash) => {
         pw = hash
-        console.log(pw)
         sequalizeModel.create({
             firstName: 'Generic',
             lastName: 'Administrator',
@@ -80,9 +79,6 @@ sequalizeModel.findAll({
             administrator: true
         })
     })
-}
-else {
-    console.log('Users already exist')
 }
 });
 
