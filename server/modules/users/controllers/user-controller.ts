@@ -4,6 +4,7 @@ import sequalizeModel = require("../models/user-model");
 import Sequelize = require('sequelize');
 import token_auth = require('../../JWT_Checker/loginToken')
 import GroupMemberModel = require('../models/group-member-model')
+import Environment = require('../../../core/environment')
 
 var express = require('express');
 var jwt = require('jsonwebtoken');
@@ -130,7 +131,7 @@ router.post('/login', (req, res) => {
                         email: user[0].email,
                         ID: user[0].ID
                     }, 
-                    process.env.JWT_SECRET_KEY,
+                    Environment.environment.JWT_SECRET_KEY,
                     {
                         expiresIn: "30 days"
                         //expiresIn: "10s" //testing
@@ -178,7 +179,7 @@ router.post('/generatekey', token_auth, (req, res) => {
                         firstName: user[0].firstName, //Use first+last name combo instead of ID to ensure key is different than login key
                         lastName: user[0].lastName
                     }, 
-                    process.env.JWT_SECRET_KEY,
+                    Environment.environment.JWT_SECRET_KEY,
                     {
                         expiresIn: "30 days"
                     }
