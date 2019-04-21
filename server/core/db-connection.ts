@@ -1,6 +1,5 @@
 ﻿import Sequelize = require('sequelize');
-import Environment = require('./environment')
-import { environment } from './environment.sample';
+import {environment } from './environment'
 
 interface IDbConfig {
     host: string;

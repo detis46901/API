@@ -1,14 +1,14 @@
 "use strict";
 var Sequelize = require('sequelize');
-var Environment = require('./environment');
+var environment_1 = require('./environment');
 function getDbConfig() {
     var config = {
-        host: Environment.environment.DB_HOST,
-        database: Environment.environment.DB_NAME,
-        username: Environment.environment.DB_USERNAME,
-        password: Environment.environment.DB_PASSWORD,
-        port: Environment.environment.DB_PORT,
-        ssl: (Environment.environment.DB_SSL == false),
+        host: environment_1.environment.DB_HOST,
+        database: environment_1.environment.DB_NAME,
+        username: environment_1.environment.DB_USERNAME,
+        password: environment_1.environment.DB_PASSWORD,
+        port: environment_1.environment.DB_PORT,
+        ssl: (environment_1.environment.DB_SSL == false),
         newdb: true
     };
     return config;
