@@ -8,7 +8,7 @@ function getDbConfig() {
         username: Environment.environment.DB_USERNAME,
         password: Environment.environment.DB_PASSWORD,
         port: Environment.environment.DB_PORT,
-        ssl: (Environment.environment.DB_SSL == true),
+        ssl: (Environment.environment.DB_SSL == false),
         newdb: true
     };
     return config;

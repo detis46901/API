@@ -23,7 +23,7 @@ var ModulePermissionController = require('./modules/feature modules/controllers/
 var UserPageInstanceController = require('./modules/feature modules/controllers/user-page-instance-controller');
 var app = express();
 // Configuration
-app.set('port', 5000);
+app.set('port', 5001);
 app.set('views', path_1.join(__dirname, '/views')); // critical to use path.join on windows
 app.set('view engine', 'vash');
 app.set('view options', { layout: false });

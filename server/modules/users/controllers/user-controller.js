@@ -2,6 +2,7 @@
 var UserService = require('../services/user-service');
 var UserModel = require('../models/user-model');
 var token_auth = require('../../JWT_Checker/loginToken');
+var Environment = require('../../../core/environment');
 var express = require('express');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
@@ -123,7 +124,7 @@ router.post('/login', function (req, res) {
                 var login_token = jwt.sign({
                     email: user[0].email,
                     ID: user[0].ID
-                }, process.env.JWT_SECRET_KEY, {
+                }, environment.JWT_SECRET_KEY, {
                     expiresIn: "30 days"
                 });
                 return res.status(200).json({
@@ -166,7 +167,7 @@ router.post('/generatekey', token_auth, function (req, res) {
                     email: user[0].email,
                     firstName: user[0].firstName,
                     lastName: user[0].lastName
-                }, process.env.JWT_SECRET_KEY, {
+                }, environment.JWT_SECRET_KEY, {
                     expiresIn: "30 days"
                 });
                 return res.status(200).json({
