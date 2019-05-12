@@ -25,7 +25,7 @@ import UserPageInstanceController = require('./modules/feature modules/controlle
 var app = express();
 
 // Configuration
-app.set('port', 5001);
+app.set('port', 5000);
 app.set('views', join( __dirname, '/views') ); // critical to use path.join on windows
 app.set('view engine', 'vash');
 app.set('view options', { layout: false });
@@ -34,6 +34,7 @@ app.use(json());
 app.use(cors());
 app.use(express.static(join(__dirname, '/../client')));
 app.use(errorHandler());
+
 
 // Routes
 //app.use('/api/parent', ParentController);

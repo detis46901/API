@@ -1,6 +1,7 @@
 "use strict";
 var dbConnection = require('../../../core/db-connection');
 var Sequelize = require('sequelize');
+var sequelize = require('sequelize');
 var ServerModel = require('./servers-model');
 var db = dbConnection();
 var sequalizeModel = db.define('layer', {
@@ -41,11 +42,8 @@ var sequalizeModel = db.define('layer', {
         }
     },
     layerDescription: {
-        type: Sequelize.STRING,
-        allowNull: true,
-        validate: {
-            len: [1, 200]
-        }
+        type: sequelize.TEXT,
+        allowNull: true
     },
     layerGeom: {
         type: Sequelize.STRING,
