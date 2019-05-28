@@ -53,7 +53,7 @@ class ModulePermissionService {
     }
 
     getByGroup(groupID: number): Promise<ModulePermissionModel.ModulePermissionInstance[]> {
-        console.log(groupID)
+        //console.log(groupID)
         var findOptions: Sequelize.FindOptions = {
             order: [
                 'ID'

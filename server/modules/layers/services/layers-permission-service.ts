@@ -52,7 +52,7 @@ class LayerPermissionService {
     }
 
     getByGroup(groupID: number): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
-        console.log(groupID)
+        //console.log(groupID)
         var findOptions: Sequelize.FindOptions = {
             order: [
                 'ID'

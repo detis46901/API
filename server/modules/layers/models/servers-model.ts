@@ -38,9 +38,9 @@ sequalizeModel.sync({force: false})
 
 sequalizeModel.findAll({
 }).then(function(result) {
-    console.log(result)
+    //console.log(result)
     if (!result[0]){
-    console.log("Creating servers")
+    //console.log("Creating servers")
     sequalizeModel.create({
             serverName: "IndianaMap",
             serverType: "ArcGIS WMS",

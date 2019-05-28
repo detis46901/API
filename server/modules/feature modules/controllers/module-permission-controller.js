@@ -31,7 +31,7 @@ router.get('/getbyinstance', token_auth, function (req, res) {
 });
 router.get('/getbygroup', token_auth, function (req, res) {
     var groupid = req.query.groupID;
-    console.log("groupid=" + groupid);
+    //console.log("groupid=" + groupid)
     service.getByGroup(groupid).then(function (result) {
         res.send(result);
     }).catch(function (error) {

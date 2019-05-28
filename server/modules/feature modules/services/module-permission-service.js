@@ -49,7 +49,7 @@ var ModulePermissionService = (function () {
         var _a;
     };
     ModulePermissionService.prototype.getByGroup = function (groupID) {
-        console.log(groupID);
+        //console.log(groupID)
         var findOptions = {
             order: [
                 'ID'

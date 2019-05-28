@@ -6,7 +6,7 @@ var router = express.Router();
 var service = new ModuleService();
 console.log("in Module Controller");
 router.get('/list', token_auth, function (req, res) {
-    console.log("Hit List");
+    //console.log("Hit List")
     service.getList(req.query.searchValue).then(function (result) {
         res.send(result);
     }).catch(function (error) {

@@ -122,8 +122,8 @@ var SQLService = (function () {
         return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "','" + comment.featureID + "'," + comment.auto + ") RETURNING id;");
     };
     SQLService.prototype.addImage = function (comment) {
-        console.log('In addImage');
-        console.log(comment.file.originalname);
+        //console.log('In addImage')
+        //console.log(comment.file.originalname)
         //console.log(comment.file.buffer)
         return db.query("UPDATE mycube.c" + comment['body']['table'] + " SET file = ?, filename = ? where id ='" + comment['body']['id'] + "'", { replacements: [comment.file.buffer, comment.file.originalname] });
         //return db.query("INSERT INTO mycube.c92 (userid, comment, featureid, file, auto) VALUES (1,'comment','525', ? ,false)", {replacements: [comment.file.buffer]})
@@ -150,11 +150,11 @@ var SQLService = (function () {
             }
             case "date": {
                 if (value) {
-                    console.log('is not null');
+                    //console.log('is not null')
                     return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE id='" + id + "';");
                 }
                 else {
-                    console.log("is null");
+                    //console.log("is null")
                     return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "null WHERE id='" + id + "';");
                 }
             }
