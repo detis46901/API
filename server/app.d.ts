@@ -98,6 +98,8 @@
         geom: string;
         featureID: number;
         auto: boolean;
+        filename: string;
+        file: any;
         createdat: Date;
     }
 

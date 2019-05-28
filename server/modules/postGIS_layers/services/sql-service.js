@@ -80,7 +80,7 @@ var SQLService = (function () {
         return db.query("CREATE TABLE mycube.t" + table + " (\n                ID    SERIAL PRIMARY KEY,\n                geom   geometry\n            );\n        ");
     };
     SQLService.prototype.createCommentTable = function (table) {
-        return db.query("CREATE TABLE mycube.c" + table + " (\n            ID   SERIAL PRIMARY KEY,\n            userID integer,\n            comment text,\n            geom geometry,\n            featureChange boolean,\n            photo bytea,\n            auto boolean,\n            featureID integer,\n            createdAt timestamp with time zone default now());\n            ");
+        return db.query("CREATE TABLE mycube.c" + table + " (\n            ID   SERIAL PRIMARY KEY,\n            userID integer,\n            comment text,\n            geom geometry,\n            featureChange boolean,\n            filename text,\n            file bytea,\n            auto boolean,\n            featureID integer,\n            createdAt timestamp with time zone default now());\n            ");
     };
     SQLService.prototype.setSRID = function (table) {
         return db.query("SELECT UpdateGeometrySRID('mycube', 't" + table + "','geom',4326);");
@@ -106,19 +106,30 @@ var SQLService = (function () {
         return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';");
     };
     SQLService.prototype.getschema = function (table) {
-        return db.query("SELECT column_name AS field, data_type as type FROM information_schema.columns WHERE table_schema = 'mycube' AND table_name = 't" + table + "'");
+        return db.query("SELECT cols.column_name AS field, cols.data_type as type,\n        pg_catalog.col_description(c.oid, cols.ordinal_position::int) as description\n        FROM pg_catalog.pg_class c, information_schema.columns cols\n        WHERE cols.table_schema = 'mycube' AND cols.table_name = 't" + table + "' AND cols.table_name = c.relname");
     };
     SQLService.prototype.getsingle = function (table, id) {
         return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';");
     };
     SQLService.prototype.getcomments = function (table, id) {
+        //return db.query('SELECT id, userid, comment, geom, filename, auto, featureid, createdat, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';")
         return db.query("SELECT mycube.c" + table + '.*, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';");
     };
     SQLService.prototype.addCommentWithGeom = function (comment) {
         return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, geom, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureID + "," + comment.auto + ")");
     };
     SQLService.prototype.addCommentWithoutGeom = function (comment) {
-        return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "','" + comment.featureID + "'," + comment.auto + ")");
+        return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "','" + comment.featureID + "'," + comment.auto + ") RETURNING id;");
+    };
+    SQLService.prototype.addImage = function (comment) {
+        console.log('In addImage');
+        console.log(comment.file.originalname);
+        //console.log(comment.file.buffer)
+        return db.query("UPDATE mycube.c" + comment['body']['table'] + " SET file = ?, filename = ? where id ='" + comment['body']['id'] + "'", { replacements: [comment.file.buffer, comment.file.originalname] });
+        //return db.query("INSERT INTO mycube.c92 (userid, comment, featureid, file, auto) VALUES (1,'comment','525', ? ,false)", {replacements: [comment.file.buffer]})
+    };
+    SQLService.prototype.getImage = function (table, id) {
+        return db.query("SELECT filename, file FROM mycube.c" + table + " WHERE id=" + id);
     };
     SQLService.prototype.deleteComment = function (table, id) {
         return db.query("DELETE FROM mycube.c" + table + ' WHERE id=' + id + ";");
@@ -138,7 +149,14 @@ var SQLService = (function () {
                 return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';");
             }
             case "date": {
-                return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE id='" + id + "';");
+                if (value) {
+                    console.log('is not null');
+                    return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE id='" + id + "';");
+                }
+                else {
+                    console.log("is null");
+                    return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "null WHERE id='" + id + "';");
+                }
             }
         }
     };

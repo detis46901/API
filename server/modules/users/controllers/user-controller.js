@@ -131,7 +131,9 @@ router.post('/login', function (req, res) {
                     message: "Token granted.",
                     token: login_token,
                     userID: user[0].ID,
-                    admin: user[0].administrator
+                    admin: user[0].administrator,
+                    firstName: user[0].firstName,
+                    lastName: user[0].lastName
                 });
             }
             else if (!result) {

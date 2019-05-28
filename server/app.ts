@@ -21,6 +21,8 @@ import ModuleController = require('./modules/feature modules/controllers/module-
 import ModuleInstancesController = require('./modules/feature modules/controllers/module-instances-controller')
 import ModulePermissionController = require('./modules/feature modules/controllers/module-permission-controller')
 import UserPageInstanceController = require('./modules/feature modules/controllers/user-page-instance-controller')
+
+// This portion of code is required to serve as a proxy 
 // Listen on a specific host via the HOST environment variable
 var host = process.env.HOST || '0.0.0.0';
 // Listen on a specific port via the PORT environment variable
@@ -43,10 +45,12 @@ app.set('views', join( __dirname, '/views') ); // critical to use path.join on w
 app.set('view engine', 'vash');
 app.set('view options', { layout: false });
 app.use(urlencoded({ extended: true }));
-app.use(json());
+// app.use(json());
 app.use(cors());
 app.use(express.static(join(__dirname, '/../client')));
 app.use(errorHandler());
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
 
 
 // Routes

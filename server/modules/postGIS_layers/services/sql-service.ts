@@ -1,6 +1,6 @@
 import dbConnection = require('../../../core/db-connection');
-
 var db = dbConnection();
+
 
 class SQLService {
 
@@ -96,7 +96,8 @@ class SQLService {
             comment text,
             geom geometry,
             featureChange boolean,
-            photo bytea,
+            filename text,
+            file bytea,
             auto boolean,
             featureID integer,
             createdAt timestamp with time zone default now());
@@ -126,29 +127,44 @@ class SQLService {
         return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" + geometry + "'),4326)) RETURNING id;")
     }
 
-   fixGeometry(table: string) {
-       return db.query("ALTER TABLE mycube.t" + table + " ALTER COLUMN geom type geometry(Geometry, 4326);")
-   }
-   
+    fixGeometry(table: string) {
+        return db.query("ALTER TABLE mycube.t" + table + " ALTER COLUMN geom type geometry(Geometry, 4326);")
+    }
+
 
     deleteRecord(table: string, id: string): Promise<any> {
         return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';")
     }
 
     getschema(table: string): Promise<any> {
-        return db.query("SELECT column_name AS field, data_type as type FROM information_schema.columns WHERE table_schema = 'mycube' AND table_name = 't" + table + "'")
+        return db.query(`SELECT cols.column_name AS field, cols.data_type as type,
+        pg_catalog.col_description(c.oid, cols.ordinal_position::int) as description
+        FROM pg_catalog.pg_class c, information_schema.columns cols
+        WHERE cols.table_schema = 'mycube' AND cols.table_name = 't` + table + "' AND cols.table_name = c.relname")
     }
     getsingle(table: string, id: string): Promise<any> {
         return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';")
     }
     getcomments(table: string, id: string): Promise<any> {
+        //return db.query('SELECT id, userid, comment, geom, filename, auto, featureid, createdat, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';")
         return db.query("SELECT mycube.c" + table + '.*, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';")
     }
     addCommentWithGeom(comment: App.MyCubeComment): Promise<any> {
         return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, geom, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureID + "," + comment.auto + ")")
-        }
+    }
     addCommentWithoutGeom(comment: App.MyCubeComment): Promise<any> {
-         return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "','" + comment.featureID + "'," + comment.auto + ")")
+        return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "','" + comment.featureID + "'," + comment.auto + ") RETURNING id;")
+    }
+
+    addImage(comment: any): Promise<any> {
+        console.log('In addImage')
+        console.log(comment.file.originalname)
+        //console.log(comment.file.buffer)
+        return db.query("UPDATE mycube.c" + comment['body']['table'] + " SET file = ?, filename = ? where id ='" + comment['body']['id'] + "'", { replacements: [comment.file.buffer, comment.file.originalname] })
+        //return db.query("INSERT INTO mycube.c92 (userid, comment, featureid, file, auto) VALUES (1,'comment','525', ? ,false)", {replacements: [comment.file.buffer]})
+    }
+    getImage(table, id): Promise<any> {
+        return db.query("SELECT filename, file FROM mycube.c" + table + " WHERE id=" + id)
     }
     deleteComment(table: string, id: string): Promise<any> {
         return db.query("DELETE FROM mycube.c" + table + ' WHERE id=' + id + ";")
@@ -168,7 +184,14 @@ class SQLService {
                 return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';")
             }
             case "date": {
-                return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE id='" + id + "';")
+                if (value) {
+                    console.log('is not null')
+                    return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE id='" + id + "';")
+                }
+                else {
+                    console.log("is null")
+                    return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "null WHERE id='" + id + "';")
+                }                
             }
         }
     }

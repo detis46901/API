@@ -5,6 +5,9 @@
 		"version": false,
 		"watch": true,
     "sourceMap": true,
-    "experimentalDecorators": true
+		"experimentalDecorators": true,
+		"lib": [
+			"es2016", "DOM"
+	]
 	}
 }

@@ -2,8 +2,42 @@ import SQLService = require('../services/sql-service');
 import token_auth = require('../../JWT_Checker/loginToken.js');
 import comment = require ('../models/postGIS_layers.model')
 import { error } from 'util';
+var stream = require('stream');
 
 var express = require('express');
+var multer  = require('multer');const multerConfig = {
+    storage: multer.memoryStorage()
+    // storage: multer.diskStorage({
+    //  //Setup where the user's file will go
+    //  destination: function(req, file, next){
+    //    next(null, './public/photo-storage');
+    //    },   
+        
+    //     //Then give the file a unique name
+    //     filename: function(req, file, next){
+    //         console.log(file);
+    //         const ext = file.mimetype.split('/')[1];
+    //         next(null, file.fieldname + '-' + Date.now() + '.'+ext);
+    //       }
+    //     }),   
+        
+    //     //A means of ensuring only images are uploaded. 
+    //     fileFilter: function(req, file, next){
+    //           if(!file){
+    //             next();
+    //           }
+    //         const image = file.mimetype.startsWith('image/');
+    //         if(image){
+    //           console.log('photo uploaded');
+    //           next(null, true);
+    //         }else{
+    //           console.log("file not supported");
+              
+    //           //TODO:  A better message response to user on failure.
+    //           return next();
+    //         }
+    //     }
+      };
 var router = express.Router();
 var service = new SQLService();
 
@@ -139,15 +173,41 @@ router.post('/addcommentwithgeom', token_auth, (req, res) => {
     });
 })
 router.post('/addcommentwithoutgeom', token_auth, (req, res) => {
+    var file = <File>req.body.file
+    console.log(file)
     var comment= <App.MyCubeComment>req.body;
     console.log(comment)
     var table = <number>comment.table;
     service.addCommentWithoutGeom(comment).then((result) => {
+        console.log(result)
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
 })
+router.post('/addimage', multer(multerConfig).single('photo'),function(req,res){
+    console.log('addImage')
+    //console.log(req)
+    service.addImage(req)
+    //res.send(res);
+ });
+ 
+router.get('/getimage', (req, res) => {
+    service.getImage(req.query.table, req.query.id).then((file) => {
+        console.log(file[0][0].file)
+        console.log(Buffer.isBuffer(file[0][0].file))
+        var fileContents = Buffer.from(file[0][0].file, "utf8");
+		var readStream = new stream.PassThrough();
+		readStream.end(fileContents);
+		
+		res.set('Content-disposition', 'attachment; filename=' + file[0][0].filename);
+		res.set('Content-Type', 'image/png');
+		readStream.pipe(res);
+	}).catch(err => {
+		console.log(err);
+		res.json({msg: 'Error', detail: err});
+	});
+    })
 
 router.get('/deletecomment', token_auth, (req, res) => {
     var table = <string>req.query.table;

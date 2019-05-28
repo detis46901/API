@@ -1,7 +1,12 @@
 "use strict";
 var SQLService = require('../services/sql-service');
 var token_auth = require('../../JWT_Checker/loginToken.js');
+var stream = require('stream');
 var express = require('express');
+var multer = require('multer');
+var multerConfig = {
+    storage: multer.memoryStorage()
+};
 var router = express.Router();
 var service = new SQLService();
 // router.get('/list', (req, res) => {
@@ -107,13 +112,37 @@ router.post('/addcommentwithgeom', token_auth, function (req, res) {
     });
 });
 router.post('/addcommentwithoutgeom', token_auth, function (req, res) {
+    var file = req.body.file;
+    console.log(file);
     var comment = req.body;
     console.log(comment);
     var table = comment.table;
     service.addCommentWithoutGeom(comment).then(function (result) {
+        console.log(result);
         res.send(result);
     }).catch(function (error) {
         res.send(error);
+    });
+});
+router.post('/addimage', multer(multerConfig).single('photo'), function (req, res) {
+    console.log('addImage');
+    //console.log(req)
+    service.addImage(req);
+    //res.send(res);
+});
+router.get('/getimage', function (req, res) {
+    service.getImage(req.query.table, req.query.id).then(function (file) {
+        console.log(file[0][0].file);
+        console.log(Buffer.isBuffer(file[0][0].file));
+        var fileContents = Buffer.from(file[0][0].file, "utf8");
+        var readStream = new stream.PassThrough();
+        readStream.end(fileContents);
+        res.set('Content-disposition', 'attachment; filename=' + file[0][0].filename);
+        res.set('Content-Type', 'image/png');
+        readStream.pipe(res);
+    }).catch(function (err) {
+        console.log(err);
+        res.json({ msg: 'Error', detail: err });
     });
 });
 router.get('/deletecomment', token_auth, function (req, res) {

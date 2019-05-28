@@ -73,6 +73,7 @@ var LayerPermissionService = (function () {
             ]
         };
         if (userID) {
+            findOptions.order = ['ID'];
             findOptions.where = (_a = {},
                 _a[Sequelize.Op.or] = [
                     { groupID: (_b = {}, _b[Sequelize.Op.or] = [groups], _b) },

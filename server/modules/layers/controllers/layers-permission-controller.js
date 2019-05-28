@@ -47,7 +47,34 @@ router.get('/getbyusergroups', token_auth, function (req, res) {
             groups.push(result[i].groupID);
         }
         service.getByUserAndGroup(req.query.userID, groups).then(function (final) {
-            res.send(final);
+            var lastLayerID;
+            final.sort(function (leftside, rightside) {
+                if (leftside.layerID < rightside.layerID)
+                    return -1;
+                if (leftside.layerID > rightside.layerID)
+                    return 1;
+                return 0;
+            });
+            var finalToSend = [];
+            for (var j = 0; j < final.length; j++) {
+                //console.log(final[j].layerID)
+                if (final[j].layerID != lastLayerID) {
+                    lastLayerID = final[j].layerID;
+                    finalToSend.push(final[j]);
+                }
+                else {
+                    if (final[j].canGrant == true) {
+                        finalToSend[finalToSend.length - 1].canGrant = true;
+                    }
+                    if (final[j].delete == true) {
+                        finalToSend[finalToSend.length - 1].delete = true;
+                    }
+                    if (final[j].edit == true) {
+                        finalToSend[finalToSend.length - 1].edit = true;
+                    }
+                }
+            }
+            res.send(finalToSend);
         });
     });
 });

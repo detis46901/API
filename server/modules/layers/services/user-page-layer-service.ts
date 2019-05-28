@@ -31,7 +31,7 @@ class UserPageLayerService {
     getPageLayers(pageID: number): any {
         var findOptions: Sequelize.FindOptions = {
             order: [
-                'pageID'
+                'layerOrder'
             ]
         };
 
@@ -47,7 +47,7 @@ class UserPageLayerService {
     
         findOptions.include = [PageModel.Model, LayerModel.Model, UserPageInstanceModel.Model]
 
-        return UserPageLayerModel.Model.findAll({order: ['ID'], where: {[Sequelize.Op.and]: [{ userPageID: pageID}]}, include: [{model: PageModel.Model}, {model: UserPageInstanceModel.Model}, {model: LayerModel.Model, include: [ServerModel.Model]}]})
+        return UserPageLayerModel.Model.findAll({order: ['layerOrder'], where: {[Sequelize.Op.and]: [{ userPageID: pageID}]}, include: [{model: PageModel.Model}, {model: UserPageInstanceModel.Model}, {model: LayerModel.Model, include: [ServerModel.Model]}]})
     }
 
     getUserLayer(userID: number): any {
@@ -103,6 +103,7 @@ class UserPageLayerService {
             UserPageLayerInstance.userID = request.userID;
             UserPageLayerInstance.defaultON = request.defaultON;
             UserPageLayerInstance.style = request.style;
+            UserPageLayerInstance.layerOrder = request.layerOrder
 
             return UserPageLayerInstance.save();
         }));

@@ -79,6 +79,7 @@ class LayerPermissionService {
         }
 
         if (userID) {
+            findOptions.order = ['ID']
             findOptions.where = {
                 [Sequelize.Op.or]: [
                 {groupID: {[Sequelize.Op.or]:[groups]}},
