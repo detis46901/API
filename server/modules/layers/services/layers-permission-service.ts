@@ -3,6 +3,7 @@ import LayerPermissionModel = require('../models/layers-permission-model');
 import LayerModel = require('../models/layers-model')
 import UserModel = require('../../users/models/user-model')
 import GroupModel = require('../../users/models/group-model')
+import ServerModel = require ('../models/servers-model')
 const Op = Sequelize.or
 
 
@@ -27,7 +28,7 @@ class LayerPermissionService {
             }
         }
 
-        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
+        findOptions.include = [{model: LayerModel.Model, include: [ServerModel.Model]}, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
     }
 
@@ -47,7 +48,7 @@ class LayerPermissionService {
             }
         }
 
-        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
+        findOptions.include = [{model: LayerModel.Model, include: [ServerModel.Model]}, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
     }
 
@@ -67,7 +68,7 @@ class LayerPermissionService {
             }
         }
 
-        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
+        findOptions.include = [{model: LayerModel.Model, include: [ServerModel.Model]}, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
     }
 
@@ -87,7 +88,7 @@ class LayerPermissionService {
         ]}
         }
 
-        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
+        findOptions.include = [{model: LayerModel.Model, include: [ServerModel.Model]}, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions)
     }
 

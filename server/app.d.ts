@@ -139,9 +139,24 @@
         moduleInstanceID?: number;
         instanceOrder: number;
     }
+    interface mapConfig {
+        name?: string;
+        userID?: number;
+        userpages?: UserPage[];
+        defaultpage?: UserPage;  //This looks like a duplicate that is also in userpages[]
+        currentpage?: UserPage;
+        userpagelayers?: UserPageLayer[];
+        userpageinstances?: UserPageInstance[];
+        userpageinstancelist?: string;
+        currentLayer?: UserPageLayer;
+        currentLayerName?: string;
+        editmode?: boolean;
+        layerpermission?: LayerPermission[];
+        modulepermission?: ModulePermission[];
+    }
 }
 
 declare module 'app' {
-    module e {}
+    module e { }
     export = e;
 }

@@ -4,6 +4,7 @@ var LayerPermissionModel = require('../models/layers-permission-model');
 var LayerModel = require('../models/layers-model');
 var UserModel = require('../../users/models/user-model');
 var GroupModel = require('../../users/models/group-model');
+var ServerModel = require('../models/servers-model');
 var Op = Sequelize.or;
 var LayerPermissionService = (function () {
     function LayerPermissionService() {
@@ -25,7 +26,7 @@ var LayerPermissionService = (function () {
                 _a
             );
         }
-        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
+        findOptions.include = [{ model: LayerModel.Model, include: [ServerModel.Model] }, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
         var _a;
     };
@@ -43,7 +44,7 @@ var LayerPermissionService = (function () {
                 _a
             );
         }
-        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
+        findOptions.include = [{ model: LayerModel.Model, include: [ServerModel.Model] }, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
         var _a;
     };
@@ -62,7 +63,7 @@ var LayerPermissionService = (function () {
                 _a
             );
         }
-        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
+        findOptions.include = [{ model: LayerModel.Model, include: [ServerModel.Model] }, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
         var _a;
     };
@@ -82,7 +83,7 @@ var LayerPermissionService = (function () {
                 _a
             );
         }
-        findOptions.include = [LayerModel.Model, UserModel.Model, GroupModel.Model];
+        findOptions.include = [{ model: LayerModel.Model, include: [ServerModel.Model] }, UserModel.Model, GroupModel.Model];
         return LayerPermissionModel.Model.findAll(findOptions);
         var _a, _b;
     };
