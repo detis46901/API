@@ -12,6 +12,7 @@
         active?: boolean;
         email: string;
         administrator: boolean;
+        public: boolean;
     }
 
     interface Layer extends IModelBase {

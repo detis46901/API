@@ -164,7 +164,7 @@ router.get('/getcomments', token_auth, (req, res) => {
 
 router.post('/addcommentwithgeom', token_auth, (req, res) => {
     var comment= <App.MyCubeComment>req.body;
-    console.log(comment)
+    //console.log(comment)
     var table = <number>comment.table;
     service.addCommentWithGeom(comment).then((result) => {
         res.send(result);
@@ -174,9 +174,9 @@ router.post('/addcommentwithgeom', token_auth, (req, res) => {
 })
 router.post('/addcommentwithoutgeom', token_auth, (req, res) => {
     var file = <File>req.body.file
-    console.log(file)
+    //console.log(file)
     var comment= <App.MyCubeComment>req.body;
-    console.log(comment)
+    //console.log(comment)
     var table = <number>comment.table;
     service.addCommentWithoutGeom(comment).then((result) => {
         console.log(result)
@@ -246,7 +246,7 @@ router.get('/deleteRecord', token_auth, (req, res) => {
 })
 
 router.put('/update', token_auth, (req, res) => {
-    console.log(req)
+    //console.log(req)
     var table = <string>req.body.table;
     var id = <string>req.body.id;
     var field = <string>req.body.mycubefield.field;

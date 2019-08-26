@@ -47,6 +47,12 @@ var sequalizeModel = db.define('user', {
         validate: {
             is: ["[a-z]", 'i'] //1/3/18^^^
         }
+    },
+    public: {
+        type: Sequelize.BOOLEAN,
+        validate: {
+            is: ["[a-z]", 'i'] //1/3/18^^^
+        }
     }
 });
 //console.log("\n\n"+sequalizeModel+"\n\n")

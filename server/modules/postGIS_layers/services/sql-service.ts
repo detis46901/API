@@ -178,7 +178,12 @@ class SQLService {
                 return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';")
             }
             case "text": {
-                return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE " + "id='" + id + "';")
+                if (value == null) {
+                    return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = NULL WHERE "' + "id='" + id + "';")
+                }
+                else {
+                    return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE " + "id='" + id + "';")
+                }
             }
             case "boolean": {
                 return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';")

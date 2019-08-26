@@ -143,7 +143,15 @@ var SQLService = (function () {
                 return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';");
             }
             case "text": {
-                return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE " + "id='" + id + "';");
+                console.log('////////////////////////////////////////////////// TEXT FIELD ////////////////////////////////////////////////////////////');
+                console.log(value);
+                if (value == null) {
+                    console.log('/////////////////////////////////////////////////////// NULL FOUND /////////////////////////////////////////////////////');
+                    return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = NULL WHERE "' + "id='" + id + "';");
+                }
+                else {
+                    return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE " + "id='" + id + "';");
+                }
             }
             case "boolean": {
                 return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';");

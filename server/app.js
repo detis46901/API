@@ -21,6 +21,7 @@ var ModuleController = require('./modules/feature modules/controllers/module-con
 var ModuleInstancesController = require('./modules/feature modules/controllers/module-instances-controller');
 var ModulePermissionController = require('./modules/feature modules/controllers/module-permission-controller');
 var UserPageInstanceController = require('./modules/feature modules/controllers/user-page-instance-controller');
+var MapConfigController = require('./modules/mapConfig/controllers/mapConfig-controller');
 // This portion of code is required to serve as a proxy 
 // Listen on a specific host via the HOST environment variable
 var host = process.env.HOST || '0.0.0.0';
@@ -65,6 +66,7 @@ app.use('/api/module', ModuleController);
 app.use('/api/moduleinstance', ModuleInstancesController);
 app.use('/api/modulepermission', ModulePermissionController);
 app.use('/api/userpageinstance', UserPageInstanceController);
+app.use('/api/mapconfig', MapConfigController);
 app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
 });

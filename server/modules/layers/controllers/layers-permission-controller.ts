@@ -9,6 +9,7 @@ var router = express.Router();
 var service = new LayerPermissionService();
 var groupMemberService = new GroupMemberService();
 
+
 router.get('/list', token_auth, (req, res) => {
     service.getList().then((result) => {
         res.send(result);
