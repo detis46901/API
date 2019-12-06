@@ -47,7 +47,7 @@ app.set('view engine', 'vash');
 app.set('view options', { layout: false });
 app.use(urlencoded({ extended: true }));
 // app.use(json());
-app.use(cors());
+app.use(cors());  //I had to go into the cors index.js file and change the preflightcontinue to "true"
 app.use(express.static(join(__dirname, '/../client')));
 app.use(errorHandler());
 app.use(express.json({limit: '50mb'}));

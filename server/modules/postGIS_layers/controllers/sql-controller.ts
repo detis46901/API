@@ -78,8 +78,9 @@ router.get('/getsheets', token_auth, (req, res) => {
 router.get('/getschema', token_auth, (req, res) => {
 
     var table = <string>req.query.table;
-
-    service.getschema(table).then((result) => {
+    var schema = <string>req.query.schema;
+    console.log(table)
+    service.getschema(schema, table).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);

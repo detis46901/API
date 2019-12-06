@@ -34,7 +34,9 @@ router.get('/getsheets', token_auth, function (req, res) {
 });
 router.get('/getschema', token_auth, function (req, res) {
     var table = req.query.table;
-    service.getschema(table).then(function (result) {
+    var schema = req.query.schema;
+    console.log(table);
+    service.getschema(schema, table).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);

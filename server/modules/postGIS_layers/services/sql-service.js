@@ -29,7 +29,7 @@ var SQLService = (function () {
         var _this = this;
         var promise = new Promise(function (resolve, reject) {
             var responsehtml = "<html><body><table>";
-            _this.getschema(table).then(function (schemaarray) {
+            _this.getschema('mycube', table).then(function (schemaarray) {
                 var schema = schemaarray[0];
                 //header information
                 responsehtml += "<tr>";
@@ -105,8 +105,8 @@ var SQLService = (function () {
     SQLService.prototype.deleteRecord = function (table, id) {
         return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';");
     };
-    SQLService.prototype.getschema = function (table) {
-        return db.query("SELECT cols.column_name AS field, cols.data_type as type,\n        pg_catalog.col_description(c.oid, cols.ordinal_position::int) as description\n        FROM pg_catalog.pg_class c, information_schema.columns cols\n        WHERE cols.table_schema = 'mycube' AND cols.table_name = 't" + table + "' AND cols.table_name = c.relname");
+    SQLService.prototype.getschema = function (schema, table) {
+        return db.query("SELECT cols.column_name AS field, cols.data_type as type,\n        pg_catalog.col_description(c.oid, cols.ordinal_position::int) as description\n        FROM pg_catalog.pg_class c, information_schema.columns cols\n        WHERE cols.table_schema = " + schema + " AND cols.table_name = '" + table + "' AND cols.table_name = c.relname");
     };
     SQLService.prototype.getsingle = function (table, id) {
         return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';");
@@ -143,10 +143,7 @@ var SQLService = (function () {
                 return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';");
             }
             case "text": {
-                console.log('////////////////////////////////////////////////// TEXT FIELD ////////////////////////////////////////////////////////////');
-                console.log(value);
                 if (value == null) {
-                    console.log('/////////////////////////////////////////////////////// NULL FOUND /////////////////////////////////////////////////////');
                     return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = NULL WHERE "' + "id='" + id + "';");
                 }
                 else {

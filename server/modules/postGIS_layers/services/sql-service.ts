@@ -33,7 +33,7 @@ class SQLService {
     getsheets(table: string): Promise<any> {
         let promise = new Promise((resolve, reject) => {
             let responsehtml: string = "<html><body><table>"
-            this.getschema(table).then((schemaarray) => {
+            this.getschema('mycube', table).then((schemaarray) => {
                 let schema = schemaarray[0]
                 //header information
                 responsehtml += "<tr>"
@@ -136,11 +136,11 @@ class SQLService {
         return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';")
     }
 
-    getschema(table: string): Promise<any> {
+    getschema(schema: string, table: string): Promise<any> {
         return db.query(`SELECT cols.column_name AS field, cols.data_type as type,
         pg_catalog.col_description(c.oid, cols.ordinal_position::int) as description
         FROM pg_catalog.pg_class c, information_schema.columns cols
-        WHERE cols.table_schema = 'mycube' AND cols.table_name = 't` + table + "' AND cols.table_name = c.relname")
+        WHERE cols.table_schema = ` + schema + ` AND cols.table_name = '` + table + "' AND cols.table_name = c.relname")
     }
     getsingle(table: string, id: string): Promise<any> {
         return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';")
