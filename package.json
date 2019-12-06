@@ -48,7 +48,7 @@
     "typescript": "^3.4.1"
   },
   "devDependencies": {
-    "bower": "^1.4.1",
+    "bower": "^1.8.8",
     "browser-sync": "^2.23.5",
     "chai": "^4.2.0",
     "errorhandler": "^1.5.0",
