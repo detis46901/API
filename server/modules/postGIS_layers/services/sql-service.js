@@ -31,6 +31,7 @@ var SQLService = (function () {
             var responsehtml = "<html><body><table>";
             _this.getschema('mycube', table).then(function (schemaarray) {
                 var schema = schemaarray[0];
+                console.log(schema);
                 //header information
                 responsehtml += "<tr>";
                 schema.forEach(function (schemaelement) {
@@ -106,7 +107,7 @@ var SQLService = (function () {
         return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';");
     };
     SQLService.prototype.getschema = function (schema, table) {
-        return db.query("SELECT cols.column_name AS field, cols.data_type as type,\n        pg_catalog.col_description(c.oid, cols.ordinal_position::int) as description\n        FROM pg_catalog.pg_class c, information_schema.columns cols\n        WHERE cols.table_schema = " + schema + " AND cols.table_name = '" + table + "' AND cols.table_name = c.relname");
+        return db.query("SELECT cols.column_name AS field, cols.data_type as type,\n        pg_catalog.col_description(c.oid, cols.ordinal_position::int) as description\n        FROM pg_catalog.pg_class c, information_schema.columns cols\n        WHERE cols.table_schema = '" + schema + "' AND cols.table_name = 't" + table + "' AND cols.table_name = c.relname");
     };
     SQLService.prototype.getsingle = function (table, id) {
         return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';");
