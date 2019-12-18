@@ -25,20 +25,21 @@ class SQLService {
     //     return UserModel.Model.findAll(findOptions);
     // }
 
-    get(table: string): Promise<any> {
-        return db.query("SELECT *,ST_Length(ST_Transform(geom,2965)), ST_Area(ST_Transform(geom,2965)) from mycube.t" + table + ' ORDER BY id')
+    get(schema: string, table: string): Promise<any> {
+        return db.query("SELECT *,ST_Length(ST_Transform(geom,2965)), ST_Area(ST_Transform(geom,2965)) from " + schema + "." + table + ' ORDER BY id')
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
     }
 
-    getsheets(table: string): Promise<any> {
+    getsheets(schema: string, table: string): Promise<any> {
+        console.log(schema)
         let promise = new Promise((resolve, reject) => {
             let responsehtml: string = "<html><body><table>"
-            this.getschema('mycube', table).then((schemaarray) => {
-                let schema = schemaarray[0]
-                console.log(schema)
+            this.getschema(schema, table).then((schemaarray) => {
+                let schema2 = schemaarray[0]
+                console.log(schema2)
                 //header information
                 responsehtml += "<tr>"
-                schema.forEach(schemaelement => {
+                schema2.forEach(schemaelement => {
                     if (schemaelement['field'] != 'geom') {
                         responsehtml += "<th>" + [schemaelement['field']] + "</th>"
                     }
@@ -47,11 +48,11 @@ class SQLService {
                 responsehtml += "<th>Area (sqft)</th>"
                 responsehtml += "</tr>"
 
-                this.get(table).then((dataarray) => {
+                this.get(schema, table).then((dataarray) => {
                     let data = (dataarray[0])
                     data.forEach(dataelement => {
                         responsehtml += "<tr>"
-                        schema.forEach(schemaelement => {
+                        schema2.forEach(schemaelement => {
                             if (schemaelement['field'] != 'geom') {
                                 if (!dataelement[schemaelement['field']] || dataelement[schemaelement['field']] == "null") { dataelement[schemaelement['field']] = "" }
                                 responsehtml += "<td>" + dataelement[schemaelement['field']] + "</td>"
@@ -138,10 +139,11 @@ class SQLService {
     }
 
     getschema(schema: string, table: string): Promise<any> {
+        console.log(table)
         return db.query(`SELECT cols.column_name AS field, cols.data_type as type,
         pg_catalog.col_description(c.oid, cols.ordinal_position::int) as description
         FROM pg_catalog.pg_class c, information_schema.columns cols
-        WHERE cols.table_schema = '` + schema + `' AND cols.table_name = 't` + table + "' AND cols.table_name = c.relname")
+        WHERE cols.table_schema = '` + schema + `' AND cols.table_name = '` + table + "' AND cols.table_name = c.relname")
     }
     getsingle(table: string, id: string): Promise<any> {
         return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';")

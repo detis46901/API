@@ -17,16 +17,20 @@ var service = new SQLService();
 //     });
 // });
 router.get('/all', token_auth, function (req, res) {
+    var schema = req.query.schema;
     var table = req.query.table;
-    service.get(table).then(function (result) {
+    schema = "'" + schema + "'";
+    service.get(schema, table).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
     });
 });
 router.get('/getsheets', token_auth, function (req, res) {
+    var schema = req.query.schema;
     var table = req.query.table;
-    service.getsheets(table).then(function (result) {
+    //schema = "'" + schema + "'"
+    service.getsheets(schema, table).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);

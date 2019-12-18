@@ -21,20 +21,21 @@ var SQLService = (function () {
     //     }
     //     return UserModel.Model.findAll(findOptions);
     // }
-    SQLService.prototype.get = function (table) {
-        return db.query("SELECT *,ST_Length(ST_Transform(geom,2965)), ST_Area(ST_Transform(geom,2965)) from mycube.t" + table + ' ORDER BY id');
+    SQLService.prototype.get = function (schema, table) {
+        return db.query("SELECT *,ST_Length(ST_Transform(geom,2965)), ST_Area(ST_Transform(geom,2965)) from " + schema + "." + table + ' ORDER BY id');
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
     };
-    SQLService.prototype.getsheets = function (table) {
+    SQLService.prototype.getsheets = function (schema, table) {
         var _this = this;
+        console.log(schema);
         var promise = new Promise(function (resolve, reject) {
             var responsehtml = "<html><body><table>";
-            _this.getschema('mycube', table).then(function (schemaarray) {
-                var schema = schemaarray[0];
-                console.log(schema);
+            _this.getschema(schema, table).then(function (schemaarray) {
+                var schema2 = schemaarray[0];
+                console.log(schema2);
                 //header information
                 responsehtml += "<tr>";
-                schema.forEach(function (schemaelement) {
+                schema2.forEach(function (schemaelement) {
                     if (schemaelement['field'] != 'geom') {
                         responsehtml += "<th>" + [schemaelement['field']] + "</th>";
                     }
@@ -42,11 +43,11 @@ var SQLService = (function () {
                 responsehtml += "<th>Length (ft)</th>";
                 responsehtml += "<th>Area (sqft)</th>";
                 responsehtml += "</tr>";
-                _this.get(table).then(function (dataarray) {
+                _this.get(schema, table).then(function (dataarray) {
                     var data = (dataarray[0]);
                     data.forEach(function (dataelement) {
                         responsehtml += "<tr>";
-                        schema.forEach(function (schemaelement) {
+                        schema2.forEach(function (schemaelement) {
                             if (schemaelement['field'] != 'geom') {
                                 if (!dataelement[schemaelement['field']] || dataelement[schemaelement['field']] == "null") {
                                     dataelement[schemaelement['field']] = "";
@@ -107,7 +108,8 @@ var SQLService = (function () {
         return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';");
     };
     SQLService.prototype.getschema = function (schema, table) {
-        return db.query("SELECT cols.column_name AS field, cols.data_type as type,\n        pg_catalog.col_description(c.oid, cols.ordinal_position::int) as description\n        FROM pg_catalog.pg_class c, information_schema.columns cols\n        WHERE cols.table_schema = '" + schema + "' AND cols.table_name = 't" + table + "' AND cols.table_name = c.relname");
+        console.log(table);
+        return db.query("SELECT cols.column_name AS field, cols.data_type as type,\n        pg_catalog.col_description(c.oid, cols.ordinal_position::int) as description\n        FROM pg_catalog.pg_class c, information_schema.columns cols\n        WHERE cols.table_schema = '" + schema + "' AND cols.table_name = '" + table + "' AND cols.table_name = c.relname");
     };
     SQLService.prototype.getsingle = function (table, id) {
         return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';");

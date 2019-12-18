@@ -52,10 +52,10 @@ var service = new SQLService();
 // });
 
 router.get('/all', token_auth, (req, res) => {
-
+    var schema = <string>req.query.schema
     var table = <string>req.query.table;
-
-    service.get(table).then((result) => {
+    schema = "'" + schema + "'"
+    service.get(schema, table).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
@@ -64,10 +64,10 @@ router.get('/all', token_auth, (req, res) => {
 });
 
 router.get('/getsheets', token_auth, (req, res) => {
-
+    var schema = <string>req.query.schema
     var table = <string>req.query.table;
-
-    service.getsheets(table).then((result) => {
+    //schema = "'" + schema + "'"
+    service.getsheets(schema, table).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
