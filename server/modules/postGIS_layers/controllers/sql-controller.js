@@ -28,6 +28,9 @@ router.get('/all', token_auth, function (req, res) {
 });
 router.get('/getsheets', token_auth, function (req, res) {
     var schema = req.query.schema;
+    if (schema == undefined) {
+        schema = 'mycube';
+    }
     var table = req.query.table;
     //schema = "'" + schema + "'"
     service.getsheets(schema, table).then(function (result) {

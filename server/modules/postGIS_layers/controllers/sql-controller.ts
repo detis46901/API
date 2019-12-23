@@ -65,6 +65,9 @@ router.get('/all', token_auth, (req, res) => {
 
 router.get('/getsheets', token_auth, (req, res) => {
     var schema = <string>req.query.schema
+    if (schema == undefined) {
+        schema = 'mycube'
+    }
     var table = <string>req.query.table;
     //schema = "'" + schema + "'"
     service.getsheets(schema, table).then((result) => {
