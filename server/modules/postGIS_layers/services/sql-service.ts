@@ -26,7 +26,12 @@ class SQLService {
     // }
 
     get(schema: string, table: string): Promise<any> {
-        return db.query("SELECT *,ST_Length(ST_Transform(geom,2965)), ST_Area(ST_Transform(geom,2965)) from " + schema + "." + table + ' ORDER BY id')
+        if (schema == 'mycube'){
+            return db.query("SELECT *,ST_Length(ST_Transform(geom,2965)), ST_Area(ST_Transform(geom,2965)) from " + schema + "." + table + ' ORDER BY id')
+        }
+        else {
+            return db.query("SELECT * from " + schema + "." + table + ' ORDER BY id')
+        }
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
     }
 
@@ -44,8 +49,10 @@ class SQLService {
                         responsehtml += "<th>" + [schemaelement['field']] + "</th>"
                     }
                 });
-                responsehtml += "<th>Length (ft)</th>"
-                responsehtml += "<th>Area (sqft)</th>"
+                if (schema == 'mycube') {
+                    responsehtml += "<th>Length (ft)</th>"
+                    responsehtml += "<th>Area (sqft)</th>"    
+                }
                 responsehtml += "</tr>"
 
                 this.get(schema, table).then((dataarray) => {
@@ -58,8 +65,10 @@ class SQLService {
                                 responsehtml += "<td>" + dataelement[schemaelement['field']] + "</td>"
                             }
                         });
-                        responsehtml += "<td>" + dataelement['st_length'] + '</td>'
-                        responsehtml += "<td>" + dataelement['st_area'] + '</td>'
+                        if (schema == 'mycube') {
+                            responsehtml += "<td>" + dataelement['st_length'] + '</td>'
+                            responsehtml += "<td>" + dataelement['st_area'] + '</td>'    
+                        }
                         responsehtml += "</tr>"
                     });
                     responsehtml += "</table></body></html>"
@@ -89,6 +98,17 @@ class SQLService {
                 geom   geometry
             );
         `)
+    }
+
+    getConstraints(schema: string, table: string): Promise<any> {
+        return db.query(`SELECT con.*
+        FROM pg_catalog.pg_constraint con
+             INNER JOIN pg_catalog.pg_class rel
+                        ON rel.oid = con.conrelid
+             INNER JOIN pg_catalog.pg_namespace nsp
+                        ON nsp.oid = connamespace
+        WHERE nsp.nspname = '` + schema + `'
+              AND rel.relname = '` + table + `';`)
     }
 
     createCommentTable(table: string): Promise<any> {
@@ -128,6 +148,9 @@ class SQLService {
     addRecord(table: string, geometry: string): Promise<any> {
         return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" + geometry + "'),4326)) RETURNING id;")
     }
+    addAnyRecord(schema, table, field, value) {
+        return db.query("INSERT INTO " + schema + "." + table + ' ("' + field + '") VALUES (' + value + ") RETURNING id;")
+    }
 
     fixGeometry(table: string) {
         return db.query("ALTER TABLE mycube.t" + table + " ALTER COLUMN geom type geometry(Geometry, 4326);")
@@ -138,6 +161,10 @@ class SQLService {
         return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';")
     }
 
+    deleteAnyRecord(schema: string, table: string, id: string): Promise<any> {
+        return db.query("DELETE FROM " + schema + "." + table + " WHERE id = '" + id + "';")
+    }
+
     getschema(schema: string, table: string): Promise<any> {
         console.log(table)
         return db.query(`SELECT cols.column_name AS field, cols.data_type as type,
@@ -146,8 +173,13 @@ class SQLService {
         WHERE cols.table_schema = '` + schema + `' AND cols.table_name = '` + table + "' AND cols.table_name = c.relname")
     }
     getsingle(table: string, id: string): Promise<any> {
-        return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';")
+        return db.query("SELECT * FROM " + table + " WHERE id='" + id + "';")
     }
+
+    getanysingle (table: string, field: string, value: string): Promise<any> {
+        return db.query("SELECT * FROM " + table + ` WHERE "` + field + `" = ` + value) 
+    }
+
     getcomments(table: string, id: string): Promise<any> {
         return db.query('SELECT id, userid, comment, geom, filename, auto, featureid, createdat, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';")
         //return db.query("SELECT mycube.c" + table + '.*, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';")
@@ -199,6 +231,37 @@ class SQLService {
                 else {
                     //console.log("is null")
                     return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "null WHERE id='" + id + "';")
+                }                
+            }
+        }
+    }
+    updateAnyRecord(schema: string, table: string, id: string, field: string, type: string, value: any) {
+        switch (type) {
+            case "integer": {
+                return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';")
+            }
+            case "double precision": {
+                return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';")
+            }
+            case "text": {
+                if (value == null) {
+                    return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = NULL WHERE "' + "id='" + id + "';")
+                }
+                else {
+                    return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE " + "id='" + id + "';")
+                }
+            }
+            case "boolean": {
+                return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';")
+            }
+            case "date": {
+                if (value) {
+                    //console.log('is not null')
+                    return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE id='" + id + "';")
+                }
+                else {
+                    //console.log("is null")
+                    return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + "null WHERE id='" + id + "';")
                 }                
             }
         }

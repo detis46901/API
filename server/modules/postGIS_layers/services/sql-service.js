@@ -22,7 +22,12 @@ var SQLService = (function () {
     //     return UserModel.Model.findAll(findOptions);
     // }
     SQLService.prototype.get = function (schema, table) {
-        return db.query("SELECT *,ST_Length(ST_Transform(geom,2965)), ST_Area(ST_Transform(geom,2965)) from " + schema + "." + table + ' ORDER BY id');
+        if (schema == 'mycube') {
+            return db.query("SELECT *,ST_Length(ST_Transform(geom,2965)), ST_Area(ST_Transform(geom,2965)) from " + schema + "." + table + ' ORDER BY id');
+        }
+        else {
+            return db.query("SELECT * from " + schema + "." + table + ' ORDER BY id');
+        }
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
     };
     SQLService.prototype.getsheets = function (schema, table) {
@@ -40,8 +45,10 @@ var SQLService = (function () {
                         responsehtml += "<th>" + [schemaelement['field']] + "</th>";
                     }
                 });
-                responsehtml += "<th>Length (ft)</th>";
-                responsehtml += "<th>Area (sqft)</th>";
+                if (schema == 'mycube') {
+                    responsehtml += "<th>Length (ft)</th>";
+                    responsehtml += "<th>Area (sqft)</th>";
+                }
                 responsehtml += "</tr>";
                 _this.get(schema, table).then(function (dataarray) {
                     var data = (dataarray[0]);
@@ -55,8 +62,10 @@ var SQLService = (function () {
                                 responsehtml += "<td>" + dataelement[schemaelement['field']] + "</td>";
                             }
                         });
-                        responsehtml += "<td>" + dataelement['st_length'] + '</td>';
-                        responsehtml += "<td>" + dataelement['st_area'] + '</td>';
+                        if (schema == 'mycube') {
+                            responsehtml += "<td>" + dataelement['st_length'] + '</td>';
+                            responsehtml += "<td>" + dataelement['st_area'] + '</td>';
+                        }
                         responsehtml += "</tr>";
                     });
                     responsehtml += "</table></body></html>";
@@ -81,6 +90,9 @@ var SQLService = (function () {
         //   `)
         return db.query("CREATE TABLE mycube.t" + table + " (\n                ID    SERIAL PRIMARY KEY,\n                geom   geometry\n            );\n        ");
     };
+    SQLService.prototype.getConstraints = function (schema, table) {
+        return db.query("SELECT con.*\n        FROM pg_catalog.pg_constraint con\n             INNER JOIN pg_catalog.pg_class rel\n                        ON rel.oid = con.conrelid\n             INNER JOIN pg_catalog.pg_namespace nsp\n                        ON nsp.oid = connamespace\n        WHERE nsp.nspname = '" + schema + "'\n              AND rel.relname = '" + table + "';");
+    };
     SQLService.prototype.createCommentTable = function (table) {
         return db.query("CREATE TABLE mycube.c" + table + " (\n            ID   SERIAL PRIMARY KEY,\n            userID integer,\n            comment text,\n            geom geometry,\n            featureChange boolean,\n            filename text,\n            file bytea,\n            auto boolean,\n            featureID integer,\n            createdAt timestamp with time zone default now());\n            ");
     };
@@ -101,18 +113,27 @@ var SQLService = (function () {
     SQLService.prototype.addRecord = function (table, geometry) {
         return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" + geometry + "'),4326)) RETURNING id;");
     };
+    SQLService.prototype.addAnyRecord = function (schema, table, field, value) {
+        return db.query("INSERT INTO " + schema + "." + table + ' ("' + field + '") VALUES (' + value + ") RETURNING id;");
+    };
     SQLService.prototype.fixGeometry = function (table) {
         return db.query("ALTER TABLE mycube.t" + table + " ALTER COLUMN geom type geometry(Geometry, 4326);");
     };
     SQLService.prototype.deleteRecord = function (table, id) {
         return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';");
     };
+    SQLService.prototype.deleteAnyRecord = function (schema, table, id) {
+        return db.query("DELETE FROM " + schema + "." + table + " WHERE id = '" + id + "';");
+    };
     SQLService.prototype.getschema = function (schema, table) {
         console.log(table);
         return db.query("SELECT cols.column_name AS field, cols.data_type as type,\n        pg_catalog.col_description(c.oid, cols.ordinal_position::int) as description\n        FROM pg_catalog.pg_class c, information_schema.columns cols\n        WHERE cols.table_schema = '" + schema + "' AND cols.table_name = '" + table + "' AND cols.table_name = c.relname");
     };
     SQLService.prototype.getsingle = function (table, id) {
-        return db.query("SELECT * FROM mycube.t" + table + " WHERE id='" + id + "';");
+        return db.query("SELECT * FROM " + table + " WHERE id='" + id + "';");
+    };
+    SQLService.prototype.getanysingle = function (table, field, value) {
+        return db.query("SELECT * FROM " + table + " WHERE \"" + field + "\" = " + value);
     };
     SQLService.prototype.getcomments = function (table, id) {
         return db.query('SELECT id, userid, comment, geom, filename, auto, featureid, createdat, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';");
@@ -164,6 +185,37 @@ var SQLService = (function () {
                 else {
                     //console.log("is null")
                     return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "null WHERE id='" + id + "';");
+                }
+            }
+        }
+    };
+    SQLService.prototype.updateAnyRecord = function (schema, table, id, field, type, value) {
+        switch (type) {
+            case "integer": {
+                return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';");
+            }
+            case "double precision": {
+                return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';");
+            }
+            case "text": {
+                if (value == null) {
+                    return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = NULL WHERE "' + "id='" + id + "';");
+                }
+                else {
+                    return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE " + "id='" + id + "';");
+                }
+            }
+            case "boolean": {
+                return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';");
+            }
+            case "date": {
+                if (value) {
+                    //console.log('is not null')
+                    return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE id='" + id + "';");
+                }
+                else {
+                    //console.log("is null")
+                    return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + "null WHERE id='" + id + "';");
                 }
             }
         }

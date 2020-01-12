@@ -57,6 +57,15 @@ router.get('/create', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/getconstraints', token_auth, function (req, res) {
+    var schema = req.query.schema;
+    var table = req.query.table;
+    service.getConstraints(schema, table).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.get('/createcommenttable', token_auth, function (req, res) {
     var table = req.query.table;
     service.createCommentTable(table).then(function (result) {
@@ -96,6 +105,16 @@ router.get('/one', token_auth, function (req, res) {
     var table = req.query.table;
     var id = req.query.id;
     service.getsingle(table, id).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
+router.get('/anyone', token_auth, function (req, res) {
+    var table = req.query.table;
+    var field = req.query.field;
+    var value = req.query.value;
+    service.getanysingle(table, field, value).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
@@ -172,6 +191,17 @@ router.get('/addRecord', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/addAnyRecord', token_auth, function (req, res) {
+    var schema = req.query.schema;
+    var table = req.query.table;
+    var field = req.query.field;
+    var value = req.query.value;
+    service.addAnyRecord(schema, table, field, value).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.get('/fixGeometry', token_auth, function (req, res) {
     var table = req.query.table;
     service.fixGeometry(table).then(function (result) {
@@ -189,6 +219,16 @@ router.get('/deleteRecord', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/deleteAnyRecord', token_auth, function (req, res) {
+    var schema = req.query.schema;
+    var table = req.query.table;
+    var id = req.query.id;
+    service.deleteAnyRecord(schema, table, id).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.put('/update', token_auth, function (req, res) {
     //console.log(req)
     var table = req.body.table;
@@ -197,6 +237,20 @@ router.put('/update', token_auth, function (req, res) {
     var type = req.body.mycubefield.type;
     var value = req.body.mycubefield.value;
     service.update(table, id, field, type, value).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
+router.put('/updateAnyRecord', token_auth, function (req, res) {
+    //console.log(req)
+    var schema = req.body.schema;
+    var table = req.body.table;
+    var id = req.body.id;
+    var field = req.body.mycubefield.field;
+    var type = req.body.mycubefield.type;
+    var value = req.body.mycubefield.value;
+    service.updateAnyRecord(schema, table, id, field, type, value).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);

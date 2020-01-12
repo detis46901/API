@@ -1,18 +1,18 @@
 import SQLService = require('../services/sql-service');
 import token_auth = require('../../JWT_Checker/loginToken.js');
-import comment = require ('../models/postGIS_layers.model')
+import comment = require('../models/postGIS_layers.model')
 import { error } from 'util';
 var stream = require('stream');
 
 var express = require('express');
-var multer  = require('multer');const multerConfig = {
+var multer = require('multer'); const multerConfig = {
     storage: multer.memoryStorage()
     // storage: multer.diskStorage({
     //  //Setup where the user's file will go
     //  destination: function(req, file, next){
     //    next(null, './public/photo-storage');
     //    },   
-        
+
     //     //Then give the file a unique name
     //     filename: function(req, file, next){
     //         console.log(file);
@@ -20,7 +20,7 @@ var multer  = require('multer');const multerConfig = {
     //         next(null, file.fieldname + '-' + Date.now() + '.'+ext);
     //       }
     //     }),   
-        
+
     //     //A means of ensuring only images are uploaded. 
     //     fileFilter: function(req, file, next){
     //           if(!file){
@@ -32,12 +32,12 @@ var multer  = require('multer');const multerConfig = {
     //           next(null, true);
     //         }else{
     //           console.log("file not supported");
-              
+
     //           //TODO:  A better message response to user on failure.
     //           return next();
     //         }
     //     }
-      };
+};
 var router = express.Router();
 var service = new SQLService();
 
@@ -88,7 +88,6 @@ router.get('/getschema', token_auth, (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-
 });
 
 router.get('/create', token_auth, (req, res) => {
@@ -98,8 +97,17 @@ router.get('/create', token_auth, (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-
 });
+
+router.get('/getconstraints', token_auth, (req, res) => {
+    var schema = <string>req.query.schema
+    var table = <string>req.query.table
+    service.getConstraints(schema, table).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    })
+})
 
 router.get('/createcommenttable', token_auth, (req, res) => {
     var table = <string>req.query.table;
@@ -156,6 +164,17 @@ router.get('/one', token_auth, (req, res) => {
     });
 })
 
+router.get('/anyone', token_auth, (req, res) => {
+    var table = <string>req.query.table;
+    var field = <string>req.query.field;
+    var value = <string>req.query.value;
+    service.getanysingle(table, field, value).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+})
+
 router.get('/getcomments', token_auth, (req, res) => {
     var table = <string>req.query.table;
     var id = <string>req.query.id;
@@ -167,7 +186,7 @@ router.get('/getcomments', token_auth, (req, res) => {
 })
 
 router.post('/addcommentwithgeom', token_auth, (req, res) => {
-    var comment= <App.MyCubeComment>req.body;
+    var comment = <App.MyCubeComment>req.body;
     //console.log(comment)
     var table = <number>comment.table;
     service.addCommentWithGeom(comment).then((result) => {
@@ -179,7 +198,7 @@ router.post('/addcommentwithgeom', token_auth, (req, res) => {
 router.post('/addcommentwithoutgeom', token_auth, (req, res) => {
     var file = <File>req.body.file
     //console.log(file)
-    var comment= <App.MyCubeComment>req.body;
+    var comment = <App.MyCubeComment>req.body;
     //console.log(comment)
     var table = <number>comment.table;
     service.addCommentWithoutGeom(comment).then((result) => {
@@ -189,29 +208,29 @@ router.post('/addcommentwithoutgeom', token_auth, (req, res) => {
         res.send(error);
     });
 })
-router.post('/addimage', multer(multerConfig).single('photo'),function(req,res){
+router.post('/addimage', multer(multerConfig).single('photo'), function (req, res) {
     console.log('addImage')
     //console.log(req)
     service.addImage(req)
     //res.send(res);
- });
- 
+});
+
 router.get('/getimage', (req, res) => {
     service.getImage(req.query.table, req.query.id).then((file) => {
         console.log(file[0][0].file)
         console.log(Buffer.isBuffer(file[0][0].file))
         var fileContents = Buffer.from(file[0][0].file, "utf8");
-		var readStream = new stream.PassThrough();
-		readStream.end(fileContents);
-		
-		res.set('Content-disposition', 'attachment; filename=' + file[0][0].filename);
-		res.set('Content-Type', 'image/png');
-		readStream.pipe(res);
-	}).catch(err => {
-		console.log(err);
-		res.json({msg: 'Error', detail: err});
-	});
-    })
+        var readStream = new stream.PassThrough();
+        readStream.end(fileContents);
+
+        res.set('Content-disposition', 'attachment; filename=' + file[0][0].filename);
+        res.set('Content-Type', 'image/png');
+        readStream.pipe(res);
+    }).catch(err => {
+        console.log(err);
+        res.json({ msg: 'Error', detail: err });
+    });
+})
 
 router.get('/deletecomment', token_auth, (req, res) => {
     var table = <string>req.query.table;
@@ -231,6 +250,17 @@ router.get('/addRecord', token_auth, (req, res) => {
         res.send(error);
     });
 })
+router.get('/addAnyRecord', token_auth, (req, res) => {
+    let schema = <string>req.query.schema;
+    let table = <string>req.query.table;
+    let field = <string>req.query.field;
+    let value = <string>req.query.value;
+    service.addAnyRecord(schema, table, field, value).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    })
+})
 router.get('/fixGeometry', token_auth, (req, res) => {
     let table = <string>req.query.table;
     service.fixGeometry(table).then((result) => {
@@ -248,7 +278,16 @@ router.get('/deleteRecord', token_auth, (req, res) => {
         res.send(error)
     })
 })
-
+router.get('/deleteAnyRecord', token_auth, (req, res) => {
+    let schema = <string>req.query.schema
+    let table = <string>req.query.table;
+    let id = <string>req.query.id;
+    service.deleteAnyRecord(schema, table, id).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error)
+    })
+})
 router.put('/update', token_auth, (req, res) => {
     //console.log(req)
     var table = <string>req.body.table;
@@ -258,6 +297,23 @@ router.put('/update', token_auth, (req, res) => {
     var value = <any>req.body.mycubefield.value;
 
     service.update(table, id, field, type, value).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+
+});
+
+router.put('/updateAnyRecord', token_auth, (req, res) => {
+    //console.log(req)
+    var schema = <string>req.body.schema
+    var table = <string>req.body.table;
+    var id = <string>req.body.id;
+    var field = <string>req.body.mycubefield.field;
+    var type = <string>req.body.mycubefield.type;
+    var value = <any>req.body.mycubefield.value;
+
+    service.updateAnyRecord(schema, table, id, field, type, value).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
