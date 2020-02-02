@@ -114,6 +114,7 @@ var SQLService = (function () {
         return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" + geometry + "'),4326)) RETURNING id;");
     };
     SQLService.prototype.addAnyRecord = function (schema, table, field, value) {
+        console.log(table, field, value);
         return db.query("INSERT INTO " + schema + "." + table + ' ("' + field + '") VALUES (' + value + ") RETURNING id;");
     };
     SQLService.prototype.fixGeometry = function (table) {
@@ -144,6 +145,9 @@ var SQLService = (function () {
     };
     SQLService.prototype.addCommentWithoutGeom = function (comment) {
         return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "','" + comment.featureID + "'," + comment.auto + ") RETURNING id;");
+    };
+    SQLService.prototype.addAnyCommentWithoutGeom = function (comment) {
+        return db.query("INSERT INTO " + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "','" + comment.featureID + "'," + comment.auto + ") RETURNING id;");
     };
     SQLService.prototype.addImage = function (comment) {
         //console.log('In addImage')
@@ -190,6 +194,7 @@ var SQLService = (function () {
         }
     };
     SQLService.prototype.updateAnyRecord = function (schema, table, id, field, type, value) {
+        console.log(id, field, type, value);
         switch (type) {
             case "integer": {
                 return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';");

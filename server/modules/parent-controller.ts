@@ -17,7 +17,7 @@ router.get('/list', (req, res) => {
     });   
 });
 
-router.get('/one', (req, res) => {   
+router.get('/single', (req, res) => {   
     service.get(req.query.rowid).then((result) => {
         res.send(result);
     }).catch((error) => {

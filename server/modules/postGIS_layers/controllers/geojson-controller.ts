@@ -38,7 +38,7 @@ router.get('/some', token_auth, (req, res) => {
     })
 })
 
-router.get('/create', token_auth, (req, res) => {
+router.get('/single', token_auth, (req, res) => {
     
         var table = <string>req.query.table;
        

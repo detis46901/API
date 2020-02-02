@@ -11,7 +11,7 @@ router.get('/list', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/one', token_auth, function (req, res) {
+router.get('/single', token_auth, function (req, res) {
     var Server = req.query.rowid;
     service.get(Server).then(function (result) {
         res.send(result);
@@ -19,7 +19,7 @@ router.get('/one', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.post('/create', token_auth, function (req, res) {
+router.post('/single', token_auth, function (req, res) {
     var request = req.body;
     service.create(request).then(function (result) {
         res.send(result);

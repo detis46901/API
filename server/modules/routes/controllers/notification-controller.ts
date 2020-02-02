@@ -14,7 +14,7 @@ router.get('/list', token_auth, (req, res) => {
     
 });
 
-router.get('/getbyuser', token_auth, (req, res) => {
+router.get('/byuser', token_auth, (req, res) => {
     var userID = <number>req.query.userID;
     service.getByUser(userID).then((result) => {
         res.send(result);
@@ -23,7 +23,7 @@ router.get('/getbyuser', token_auth, (req, res) => {
     });
 })
 
-router.get('/getbytype', token_auth, (req, res) => {
+router.get('/bytype', token_auth, (req, res) => {
     var type = <string>req.query.objectType;
     service.getByType(type).then((result) => {
         res.send(result);
@@ -32,7 +32,7 @@ router.get('/getbytype', token_auth, (req, res) => {
     });
 })
 
-router.get('/getbysource', token_auth, (req, res) => {
+router.get('/bysource', token_auth, (req, res) => {
     var sourceID = <number>req.query.sourceID;
     service.getBySource(sourceID).then((result) => {
         res.send(result);
@@ -41,7 +41,7 @@ router.get('/getbysource', token_auth, (req, res) => {
     });
 })
 
-router.get('/one', token_auth, (req, res) => {
+router.get('/single', token_auth, (req, res) => {
     var notif = <number>req.query.rowid;
     
     service.get(notif).then((result) => {
@@ -52,7 +52,7 @@ router.get('/one', token_auth, (req, res) => {
 
 });
 
-router.post('/create', token_auth, (req, res) => {
+router.post('/single', token_auth, (req, res) => {
     var request = <App.Notification>req.body;
     
     service.create(request).then((result) => {

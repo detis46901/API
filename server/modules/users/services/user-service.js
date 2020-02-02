@@ -1,6 +1,7 @@
 "use strict";
 var Sequelize = require('sequelize');
 var UserModel = require('../models/user-model');
+var DomainModel = require('../../domain/models/domain-model');
 //import ParentService = require('../../parent-service');
 var UserService = (function () {
     function UserService() {
@@ -25,7 +26,9 @@ var UserService = (function () {
         var _a, _b, _c, _d;
     };
     UserService.prototype.get = function (rowID) {
-        return UserModel.Model.findByPk(rowID);
+        var findOptions = {};
+        findOptions.include = [DomainModel.Model];
+        return UserModel.Model.findByPk(rowID, findOptions);
     };
     UserService.prototype.create = function (request) {
         return UserModel.Model.create(request);

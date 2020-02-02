@@ -34,11 +34,11 @@ router.get('/list', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/one', token_auth, function (req, res) {
+router.get('/single', token_auth, function (req, res) {
     console.log(req.query.mapconfig);
     var job = [];
     var mapConfig = JSON.parse(req.query.mapconfig);
-    userPageService.getActiveByUserID(mapConfig.userID).then(function (result) {
+    userPageService.getActiveByUserID(mapConfig.user.ID).then(function (result) {
         mapConfig.name = "Current";
         mapConfig.userpages = result;
         var index = mapConfig.userpages.findIndex(function (x) { return x.default == true; });
@@ -74,7 +74,7 @@ router.get('/one', token_auth, function (req, res) {
     });
 });
 //1/3/18: Robust way to do /create and /login
-router.post('/create', token_auth, function (req, res) {
+router.post('/single', token_auth, function (req, res) {
     var request = req.body;
     UserModel.Model.findAll({
         where: { email: request.email }

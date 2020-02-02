@@ -18,7 +18,7 @@ router.get('/list', token_auth, (req, res) => {
     });
 });
 
-router.get('/getbyuser', token_auth, (req, res) => {
+router.get('/byuser', token_auth, (req, res) => {
     var userid = <number>req.query.userid;   
     service.getByUser(userid).then((result) => {
         res.send(result);
@@ -27,7 +27,7 @@ router.get('/getbyuser', token_auth, (req, res) => {
     });
 });
 
-router.get('/getbylayer', token_auth, (req, res) => {
+router.get('/bylayer', token_auth, (req, res) => {
     var layerid = <number>req.query.layerID;
     service.getByLayer(layerid).then((result) => {
         res.send(result);
@@ -36,7 +36,7 @@ router.get('/getbylayer', token_auth, (req, res) => {
     });
 });
 
-router.get('/getbygroup', token_auth, (req, res) => {
+router.get('/bygroup', token_auth, (req, res) => {
     var groupid = <number>req.query.groupID;
     //console.log("groupid=" + groupid)
     service.getByGroup(groupid).then((result) => {
@@ -46,7 +46,7 @@ router.get('/getbygroup', token_auth, (req, res) => {
     });
 });
 
-router.get('/getbyusergroups', token_auth, (req, res) => {
+router.get('/byusergroups', token_auth, (req, res) => {
     var finalResponse = new Array<any>();
     let groups = new Array<number>();
     groupMemberService.getByUser(req.query.userID).then((result) => {
@@ -85,7 +85,7 @@ router.get('/getbyusergroups', token_auth, (req, res) => {
     })
 });
 
-router.get('/one', token_auth, (req, res) => {
+router.get('/single', token_auth, (req, res) => {
 
     var LayerID = <number>req.query.rowid;
     
@@ -97,7 +97,7 @@ router.get('/one', token_auth, (req, res) => {
 
 });
 
-router.post('/create', token_auth, (req, res) => {
+router.post('/single', token_auth, (req, res) => {
     
     var request = <App.LayerPermission>req.body;
     

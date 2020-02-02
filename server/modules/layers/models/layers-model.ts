@@ -2,6 +2,7 @@ import dbConnection = require('../../../core/db-connection');
 import Sequelize = require('sequelize');
 import sequelize = require('sequelize');
 var ServerModel = require('./servers-model');
+var DomainModel = require('../../domain/models/domain-model')
 
 var db = dbConnection();
 
@@ -68,6 +69,7 @@ var sequalizeModel = db.define<LayerInstance, App.Layer>('layer', <any>{
 
 
 sequalizeModel.belongsTo(ServerModel.Model);
+sequalizeModel.belongsTo(DomainModel.Model);
 sequalizeModel.sync()
 
 export var Model = sequalizeModel;

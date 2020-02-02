@@ -42,12 +42,12 @@ router.get('/list', token_auth, (req, res) => {
 
 });
 
-router.get('/one', token_auth, (req, res) => {
+router.get('/single', token_auth, (req, res) => {
     console.log(req.query.mapconfig)
     let job:boolean[] = []
     var mapConfig = <App.mapConfig>JSON.parse(req.query.mapconfig);
 
-    userPageService.getActiveByUserID(mapConfig.userID).then((result) => {
+    userPageService.getActiveByUserID(mapConfig.user.ID).then((result) => {
         mapConfig.name = "Current"
         mapConfig.userpages = result
         let index = mapConfig.userpages.findIndex(x => x.default == true)
@@ -81,7 +81,7 @@ router.get('/one', token_auth, (req, res) => {
 
 
 //1/3/18: Robust way to do /create and /login
-router.post('/create', token_auth, (req, res) => {
+router.post('/single', token_auth, (req, res) => {
     var request = <App.User>req.body;
     UserModel.Model.findAll({
         where: { email: request.email }

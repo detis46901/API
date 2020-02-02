@@ -14,7 +14,7 @@ router.get('/list', token_auth, (req, res) => {
     
 });
 
-router.get('/one', token_auth, (req, res) => {
+router.get('/single', token_auth, (req, res) => {
     var LayerID = <number>req.query.rowid;
     service.get(LayerID).then((result) => {
         res.send(result);
@@ -53,7 +53,7 @@ router.get('/getbylayer', token_auth, (req, res) => {
     });
 })
 
-router.post('/create', token_auth, (req, res) => {   
+router.post('/single', token_auth, (req, res) => {   
     var request = <App.UserPageLayer>req.body;
     
     service.create(request).then((result) => {

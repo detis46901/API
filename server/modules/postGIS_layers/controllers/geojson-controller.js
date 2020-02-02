@@ -30,7 +30,7 @@ router.get('/some', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/create', token_auth, function (req, res) {
+router.get('/single', token_auth, function (req, res) {
     var table = req.query.table;
     service.create(table).then(function (result) {
         res.send(result);

@@ -17,7 +17,7 @@ router.get('/list', token_auth, (req, res) => {
     
 });
 
-router.get('/one', token_auth, (req, res) => {
+router.get('/single', token_auth, (req, res) => {
 
     var User = <number>req.query.rowid;
     
@@ -29,7 +29,7 @@ router.get('/one', token_auth, (req, res) => {
 
 });
 
-router.post('/create', token_auth, (req, res) => {
+router.post('/single', token_auth, (req, res) => {
     
     var request = <App.Group>req.body;
     

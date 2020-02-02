@@ -16,7 +16,7 @@ router.get('/list', token_auth, (req, res) => {
     });
 });
 
-router.get('/getbyuser', token_auth, (req, res) => {
+router.get('/byuser', token_auth, (req, res) => {
     var userid = <number>req.query.userid;   
     service.getByUser(userid).then((result) => {
         res.send(result);
@@ -25,7 +25,7 @@ router.get('/getbyuser', token_auth, (req, res) => {
     });
 });
 
-router.get('/getbyinstance', token_auth, (req, res) => {
+router.get('/byinstance', token_auth, (req, res) => {
     var instanceid = <number>req.query.instanceID;
     service.getByInstance(instanceid).then((result) => {
         res.send(result);
@@ -34,7 +34,7 @@ router.get('/getbyinstance', token_auth, (req, res) => {
     });
 });
 
-router.get('/getbygroup', token_auth, (req, res) => {
+router.get('/bygroup', token_auth, (req, res) => {
     var groupid = <number>req.query.groupID;
     //console.log("groupid=" + groupid)
     service.getByGroup(groupid).then((result) => {
@@ -44,7 +44,7 @@ router.get('/getbygroup', token_auth, (req, res) => {
     });
 });
 
-router.get('/getbyusergroups', token_auth, (req, res) => {
+router.get('/byusergroups', token_auth, (req, res) => {
     var finalResponse = new Array<any>();
     let groups = new Array<number>();
     groupMemberService.getByUser(req.query.userID).then((result) => {
@@ -58,20 +58,7 @@ router.get('/getbyusergroups', token_auth, (req, res) => {
     })
 });
 
-//pretty sure this isn't being used
-router.get('/one', token_auth, (req, res) => {
-
-    var instanceID = <number>req.query.id;
-    
-    service.get(instanceID).then((result) => {
-        res.send(result);
-    }).catch((error) => {
-        res.send(error);
-    });
-
-});
-
-router.post('/create', token_auth, (req, res) => {
+router.post('/single', token_auth, (req, res) => {
     
     var request = <App.ModulePermission>req.body;
     

@@ -13,7 +13,7 @@ router.get('/list', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/getbyuser', token_auth, function (req, res) {
+router.get('/byuser', token_auth, function (req, res) {
     var userid = req.query.userid;
     service.getByUser(userid).then(function (result) {
         res.send(result);
@@ -21,7 +21,7 @@ router.get('/getbyuser', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/getbyinstance', token_auth, function (req, res) {
+router.get('/byinstance', token_auth, function (req, res) {
     var instanceid = req.query.instanceID;
     service.getByInstance(instanceid).then(function (result) {
         res.send(result);
@@ -29,7 +29,7 @@ router.get('/getbyinstance', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/getbygroup', token_auth, function (req, res) {
+router.get('/bygroup', token_auth, function (req, res) {
     var groupid = req.query.groupID;
     //console.log("groupid=" + groupid)
     service.getByGroup(groupid).then(function (result) {
@@ -38,7 +38,7 @@ router.get('/getbygroup', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/getbyusergroups', token_auth, function (req, res) {
+router.get('/byusergroups', token_auth, function (req, res) {
     var finalResponse = new Array();
     var groups = new Array();
     groupMemberService.getByUser(req.query.userID).then(function (result) {
@@ -51,16 +51,7 @@ router.get('/getbyusergroups', token_auth, function (req, res) {
         });
     });
 });
-//pretty sure this isn't being used
-router.get('/one', token_auth, function (req, res) {
-    var instanceID = req.query.id;
-    service.get(instanceID).then(function (result) {
-        res.send(result);
-    }).catch(function (error) {
-        res.send(error);
-    });
-});
-router.post('/create', token_auth, function (req, res) {
+router.post('/single', token_auth, function (req, res) {
     var request = req.body;
     service.create(request).then(function (result) {
         res.send(result);

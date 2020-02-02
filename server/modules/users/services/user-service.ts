@@ -1,5 +1,6 @@
 import Sequelize = require('sequelize');
 import UserModel = require('../models/user-model');
+import DomainModel = require('../../domain/models/domain-model')
 import bcrypt = require('bcrypt');
 //import ParentService = require('../../parent-service');
 
@@ -27,7 +28,9 @@ class UserService {
     }
 
     get(rowID: number): Promise<UserModel.UserInstance> {
-        return UserModel.Model.findByPk(rowID);
+        var findOptions: Sequelize.FindOptions = { };
+        findOptions.include = [DomainModel.Model]
+        return UserModel.Model.findByPk(rowID, findOptions);
     }
 
     create(request: App.User): Promise<UserModel.UserInstance> {

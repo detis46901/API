@@ -11,7 +11,7 @@ router.get('/list', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/getactivebyuserid', token_auth, function (req, res) {
+router.get('/activebyuserid', token_auth, function (req, res) {
     service.getActiveByUserID(req.query.userID).then(function (result) {
         res.send(result);
     }).catch(function (error) {
@@ -25,7 +25,7 @@ router.get('/default', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/one', token_auth, function (req, res) {
+router.get('/single', token_auth, function (req, res) {
     var Page = req.query.rowid;
     service.get(Page).then(function (result) {
         res.send(result);

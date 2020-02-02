@@ -9,13 +9,6 @@ var multerConfig = {
 };
 var router = express.Router();
 var service = new SQLService();
-// router.get('/list', (req, res) => {
-//     service.getList(req.query.searchValue).then((result) => {
-//         res.send(result);
-//     }).catch((error) => {
-//         res.send(error);
-//     });
-// });
 router.get('/all', token_auth, function (req, res) {
     var schema = req.query.schema;
     var table = req.query.table;
@@ -57,7 +50,7 @@ router.get('/create', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/getconstraints', token_auth, function (req, res) {
+router.get('/constraints', token_auth, function (req, res) {
     var schema = req.query.schema;
     var table = req.query.table;
     service.getConstraints(schema, table).then(function (result) {
@@ -101,7 +94,7 @@ router.get('/deletecommenttable', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/one', token_auth, function (req, res) {
+router.get('/single', token_auth, function (req, res) {
     var table = req.query.table;
     var id = req.query.id;
     service.getsingle(table, id).then(function (result) {
@@ -146,6 +139,17 @@ router.post('/addcommentwithoutgeom', token_auth, function (req, res) {
     //console.log(comment)
     var table = comment.table;
     service.addCommentWithoutGeom(comment).then(function (result) {
+        console.log(result);
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
+router.post('/addanycommentwithoutgeom', token_auth, function (req, res) {
+    var file = req.body.file;
+    //console.log(file)
+    var comment = req.body;
+    service.addAnyCommentWithoutGeom(comment).then(function (result) {
         console.log(result);
         res.send(result);
     }).catch(function (error) {

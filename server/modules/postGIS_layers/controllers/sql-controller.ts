@@ -7,49 +7,9 @@ var stream = require('stream');
 var express = require('express');
 var multer = require('multer'); const multerConfig = {
     storage: multer.memoryStorage()
-    // storage: multer.diskStorage({
-    //  //Setup where the user's file will go
-    //  destination: function(req, file, next){
-    //    next(null, './public/photo-storage');
-    //    },   
-
-    //     //Then give the file a unique name
-    //     filename: function(req, file, next){
-    //         console.log(file);
-    //         const ext = file.mimetype.split('/')[1];
-    //         next(null, file.fieldname + '-' + Date.now() + '.'+ext);
-    //       }
-    //     }),   
-
-    //     //A means of ensuring only images are uploaded. 
-    //     fileFilter: function(req, file, next){
-    //           if(!file){
-    //             next();
-    //           }
-    //         const image = file.mimetype.startsWith('image/');
-    //         if(image){
-    //           console.log('photo uploaded');
-    //           next(null, true);
-    //         }else{
-    //           console.log("file not supported");
-
-    //           //TODO:  A better message response to user on failure.
-    //           return next();
-    //         }
-    //     }
 };
 var router = express.Router();
 var service = new SQLService();
-
-// router.get('/list', (req, res) => {
-
-//     service.getList(req.query.searchValue).then((result) => {
-//         res.send(result);
-//     }).catch((error) => {
-//         res.send(error);
-//     });
-
-// });
 
 router.get('/all', token_auth, (req, res) => {
     var schema = <string>req.query.schema
@@ -99,7 +59,7 @@ router.get('/create', token_auth, (req, res) => {
     });
 });
 
-router.get('/getconstraints', token_auth, (req, res) => {
+router.get('/constraints', token_auth, (req, res) => {
     var schema = <string>req.query.schema
     var table = <string>req.query.table
     service.getConstraints(schema, table).then((result) => {
@@ -154,7 +114,7 @@ router.get('/deletecommenttable', token_auth, (req, res) => {
 
 });
 
-router.get('/one', token_auth, (req, res) => {
+router.get('/single', token_auth, (req, res) => {
     var table = <string>req.query.table;
     var id = <string>req.query.id;
     service.getsingle(table, id).then((result) => {
@@ -208,6 +168,18 @@ router.post('/addcommentwithoutgeom', token_auth, (req, res) => {
         res.send(error);
     });
 })
+router.post('/addanycommentwithoutgeom', token_auth, (req, res) => {
+    var file = <File>req.body.file
+    //console.log(file)
+    var comment = <App.MyCubeComment>req.body;
+    service.addAnyCommentWithoutGeom(comment).then((result) => {
+        console.log(result)
+        res.send(result);
+    }).catch((error) => {
+        res.send(error);
+    });
+})
+
 router.post('/addimage', multer(multerConfig).single('photo'), function (req, res) {
     console.log('addImage')
     //console.log(req)

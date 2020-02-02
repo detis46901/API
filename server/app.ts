@@ -22,6 +22,7 @@ import ModuleInstancesController = require('./modules/feature modules/controller
 import ModulePermissionController = require('./modules/feature modules/controllers/module-permission-controller')
 import UserPageInstanceController = require('./modules/feature modules/controllers/user-page-instance-controller')
 import MapConfigController = require ('./modules/mapConfig/controllers/mapConfig-controller')
+import DomainController = require ('./modules/domain/controllers/domain-controller')
 
 // This portion of code is required to serve as a proxy 
 // Listen on a specific host via the HOST environment variable
@@ -73,6 +74,7 @@ app.use('/api/moduleinstance', ModuleInstancesController);
 app.use('/api/modulepermission', ModulePermissionController)
 app.use('/api/userpageinstance', UserPageInstanceController)
 app.use('/api/mapconfig', MapConfigController)
+app.use('/api/domain', DomainController)
 
 
 

@@ -16,14 +16,14 @@ router.get('/list', function (req, res) {
         res.send(error);
     });
 });
-router.get('/one', function (req, res) {
+router.get('/single', function (req, res) {
     service.get(req.query.rowid).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
     });
 });
-router.get('/getbyrole', function (req, res) {
+router.get('/byrole', function (req, res) {
     var roleID = req.query.roleID;
     service.getByRole(roleID).then(function (result) {
         res.send(result);

@@ -4,6 +4,19 @@
         updatedAt?: Date;
     }
 
+    interface Domain {
+        ID: number;
+        title: string;
+        url: string;
+        centerlong: number;
+        centerlat: number;
+        centerzoom: number;
+        bingmapskey: string;
+        mapboxbasemapurl: string;
+        localz: string;
+        cacheSize: number;
+    }
+
     interface User extends IModelBase {
         ID?: number;
         firstName?: string;
@@ -142,6 +155,7 @@
     }
     interface mapConfig {
         name?: string;
+        user: User;
         userID?: number;
         userpages?: UserPage[];
         defaultpage?: UserPage;  //This looks like a duplicate that is also in userpages[]

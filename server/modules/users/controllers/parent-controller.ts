@@ -21,7 +21,7 @@ router.get('/list', (req, res) => {
     
 });
 
-router.get('/one', (req, res) => {   
+router.get('/single', (req, res) => {   
     service.get(req.query.rowid).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -30,7 +30,7 @@ router.get('/one', (req, res) => {
 
 });
 
-router.get('/getbyrole', (req, res) => {
+router.get('/byrole', (req, res) => {
     var roleID = <number>req.query.roleID
 
     service.getByRole(roleID).then((result) => {

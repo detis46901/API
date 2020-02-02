@@ -14,7 +14,7 @@ router.get('/list', token_auth, (req, res) => {
     
 });
 
-router.get('/one', token_auth, (req, res) => {
+router.get('/single', token_auth, (req, res) => {
     var InstanceID = <number>req.query.rowid;
     service.get(InstanceID).then((result) => {
         res.send(result);
@@ -53,7 +53,7 @@ router.get('/getbyinstance', token_auth, (req, res) => {
     });
 })
 
-router.post('/create', token_auth, (req, res) => {   
+router.post('/single', token_auth, (req, res) => {   
     var request = <App.UserPageInstance>req.body;
     
     service.create(request).then((result) => {

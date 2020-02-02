@@ -11,7 +11,7 @@ router.get('/list', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/getbyuser', token_auth, function (req, res) {
+router.get('/byuser', token_auth, function (req, res) {
     var userid = req.query.userid;
     service.getByUser(userid).then(function (result) {
         res.send(result);
@@ -19,7 +19,7 @@ router.get('/getbyuser', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/getbygroup', token_auth, function (req, res) {
+router.get('/bygroup', token_auth, function (req, res) {
     var groupid = req.query.groupid;
     service.getByGroup(groupid).then(function (result) {
         res.send(result);
@@ -27,7 +27,7 @@ router.get('/getbygroup', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/one', token_auth, function (req, res) {
+router.get('/single', token_auth, function (req, res) {
     var request = req.query.rowid;
     service.get(request).then(function (result) {
         res.send(result);
@@ -35,7 +35,7 @@ router.get('/one', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.post('/create', token_auth, function (req, res) {
+router.post('/single', token_auth, function (req, res) {
     var request = req.body;
     service.create(request).then(function (result) {
         res.send(result);

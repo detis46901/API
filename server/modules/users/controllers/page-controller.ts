@@ -14,7 +14,7 @@ router.get('/list', token_auth, (req, res) => {
     
 });
 
-router.get('/getactivebyuserid', token_auth, (req, res) => {
+router.get('/activebyuserid', token_auth, (req, res) => {
     service.getActiveByUserID(req.query.userID).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -32,7 +32,7 @@ router.get('/default', token_auth, (req, res) => {
     
 });
 
-router.get('/one', token_auth, (req, res) => {
+router.get('/single', token_auth, (req, res) => {
     var Page = <number>req.query.rowid;
     
     service.get(Page).then((result) => {

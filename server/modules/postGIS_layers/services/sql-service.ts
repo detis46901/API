@@ -149,6 +149,7 @@ class SQLService {
         return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" + geometry + "'),4326)) RETURNING id;")
     }
     addAnyRecord(schema, table, field, value) {
+        console.log(table, field, value)
         return db.query("INSERT INTO " + schema + "." + table + ' ("' + field + '") VALUES (' + value + ") RETURNING id;")
     }
 
@@ -189,6 +190,9 @@ class SQLService {
     }
     addCommentWithoutGeom(comment: App.MyCubeComment): Promise<any> {
         return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "','" + comment.featureID + "'," + comment.auto + ") RETURNING id;")
+    }
+    addAnyCommentWithoutGeom(comment: App.MyCubeComment): Promise<any> {
+        return db.query("INSERT INTO " + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "','" + comment.featureID + "'," + comment.auto + ") RETURNING id;")
     }
 
     addImage(comment: any): Promise<any> {
@@ -236,6 +240,7 @@ class SQLService {
         }
     }
     updateAnyRecord(schema: string, table: string, id: string, field: string, type: string, value: any) {
+        console.log(id, field, type, value)
         switch (type) {
             case "integer": {
                 return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';")

@@ -3,6 +3,7 @@ var dbConnection = require('../../../core/db-connection');
 var Sequelize = require('sequelize');
 var sequelize = require('sequelize');
 var ServerModel = require('./servers-model');
+var DomainModel = require('../../domain/models/domain-model');
 var db = dbConnection();
 var sequalizeModel = db.define('layer', {
     ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
@@ -59,6 +60,7 @@ var sequalizeModel = db.define('layer', {
     }
 });
 sequalizeModel.belongsTo(ServerModel.Model);
+sequalizeModel.belongsTo(DomainModel.Model);
 sequalizeModel.sync();
 exports.Model = sequalizeModel;
 

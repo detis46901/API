@@ -1,6 +1,7 @@
 import dbConnection = require('../../../core/db-connection');
 import Sequelize = require('sequelize');
 import GroupMemberModel = require('./group-member-model');
+import DomainModel = require('../../domain/models/domain-model')
 
 var db = dbConnection();
 var bcrypt = require('bcrypt');
@@ -62,12 +63,10 @@ var sequalizeModel = db.define<UserInstance, App.User>('user', <any>{
     }
 });
 
-//console.log("\n\n"+sequalizeModel+"\n\n")
+sequalizeModel.belongsTo(DomainModel.Model)
 sequalizeModel.sync() 
 
-
-var flag = 0;
-
+//Should probably update this or at least put it in the documentation.
 sequalizeModel.findAll({
 }).then(function(result) {
     //console.log(result)

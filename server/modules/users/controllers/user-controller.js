@@ -19,7 +19,7 @@ router.get('/list', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/one', token_auth, function (req, res) {
+router.get('/single', token_auth, function (req, res) {
     var User = req.query.rowid;
     service.get(User).then(function (result) {
         res.send(result);
@@ -28,7 +28,7 @@ router.get('/one', token_auth, function (req, res) {
     });
 });
 //1/3/18: Robust way to do /create and /login
-router.post('/create', token_auth, function (req, res) {
+router.post('/single', token_auth, function (req, res) {
     var request = req.body;
     UserModel.Model.findAll({
         where: { email: request.email }

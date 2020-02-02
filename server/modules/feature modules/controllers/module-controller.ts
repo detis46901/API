@@ -15,7 +15,7 @@ router.get('/list', token_auth, (req, res) => {
     
 });
 
-router.get('/one', token_auth, (req, res) => {
+router.get('/single', token_auth, (req, res) => {
     var LayerID = <number>req.query.rowid;
     
     service.get(LayerID).then((result) => {
@@ -26,7 +26,7 @@ router.get('/one', token_auth, (req, res) => {
 
 });
 
-router.post('/create', token_auth, (req, res) => {
+router.post('/single', token_auth, (req, res) => {
     var request = <App.Module>req.body;
     
     service.create(request).then((result) => {

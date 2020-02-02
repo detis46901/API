@@ -1,6 +1,7 @@
 "use strict";
 var dbConnection = require('../../../core/db-connection');
 var Sequelize = require('sequelize');
+var DomainModel = require('../../domain/models/domain-model');
 var db = dbConnection();
 var bcrypt = require('bcrypt');
 var sequalizeModel = db.define('user', {
@@ -55,9 +56,9 @@ var sequalizeModel = db.define('user', {
         }
     }
 });
-//console.log("\n\n"+sequalizeModel+"\n\n")
+sequalizeModel.belongsTo(DomainModel.Model);
 sequalizeModel.sync();
-var flag = 0;
+//Should probably update this or at least put it in the documentation.
 sequalizeModel.findAll({}).then(function (result) {
     //console.log(result)
     if (!result[0]) {
