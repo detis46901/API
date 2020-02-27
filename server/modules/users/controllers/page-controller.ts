@@ -43,7 +43,7 @@ router.get('/single', token_auth, (req, res) => {
 
 });
 
-router.post('/create', token_auth, (req, res) => {
+router.post('/single', token_auth, (req, res) => {
     var request = <App.UserPage>req.body;
     
     service.create(request).then((result) => {

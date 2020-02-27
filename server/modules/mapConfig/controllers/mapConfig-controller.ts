@@ -51,6 +51,7 @@ router.get('/single', token_auth, (req, res) => {
         mapConfig.name = "Current"
         mapConfig.userpages = result
         let index = mapConfig.userpages.findIndex(x => x.default == true)
+        if (index == -1) {index =0} //fixes the problem of no default page
         mapConfig.defaultpage = mapConfig.userpages[index];
         mapConfig.currentpage = mapConfig.userpages[index];
         job.push(true)

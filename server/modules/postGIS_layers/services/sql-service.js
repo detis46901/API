@@ -137,13 +137,23 @@ var SQLService = (function () {
         return db.query("SELECT * FROM " + table + " WHERE \"" + field + "\" = " + value);
     };
     SQLService.prototype.getcomments = function (table, id) {
-        return db.query('SELECT id, userid, comment, geom, filename, auto, featureid, createdat, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';");
+        return db.query('SELECT id, userid, comment, geom, filename, auto, featureid, createdat, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "' ORDER BY id DESC;");
         //return db.query("SELECT mycube.c" + table + '.*, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';")
     };
     SQLService.prototype.addCommentWithGeom = function (comment) {
+        var ntext = /'/g;
+        try {
+            comment.comment = comment.comment.replace(ntext, "''");
+        }
+        catch (error) { }
         return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, geom, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureID + "," + comment.auto + ")");
     };
     SQLService.prototype.addCommentWithoutGeom = function (comment) {
+        var ntext = /'/g;
+        try {
+            comment.comment = comment.comment.replace(ntext, "''");
+        }
+        catch (error) { }
         return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "','" + comment.featureID + "'," + comment.auto + ") RETURNING id;");
     };
     SQLService.prototype.addAnyCommentWithoutGeom = function (comment) {
@@ -207,6 +217,11 @@ var SQLService = (function () {
                     return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = NULL WHERE "' + "id='" + id + "';");
                 }
                 else {
+                    var ntext = /'/g;
+                    try {
+                        value = value.replace(ntext, "''");
+                    }
+                    catch (error) { }
                     return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE " + "id='" + id + "';");
                 }
             }

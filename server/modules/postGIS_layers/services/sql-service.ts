@@ -182,13 +182,20 @@ class SQLService {
     }
 
     getcomments(table: string, id: string): Promise<any> {
-        return db.query('SELECT id, userid, comment, geom, filename, auto, featureid, createdat, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';")
+        return db.query('SELECT id, userid, comment, geom, filename, auto, featureid, createdat, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "' ORDER BY id DESC;")
         //return db.query("SELECT mycube.c" + table + '.*, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';")
     }
     addCommentWithGeom(comment: App.MyCubeComment): Promise<any> {
+        let ntext: RegExp = /'/g
+        try { comment.comment = comment.comment.replace(ntext, "''") }
+        catch (error) { }  
         return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, geom, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureID + "," + comment.auto + ")")
     }
+
     addCommentWithoutGeom(comment: App.MyCubeComment): Promise<any> {
+        let ntext: RegExp = /'/g
+        try { comment.comment = comment.comment.replace(ntext, "''") }
+        catch (error) { }
         return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "','" + comment.featureID + "'," + comment.auto + ") RETURNING id;")
     }
     addAnyCommentWithoutGeom(comment: App.MyCubeComment): Promise<any> {
@@ -253,6 +260,9 @@ class SQLService {
                     return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = NULL WHERE "' + "id='" + id + "';")
                 }
                 else {
+                    let ntext: RegExp = /'/g
+                    try { value = value.replace(ntext, "''") }
+                    catch (error) { }              
                     return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE " + "id='" + id + "';")
                 }
             }
