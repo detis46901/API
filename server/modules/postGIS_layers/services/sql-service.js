@@ -146,7 +146,7 @@ var SQLService = (function () {
             comment.comment = comment.comment.replace(ntext, "''");
         }
         catch (error) { }
-        return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, geom, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureID + "," + comment.auto + ")");
+        return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, geom, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureid + "," + comment.auto + ")");
     };
     SQLService.prototype.addCommentWithoutGeom = function (comment) {
         var ntext = /'/g;
@@ -154,10 +154,10 @@ var SQLService = (function () {
             comment.comment = comment.comment.replace(ntext, "''");
         }
         catch (error) { }
-        return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "','" + comment.featureID + "'," + comment.auto + ") RETURNING id;");
+        return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "','" + comment.featureid + "'," + comment.auto + ") RETURNING id;");
     };
     SQLService.prototype.addAnyCommentWithoutGeom = function (comment) {
-        return db.query("INSERT INTO " + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userID + ",'" + comment.comment + "','" + comment.featureID + "'," + comment.auto + ") RETURNING id;");
+        return db.query("INSERT INTO " + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "','" + comment.featureid + "'," + comment.auto + ") RETURNING id;");
     };
     SQLService.prototype.addImage = function (comment) {
         //console.log('In addImage')

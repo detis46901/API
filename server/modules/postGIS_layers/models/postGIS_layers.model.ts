@@ -2,10 +2,10 @@
 export interface MyCubeComment {
     table: number;
     id: number;
-    userID: number;
+    userid: number;
     comment: string;
     geom: string;
-    featureID: number;
+    featureid: number;
     auto: boolean;
     createdat: Date;
 }
