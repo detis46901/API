@@ -1,4 +1,5 @@
 import dbConnection = require('../../../core/db-connection');
+import { MyCubeField } from '../models/postGIS_layers.model';
 var db = dbConnection();
 
 
@@ -26,7 +27,7 @@ class SQLService {
     // }
 
     get(schema: string, table: string): Promise<any> {
-        if (schema == 'mycube'){
+        if (schema == 'mycube') {
             return db.query("SELECT *,ST_Length(ST_Transform(geom,2965)), ST_Area(ST_Transform(geom,2965)) from " + schema + "." + table + ' ORDER BY id')
         }
         else {
@@ -51,7 +52,7 @@ class SQLService {
                 });
                 if (schema == 'mycube') {
                     responsehtml += "<th>Length (ft)</th>"
-                    responsehtml += "<th>Area (sqft)</th>"    
+                    responsehtml += "<th>Area (sqft)</th>"
                 }
                 responsehtml += "</tr>"
 
@@ -67,7 +68,7 @@ class SQLService {
                         });
                         if (schema == 'mycube') {
                             responsehtml += "<td>" + dataelement['st_length'] + '</td>'
-                            responsehtml += "<td>" + dataelement['st_area'] + '</td>'    
+                            responsehtml += "<td>" + dataelement['st_area'] + '</td>'
                         }
                         responsehtml += "</tr>"
                     });
@@ -130,11 +131,82 @@ class SQLService {
         return db.query(`SELECT UpdateGeometrySRID('mycube', 't` + table + `','geom',4326);`)
     }
 
-    addColumn(table: string, field: string, type: string, label: boolean): Promise<any> {
-        db.query('ALTER TABLE mycube.t' + table + ' ADD "' + field + '" ' + type)
+    addColumn(table: string, field: string, type: string, label: boolean, myCubeField: MyCubeField): Promise<any> {
+        db.query('ALTER TABLE mycube.t' + table + ' ADD "' + myCubeField.field + '" ' + myCubeField.type)
         //if (label == true) { db.query(`COMMENT ON COLUMN mycube.t` + table + '."' + field + `" IS '` + field + `';`) }
         return db.query("SELECT col_description(41644,3);")
 
+    }
+
+    deleteColumn(table: string, myCubeField: MyCubeField): Promise<any> {
+        return db.query('ALTER TABLE mycube.t' + table + ' DROP "' + myCubeField.field + '"')
+    }
+
+    moveColumn(table: string, myCubeField: MyCubeField): Promise<any> {
+        let rnd = Math.trunc(Math.random()*100)
+        let promise = new Promise((resolve, reject) => {
+        this.mC1(table, myCubeField, rnd).then(() => {
+            this.mC2(table, myCubeField, rnd).then(() => {
+                this.mC3(table, myCubeField).then(() => {
+                   this.mc4(table, myCubeField, rnd).then(() => {console.log('completed'); resolve()})
+                }
+                )
+            }
+            )
+        }
+        )
+    })
+    return promise
+    }
+
+    mC1(table: string, myCubeField: MyCubeField, rnd:number): Promise<any> {
+        return db.query('ALTER TABLE mycube.t' + table + ' ADD layer' + rnd + ' ' + myCubeField.type)
+    }
+
+    mC2(table: string, myCubeField: MyCubeField, rnd:number): Promise<any> {
+        return db.query('UPDATE mycube.t' + table + ' SET layer' + rnd + ' = "' + myCubeField.field + '"')
+    }
+
+    mC3(table: string, myCubeField: MyCubeField): Promise<any> {
+        return db.query('ALTER TABLE mycube.t' + table + ' DROP "' + myCubeField.field + '"')
+    }
+
+    mc4(table: string, myCubeField: MyCubeField, rnd: number): Promise<any> {
+        return db.query('ALTER TABLE mycube.t' + table + ' RENAME layer' + rnd + ' TO "' + myCubeField.field + '"')
+    }
+
+    updateConstraint(schema: string, table: string, myCubeField: MyCubeField): Promise<any> {
+        let promise = new Promise((resolve, reject) => {
+        // this.deleteConstraint(schema, table, myCubeField.field).then(() => {
+            myCubeField.constraints.forEach((x) => {
+                var constraint: string = ""
+                var i:number = 0
+                myCubeField.constraints.forEach((x) => {
+                    constraint = constraint + '"' + myCubeField.field + '"' + "='" + x.name + "'"
+                    if (i < myCubeField.constraints.length - 1) {
+                        constraint = constraint + " OR "
+                    }
+                    i =+1
+                })
+                console.log('adding constraint if it exists')
+                if(constraint) { 
+                this.addConstraint(schema, table, myCubeField.field, constraint).then((result) => {
+                    console.log(result)
+                })
+            }
+            })
+        // })
+    })
+    return promise
+    }
+
+    addConstraint(schema: string, table: string, field: string, constraint: string): Promise<any> {
+        console.log('ALTER TABLE ' + schema + '.t' + table + ' ADD CONSTRAINT ' + field + '_types CHECK (' + constraint + ');')
+        return db.query('ALTER TABLE ' + schema + '.t' + table + ' ADD CONSTRAINT "' + field + '_types" CHECK (' + constraint + ');')
+    }
+
+    deleteConstraint(schema: string, table: string, field: string): Promise<any> {
+        return db.query('ALTER TABLE ' + schema + '.t' + table + ' DROP CONSTRAINT ' + field + '_types')
     }
 
     deleteTable(table: string): Promise<any> {
@@ -177,8 +249,8 @@ class SQLService {
         return db.query("SELECT * FROM " + table + " WHERE id='" + id + "';")
     }
 
-    getanysingle (table: string, field: string, value: string): Promise<any> {
-        return db.query("SELECT * FROM " + table + ` WHERE "` + field + `" = ` + value) 
+    getanysingle(table: string, field: string, value: string): Promise<any> {
+        return db.query("SELECT * FROM " + table + ` WHERE "` + field + `" = ` + value)
     }
 
     getcomments(table: string, id: string): Promise<any> {
@@ -188,7 +260,7 @@ class SQLService {
     addCommentWithGeom(comment: App.MyCubeComment): Promise<any> {
         let ntext: RegExp = /'/g
         try { comment.comment = comment.comment.replace(ntext, "''") }
-        catch (error) { }  
+        catch (error) { }
         return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, geom, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureid + "," + comment.auto + ")")
     }
 
@@ -242,7 +314,7 @@ class SQLService {
                 else {
                     //console.log("is null")
                     return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "null WHERE id='" + id + "';")
-                }                
+                }
             }
         }
     }
@@ -262,7 +334,7 @@ class SQLService {
                 else {
                     let ntext: RegExp = /'/g
                     try { value = value.replace(ntext, "''") }
-                    catch (error) { }              
+                    catch (error) { }
                     return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE " + "id='" + id + "';")
                 }
             }
@@ -277,7 +349,7 @@ class SQLService {
                 else {
                     //console.log("is null")
                     return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + "null WHERE id='" + id + "';")
-                }                
+                }
             }
         }
     }

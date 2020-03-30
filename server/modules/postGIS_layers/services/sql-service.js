@@ -99,10 +99,71 @@ var SQLService = (function () {
     SQLService.prototype.setSRID = function (table) {
         return db.query("SELECT UpdateGeometrySRID('mycube', 't" + table + "','geom',4326);");
     };
-    SQLService.prototype.addColumn = function (table, field, type, label) {
-        db.query('ALTER TABLE mycube.t' + table + ' ADD "' + field + '" ' + type);
+    SQLService.prototype.addColumn = function (table, field, type, label, myCubeField) {
+        db.query('ALTER TABLE mycube.t' + table + ' ADD "' + myCubeField.field + '" ' + myCubeField.type);
         //if (label == true) { db.query(`COMMENT ON COLUMN mycube.t` + table + '."' + field + `" IS '` + field + `';`) }
         return db.query("SELECT col_description(41644,3);");
+    };
+    SQLService.prototype.deleteColumn = function (table, myCubeField) {
+        return db.query('ALTER TABLE mycube.t' + table + ' DROP "' + myCubeField.field + '"');
+    };
+    SQLService.prototype.moveColumn = function (table, myCubeField) {
+        var _this = this;
+        var rnd = Math.trunc(Math.random() * 100);
+        var promise = new Promise(function (resolve, reject) {
+            _this.mC1(table, myCubeField, rnd).then(function () {
+                _this.mC2(table, myCubeField, rnd).then(function () {
+                    _this.mC3(table, myCubeField).then(function () {
+                        _this.mc4(table, myCubeField, rnd).then(function () { console.log('completed'); resolve(); });
+                    });
+                });
+            });
+        });
+        return promise;
+    };
+    SQLService.prototype.mC1 = function (table, myCubeField, rnd) {
+        return db.query('ALTER TABLE mycube.t' + table + ' ADD layer' + rnd + ' ' + myCubeField.type);
+    };
+    SQLService.prototype.mC2 = function (table, myCubeField, rnd) {
+        return db.query('UPDATE mycube.t' + table + ' SET layer' + rnd + ' = "' + myCubeField.field + '"');
+    };
+    SQLService.prototype.mC3 = function (table, myCubeField) {
+        return db.query('ALTER TABLE mycube.t' + table + ' DROP "' + myCubeField.field + '"');
+    };
+    SQLService.prototype.mc4 = function (table, myCubeField, rnd) {
+        return db.query('ALTER TABLE mycube.t' + table + ' RENAME layer' + rnd + ' TO "' + myCubeField.field + '"');
+    };
+    SQLService.prototype.updateConstraint = function (schema, table, myCubeField) {
+        var _this = this;
+        var promise = new Promise(function (resolve, reject) {
+            // this.deleteConstraint(schema, table, myCubeField.field).then(() => {
+            myCubeField.constraints.forEach(function (x) {
+                var constraint = "";
+                var i = 0;
+                myCubeField.constraints.forEach(function (x) {
+                    constraint = constraint + '"' + myCubeField.field + '"' + "='" + x.name + "'";
+                    if (i < myCubeField.constraints.length - 1) {
+                        constraint = constraint + " OR ";
+                    }
+                    i = +1;
+                });
+                console.log('adding constraint if it exists');
+                if (constraint) {
+                    _this.addConstraint(schema, table, myCubeField.field, constraint).then(function (result) {
+                        console.log(result);
+                    });
+                }
+            });
+            // })
+        });
+        return promise;
+    };
+    SQLService.prototype.addConstraint = function (schema, table, field, constraint) {
+        console.log('ALTER TABLE ' + schema + '.t' + table + ' ADD CONSTRAINT ' + field + '_types CHECK (' + constraint + ');');
+        return db.query('ALTER TABLE ' + schema + '.t' + table + ' ADD CONSTRAINT "' + field + '_types" CHECK (' + constraint + ');');
+    };
+    SQLService.prototype.deleteConstraint = function (schema, table, field) {
+        return db.query('ALTER TABLE ' + schema + '.t' + table + ' DROP CONSTRAINT ' + field + '_types');
     };
     SQLService.prototype.deleteTable = function (table) {
         return db.query('DROP TABLE mycube.t' + table);

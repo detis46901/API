@@ -9,3 +9,20 @@ export interface MyCubeComment {
     auto: boolean;
     createdat: Date;
 }
+
+export interface MyCubeConstraint {
+    name: string | number;
+    option: string;
+}
+
+export interface MyCubeField {
+    field: string;
+    type: string;
+    description?: string;
+    value?: any;
+    options?: string[]
+    label?: boolean;
+    changed?: boolean;
+    links?: any[]
+    constraints?: Array<MyCubeConstraint>
+}

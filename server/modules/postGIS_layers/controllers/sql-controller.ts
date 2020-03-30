@@ -69,6 +69,14 @@ router.get('/constraints', token_auth, (req, res) => {
     })
 })
 
+router.get('/updateconstraint', token_auth, (req, res) => {
+    // console.log(req)
+    var schema = <string>req.query.schema
+    var table = <string>req.query.table
+    var myCubeField = <comment.MyCubeField>JSON.parse(req.query.myCubeField)
+    service.updateConstraint(schema, table, myCubeField)
+})
+
 router.get('/createcommenttable', token_auth, (req, res) => {
     var table = <string>req.query.table;
     service.createCommentTable(table).then((result) => {
@@ -83,14 +91,46 @@ router.get('/addColumn', token_auth, (req, res) => {
     var field = <string>req.query.field;
     var type = <string>req.query.type
     var label = <boolean>req.query.label
-
-    service.addColumn(table, field, type, label).then((result) => {
+    var myCubeField = <comment.MyCubeField>JSON.parse(req.query.myCubeField)
+    console.log(myCubeField)
+    service.addColumn(table, field, type, label, myCubeField).then((result) => {
+        var constraint: string = ""
+        var i:number = 0
+        myCubeField.constraints.forEach((x) => {
+            constraint = constraint + '"' + myCubeField.field + '"' + "='" + x.name + "'"
+            if (i < myCubeField.constraints.length - 1) {
+                constraint = constraint + " OR "
+            }
+            i =+1
+        })
+        service.addConstraint('mycube', table, myCubeField.field, constraint).then((result) => {
+            console.log(result)
+        })
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
-
 });
+
+router.get('/deleteColumn', token_auth, (req, res) => {
+    var table = <string>req.query.table;
+    var myCubeField = <comment.MyCubeField>JSON.parse(req.query.myCubeField)
+    service.deleteColumn(table, myCubeField).then((result) => {
+        res.send(result)
+    }).catch((error) => {
+        res.send(error)
+    })
+})
+
+router.get('/moveColumn', token_auth, (req, res) => {
+    var table = <string>req.query.table;
+    var myCubeField = <comment.MyCubeField>JSON.parse(req.query.myCubeField)
+    service.moveColumn(table, myCubeField).then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.send(error)
+    })
+})
 
 router.get('/deleteTable', token_auth, (req, res) => {
     var table = <string>req.query.table;

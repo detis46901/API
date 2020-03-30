@@ -59,6 +59,13 @@ router.get('/constraints', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/updateconstraint', token_auth, function (req, res) {
+    // console.log(req)
+    var schema = req.query.schema;
+    var table = req.query.table;
+    var myCubeField = JSON.parse(req.query.myCubeField);
+    service.updateConstraint(schema, table, myCubeField);
+});
 router.get('/createcommenttable', token_auth, function (req, res) {
     var table = req.query.table;
     service.createCommentTable(table).then(function (result) {
@@ -72,7 +79,39 @@ router.get('/addColumn', token_auth, function (req, res) {
     var field = req.query.field;
     var type = req.query.type;
     var label = req.query.label;
-    service.addColumn(table, field, type, label).then(function (result) {
+    var myCubeField = JSON.parse(req.query.myCubeField);
+    console.log(myCubeField);
+    service.addColumn(table, field, type, label, myCubeField).then(function (result) {
+        var constraint = "";
+        var i = 0;
+        myCubeField.constraints.forEach(function (x) {
+            constraint = constraint + '"' + myCubeField.field + '"' + "='" + x.name + "'";
+            if (i < myCubeField.constraints.length - 1) {
+                constraint = constraint + " OR ";
+            }
+            i = +1;
+        });
+        service.addConstraint('mycube', table, myCubeField.field, constraint).then(function (result) {
+            console.log(result);
+        });
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
+router.get('/deleteColumn', token_auth, function (req, res) {
+    var table = req.query.table;
+    var myCubeField = JSON.parse(req.query.myCubeField);
+    service.deleteColumn(table, myCubeField).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
+router.get('/moveColumn', token_auth, function (req, res) {
+    var table = req.query.table;
+    var myCubeField = JSON.parse(req.query.myCubeField);
+    service.moveColumn(table, myCubeField).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);

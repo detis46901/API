@@ -169,6 +169,21 @@
         layerpermission?: LayerPermission[];
         modulepermission?: ModulePermission[];
     }
+    interface MyCubeConstraint {
+        name: string | number;
+        option: string;
+    }
+    interface MyCubeField {
+        field: string;
+        type: string;
+        description?: string;
+        value?: any;
+        options?: string[]
+        label?: boolean;
+        changed?: boolean;
+        links?: any[]
+        constraints?: Array<MyCubeConstraint>
+    }
 }
 
 declare module 'app' {
