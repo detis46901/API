@@ -33,9 +33,9 @@ router.get('/getsheets', token_auth, function (req, res) {
     });
 });
 router.get('/getschema', token_auth, function (req, res) {
+    console.log('getschema');
     var table = req.query.table;
     var schema = req.query.schema;
-    console.log(table);
     service.getschema(schema, table).then(function (result) {
         res.send(result);
     }).catch(function (error) {
@@ -60,11 +60,14 @@ router.get('/constraints', token_auth, function (req, res) {
     });
 });
 router.get('/updateconstraint', token_auth, function (req, res) {
-    // console.log(req)
     var schema = req.query.schema;
     var table = req.query.table;
     var myCubeField = JSON.parse(req.query.myCubeField);
-    service.updateConstraint(schema, table, myCubeField);
+    service.updateConstraint(schema, table, myCubeField).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
 });
 router.get('/createcommenttable', token_auth, function (req, res) {
     var table = req.query.table;
@@ -80,7 +83,6 @@ router.get('/addColumn', token_auth, function (req, res) {
     var type = req.query.type;
     var label = req.query.label;
     var myCubeField = JSON.parse(req.query.myCubeField);
-    console.log(myCubeField);
     service.addColumn(table, field, type, label, myCubeField).then(function (result) {
         var constraint = "";
         var i = 0;
@@ -92,7 +94,6 @@ router.get('/addColumn', token_auth, function (req, res) {
             i = +1;
         });
         service.addConstraint('mycube', table, myCubeField.field, constraint).then(function (result) {
-            console.log(result);
         });
         res.send(result);
     }).catch(function (error) {
@@ -143,10 +144,11 @@ router.get('/single', token_auth, function (req, res) {
     });
 });
 router.get('/anyone', token_auth, function (req, res) {
+    var schema = req.query.schema;
     var table = req.query.table;
     var field = req.query.field;
     var value = req.query.value;
-    service.getanysingle(table, field, value).then(function (result) {
+    service.getanysingle(schema, table, field, value).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
@@ -161,9 +163,18 @@ router.get('/getcomments', token_auth, function (req, res) {
         res.send(error);
     });
 });
+router.get('/singlelog', token_auth, function (req, res) {
+    var schema = req.query.schema;
+    var table = req.query.table;
+    var id = req.query.id;
+    service.getSingleLog(schema, table, id).then(function (result) {
+        res.send(result);
+    }).catch(function (error) {
+        res.send(error);
+    });
+});
 router.post('/addcommentwithgeom', token_auth, function (req, res) {
     var comment = req.body;
-    //console.log(comment)
     var table = comment.table;
     service.addCommentWithGeom(comment).then(function (result) {
         res.send(result);
@@ -173,12 +184,9 @@ router.post('/addcommentwithgeom', token_auth, function (req, res) {
 });
 router.post('/addcommentwithoutgeom', token_auth, function (req, res) {
     var file = req.body.file;
-    //console.log(file)
     var comment = req.body;
-    //console.log(comment)
     var table = comment.table;
     service.addCommentWithoutGeom(comment).then(function (result) {
-        console.log(result);
         res.send(result);
     }).catch(function (error) {
         res.send(error);
@@ -186,7 +194,6 @@ router.post('/addcommentwithoutgeom', token_auth, function (req, res) {
 });
 router.post('/addanycommentwithoutgeom', token_auth, function (req, res) {
     var file = req.body.file;
-    //console.log(file)
     var comment = req.body;
     service.addAnyCommentWithoutGeom(comment).then(function (result) {
         console.log(result);
@@ -197,14 +204,18 @@ router.post('/addanycommentwithoutgeom', token_auth, function (req, res) {
 });
 router.post('/addimage', multer(multerConfig).single('photo'), function (req, res) {
     console.log('addImage');
-    //console.log(req)
-    service.addImage(req);
-    //res.send(res);
+    service.addImage(req).then(function (result) {
+        res.send(result);
+    });
+});
+router.post('/addanyimage', multer(multerConfig).single('photo'), function (req, res) {
+    console.log('addImage');
+    service.addAnyImage(req).then(function (result) {
+        res.send(result);
+    });
 });
 router.get('/getimage', function (req, res) {
     service.getImage(req.query.table, req.query.id).then(function (file) {
-        console.log(file[0][0].file);
-        console.log(Buffer.isBuffer(file[0][0].file));
         var fileContents = Buffer.from(file[0][0].file, "utf8");
         var readStream = new stream.PassThrough();
         readStream.end(fileContents);
@@ -212,7 +223,18 @@ router.get('/getimage', function (req, res) {
         res.set('Content-Type', 'image/png');
         readStream.pipe(res);
     }).catch(function (err) {
-        console.log(err);
+        res.json({ msg: 'Error', detail: err });
+    });
+});
+router.get('/getanyimage', function (req, res) {
+    service.getAnyImage(req.query.schema, req.query.table, req.query.id).then(function (file) {
+        var fileContents = Buffer.from(file[0][0].file, "utf8");
+        var readStream = new stream.PassThrough();
+        readStream.end(fileContents);
+        res.set('Content-disposition', 'attachment; filename=' + file[0][0].filename);
+        res.set('Content-Type', 'image/png');
+        readStream.pipe(res);
+    }).catch(function (err) {
         res.json({ msg: 'Error', detail: err });
     });
 });
@@ -273,7 +295,6 @@ router.get('/deleteAnyRecord', token_auth, function (req, res) {
     });
 });
 router.put('/update', token_auth, function (req, res) {
-    //console.log(req)
     var table = req.body.table;
     var id = req.body.id;
     var field = req.body.mycubefield.field;
@@ -286,7 +307,6 @@ router.put('/update', token_auth, function (req, res) {
     });
 });
 router.put('/updateAnyRecord', token_auth, function (req, res) {
-    //console.log(req)
     var schema = req.body.schema;
     var table = req.body.table;
     var id = req.body.id;

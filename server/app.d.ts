@@ -105,7 +105,9 @@
     }
 
     interface MyCubeComment extends IModelBase {
+        schema: string;
         table: number;
+        logTable: string
         id: number;
         userid: number;
         comment: string;

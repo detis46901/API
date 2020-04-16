@@ -37,12 +37,10 @@ class SQLService {
     }
 
     getsheets(schema: string, table: string): Promise<any> {
-        console.log(schema)
         let promise = new Promise((resolve, reject) => {
             let responsehtml: string = "<html><body><table>"
             this.getschema(schema, table).then((schemaarray) => {
                 let schema2 = schemaarray[0]
-                console.log(schema2)
                 //header information
                 responsehtml += "<tr>"
                 schema2.forEach(schemaelement => {
@@ -143,27 +141,27 @@ class SQLService {
     }
 
     moveColumn(table: string, myCubeField: MyCubeField): Promise<any> {
-        let rnd = Math.trunc(Math.random()*100)
+        let rnd = Math.trunc(Math.random() * 100)
         let promise = new Promise((resolve, reject) => {
-        this.mC1(table, myCubeField, rnd).then(() => {
-            this.mC2(table, myCubeField, rnd).then(() => {
-                this.mC3(table, myCubeField).then(() => {
-                   this.mc4(table, myCubeField, rnd).then(() => {console.log('completed'); resolve()})
+            this.mC1(table, myCubeField, rnd).then(() => {
+                this.mC2(table, myCubeField, rnd).then(() => {
+                    this.mC3(table, myCubeField).then(() => {
+                        this.mc4(table, myCubeField, rnd).then(() => { console.log('completed'); resolve() })
+                    }
+                    )
                 }
                 )
             }
             )
-        }
-        )
-    })
-    return promise
+        })
+        return promise
     }
 
-    mC1(table: string, myCubeField: MyCubeField, rnd:number): Promise<any> {
+    mC1(table: string, myCubeField: MyCubeField, rnd: number): Promise<any> {
         return db.query('ALTER TABLE mycube.t' + table + ' ADD layer' + rnd + ' ' + myCubeField.type)
     }
 
-    mC2(table: string, myCubeField: MyCubeField, rnd:number): Promise<any> {
+    mC2(table: string, myCubeField: MyCubeField, rnd: number): Promise<any> {
         return db.query('UPDATE mycube.t' + table + ' SET layer' + rnd + ' = "' + myCubeField.field + '"')
     }
 
@@ -177,31 +175,37 @@ class SQLService {
 
     updateConstraint(schema: string, table: string, myCubeField: MyCubeField): Promise<any> {
         let promise = new Promise((resolve, reject) => {
-        // this.deleteConstraint(schema, table, myCubeField.field).then(() => {
-            myCubeField.constraints.forEach((x) => {
-                var constraint: string = ""
-                var i:number = 0
+            var constraint: string = ""
+            var i: number = 1
+            // this.deleteConstraint(schema, table, myCubeField.field).then(() => {
+            if (myCubeField.constraints) {
                 myCubeField.constraints.forEach((x) => {
-                    constraint = constraint + '"' + myCubeField.field + '"' + "='" + x.name + "'"
-                    if (i < myCubeField.constraints.length - 1) {
+                    if (myCubeField.type == 'integer' || myCubeField.type == 'double precision') { constraint = constraint + '"' + myCubeField.field + '"' + "= " + x.name }
+                    else { constraint = constraint + '"' + myCubeField.field + '"' + "='" + x.name + "'" }
+                    if (i < myCubeField.constraints.length) {
                         constraint = constraint + " OR "
                     }
-                    i =+1
+                    i = i + 1
                 })
                 console.log('adding constraint if it exists')
-                if(constraint) { 
-                this.addConstraint(schema, table, myCubeField.field, constraint).then((result) => {
-                    console.log(result)
-                })
+                if (constraint) {
+                    this.deleteConstraint(schema, table, myCubeField.field).then((result) => {
+                        this.addConstraint(schema, table, myCubeField.field, constraint).then((result) => {
+                            resolve()
+                        })
+                    }).catch((error) => {
+                        this.addConstraint(schema, table, myCubeField.field, constraint).then((result) => { console.log('Complete'); resolve() })
+                    })
+                }
+                else { resolve() }
+
             }
-            })
-        // })
-    })
-    return promise
+        })
+        return promise
     }
 
     addConstraint(schema: string, table: string, field: string, constraint: string): Promise<any> {
-        console.log('ALTER TABLE ' + schema + '.t' + table + ' ADD CONSTRAINT ' + field + '_types CHECK (' + constraint + ');')
+        //this can fail at times if there is already a constraint
         return db.query('ALTER TABLE ' + schema + '.t' + table + ' ADD CONSTRAINT "' + field + '_types" CHECK (' + constraint + ');')
     }
 
@@ -221,7 +225,6 @@ class SQLService {
         return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" + geometry + "'),4326)) RETURNING id;")
     }
     addAnyRecord(schema, table, field, value) {
-        console.log(table, field, value)
         return db.query("INSERT INTO " + schema + "." + table + ' ("' + field + '") VALUES (' + value + ") RETURNING id;")
     }
 
@@ -235,11 +238,10 @@ class SQLService {
     }
 
     deleteAnyRecord(schema: string, table: string, id: string): Promise<any> {
-        return db.query("DELETE FROM " + schema + "." + table + " WHERE id = '" + id + "';")
+        return db.query('DELETE FROM ' + schema + '."' + table + '" WHERE id' + " = '" + id + "';")
     }
 
     getschema(schema: string, table: string): Promise<any> {
-        console.log(table)
         return db.query(`SELECT cols.column_name AS field, cols.data_type as type,
         pg_catalog.col_description(c.oid, cols.ordinal_position::int) as description
         FROM pg_catalog.pg_class c, information_schema.columns cols
@@ -249,15 +251,20 @@ class SQLService {
         return db.query("SELECT * FROM " + table + " WHERE id='" + id + "';")
     }
 
-    getanysingle(table: string, field: string, value: string): Promise<any> {
-        return db.query("SELECT * FROM " + table + ` WHERE "` + field + `" = ` + value)
+    getanysingle(schema: string, table: string, field: string, value: string): Promise<any> {
+        return db.query("SELECT * FROM " + schema + '."' + table + `" WHERE "` + field + `" = ` + value)
     }
 
     getcomments(table: string, id: string): Promise<any> {
         return db.query('SELECT id, userid, comment, geom, filename, auto, featureid, createdat, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "' ORDER BY id DESC;")
         //return db.query("SELECT mycube.c" + table + '.*, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';")
     }
+    getSingleLog(schema: string, table: string, id: string): Promise<any> {
+        return db.query('SELECT ' + schema + '."' + table + '".*, users."firstName", users."lastName" FROM ' + schema + '.' + table + "  INNER JOIN users ON " + schema + "." + table + '.userid = users."ID" WHERE ' + schema + '.' + table + ".featureid='" + id + "' ORDER BY id DESC;")
+    }
+
     addCommentWithGeom(comment: App.MyCubeComment): Promise<any> {
+        console.log(comment.geom['geometry'])
         let ntext: RegExp = /'/g
         try { comment.comment = comment.comment.replace(ntext, "''") }
         catch (error) { }
@@ -270,19 +277,32 @@ class SQLService {
         catch (error) { }
         return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "','" + comment.featureid + "'," + comment.auto + ") RETURNING id;")
     }
+
     addAnyCommentWithoutGeom(comment: App.MyCubeComment): Promise<any> {
-        return db.query("INSERT INTO " + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "','" + comment.featureid + "'," + comment.auto + ") RETURNING id;")
+        if (comment.geom) {
+            console.log(comment.geom['geometry'])
+            let ntext: RegExp = /'/g
+            try { comment.comment = comment.comment.replace(ntext, "''") }
+            catch (error) { }
+            console.log("INSERT INTO " + comment.schema + '."' + comment.logTable + '" (userid, comment, geom, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureid + "," + comment.auto + ")")
+            return db.query("INSERT INTO " + comment.schema + '."' + comment.logTable + '" (userid, comment, geom, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureid + "," + comment.auto + ")")
+        }
+        else {
+            return db.query("INSERT INTO " + comment.schema + '."' + comment.logTable + '" (userid, comment, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "','" + comment.featureid + "'," + comment.auto + ") RETURNING id;")
+        }
     }
 
     addImage(comment: any): Promise<any> {
-        //console.log('In addImage')
-        //console.log(comment.file.originalname)
-        //console.log(comment.file.buffer)
-        return db.query("UPDATE mycube.c" + comment['body']['table'] + " SET file = ?, filename = ? where id ='" + comment['body']['id'] + "'", { replacements: [comment.file.buffer, comment.file.originalname] })
-        //return db.query("INSERT INTO mycube.c92 (userid, comment, featureid, file, auto) VALUES (1,'comment','525', ? ,false)", {replacements: [comment.file.buffer]})
+        return db.query("UPDATE " + comment['body']['schema'] + '."' + comment['body']['table'] + '"' + " SET file = ?, filename = ? where id ='" + comment['body']['id'] + "'", { replacements: [comment.file.buffer, comment.file.originalname] })
+    }
+    addAnyImage(comment: any): Promise<any> {
+        return db.query('UPDATE ' + comment['body']['table'] + " SET file = ?, filename = ? where id ='" + comment['body']['id'] + "'", { replacements: [comment.file.buffer, comment.file.originalname] })
     }
     getImage(table, id): Promise<any> {
         return db.query("SELECT filename, file FROM mycube.c" + table + " WHERE id=" + id)
+    }
+    getAnyImage(schema, table, id): Promise<any> {
+        return db.query('SELECT filename, file FROM "' + schema + '"."' + table + '" WHERE id=' + id)
     }
     deleteComment(table: string, id: string): Promise<any> {
         return db.query("DELETE FROM mycube.c" + table + ' WHERE id=' + id + ";")
@@ -308,18 +328,15 @@ class SQLService {
             }
             case "date": {
                 if (value) {
-                    //console.log('is not null')
                     return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE id='" + id + "';")
                 }
                 else {
-                    //console.log("is null")
                     return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "null WHERE id='" + id + "';")
                 }
             }
         }
     }
     updateAnyRecord(schema: string, table: string, id: string, field: string, type: string, value: any) {
-        console.log(id, field, type, value)
         switch (type) {
             case "integer": {
                 return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';")
@@ -343,11 +360,9 @@ class SQLService {
             }
             case "date": {
                 if (value) {
-                    //console.log('is not null')
                     return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE id='" + id + "';")
                 }
                 else {
-                    //console.log("is null")
                     return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + "null WHERE id='" + id + "';")
                 }
             }

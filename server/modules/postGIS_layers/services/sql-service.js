@@ -32,12 +32,10 @@ var SQLService = (function () {
     };
     SQLService.prototype.getsheets = function (schema, table) {
         var _this = this;
-        console.log(schema);
         var promise = new Promise(function (resolve, reject) {
             var responsehtml = "<html><body><table>";
             _this.getschema(schema, table).then(function (schemaarray) {
                 var schema2 = schemaarray[0];
-                console.log(schema2);
                 //header information
                 responsehtml += "<tr>";
                 schema2.forEach(function (schemaelement) {
@@ -136,30 +134,41 @@ var SQLService = (function () {
     SQLService.prototype.updateConstraint = function (schema, table, myCubeField) {
         var _this = this;
         var promise = new Promise(function (resolve, reject) {
+            var constraint = "";
+            var i = 1;
             // this.deleteConstraint(schema, table, myCubeField.field).then(() => {
-            myCubeField.constraints.forEach(function (x) {
-                var constraint = "";
-                var i = 0;
+            if (myCubeField.constraints) {
                 myCubeField.constraints.forEach(function (x) {
-                    constraint = constraint + '"' + myCubeField.field + '"' + "='" + x.name + "'";
-                    if (i < myCubeField.constraints.length - 1) {
+                    if (myCubeField.type == 'integer' || myCubeField.type == 'double precision') {
+                        constraint = constraint + '"' + myCubeField.field + '"' + "= " + x.name;
+                    }
+                    else {
+                        constraint = constraint + '"' + myCubeField.field + '"' + "='" + x.name + "'";
+                    }
+                    if (i < myCubeField.constraints.length) {
                         constraint = constraint + " OR ";
                     }
-                    i = +1;
+                    i = i + 1;
                 });
                 console.log('adding constraint if it exists');
                 if (constraint) {
-                    _this.addConstraint(schema, table, myCubeField.field, constraint).then(function (result) {
-                        console.log(result);
+                    _this.deleteConstraint(schema, table, myCubeField.field).then(function (result) {
+                        _this.addConstraint(schema, table, myCubeField.field, constraint).then(function (result) {
+                            resolve();
+                        });
+                    }).catch(function (error) {
+                        _this.addConstraint(schema, table, myCubeField.field, constraint).then(function (result) { console.log('Complete'); resolve(); });
                     });
                 }
-            });
-            // })
+                else {
+                    resolve();
+                }
+            }
         });
         return promise;
     };
     SQLService.prototype.addConstraint = function (schema, table, field, constraint) {
-        console.log('ALTER TABLE ' + schema + '.t' + table + ' ADD CONSTRAINT ' + field + '_types CHECK (' + constraint + ');');
+        //this can fail at times if there is already a constraint
         return db.query('ALTER TABLE ' + schema + '.t' + table + ' ADD CONSTRAINT "' + field + '_types" CHECK (' + constraint + ');');
     };
     SQLService.prototype.deleteConstraint = function (schema, table, field) {
@@ -175,7 +184,6 @@ var SQLService = (function () {
         return db.query("INSERT INTO mycube.t" + table + " (geom) VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" + geometry + "'),4326)) RETURNING id;");
     };
     SQLService.prototype.addAnyRecord = function (schema, table, field, value) {
-        console.log(table, field, value);
         return db.query("INSERT INTO " + schema + "." + table + ' ("' + field + '") VALUES (' + value + ") RETURNING id;");
     };
     SQLService.prototype.fixGeometry = function (table) {
@@ -185,23 +193,26 @@ var SQLService = (function () {
         return db.query("DELETE FROM mycube.t" + table + " WHERE id = '" + id + "';");
     };
     SQLService.prototype.deleteAnyRecord = function (schema, table, id) {
-        return db.query("DELETE FROM " + schema + "." + table + " WHERE id = '" + id + "';");
+        return db.query('DELETE FROM ' + schema + '."' + table + '" WHERE id' + " = '" + id + "';");
     };
     SQLService.prototype.getschema = function (schema, table) {
-        console.log(table);
         return db.query("SELECT cols.column_name AS field, cols.data_type as type,\n        pg_catalog.col_description(c.oid, cols.ordinal_position::int) as description\n        FROM pg_catalog.pg_class c, information_schema.columns cols\n        WHERE cols.table_schema = '" + schema + "' AND cols.table_name = '" + table + "' AND cols.table_name = c.relname");
     };
     SQLService.prototype.getsingle = function (table, id) {
         return db.query("SELECT * FROM " + table + " WHERE id='" + id + "';");
     };
-    SQLService.prototype.getanysingle = function (table, field, value) {
-        return db.query("SELECT * FROM " + table + " WHERE \"" + field + "\" = " + value);
+    SQLService.prototype.getanysingle = function (schema, table, field, value) {
+        return db.query("SELECT * FROM " + schema + '."' + table + "\" WHERE \"" + field + "\" = " + value);
     };
     SQLService.prototype.getcomments = function (table, id) {
         return db.query('SELECT id, userid, comment, geom, filename, auto, featureid, createdat, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "' ORDER BY id DESC;");
         //return db.query("SELECT mycube.c" + table + '.*, users."firstName", users."lastName" FROM mycube.c' + table + "  INNER JOIN users ON mycube.c" + table + '.userid = users."ID" WHERE mycube.c' + table + ".featureid='" + id + "';")
     };
+    SQLService.prototype.getSingleLog = function (schema, table, id) {
+        return db.query('SELECT ' + schema + '."' + table + '".*, users."firstName", users."lastName" FROM ' + schema + '.' + table + "  INNER JOIN users ON " + schema + "." + table + '.userid = users."ID" WHERE ' + schema + '.' + table + ".featureid='" + id + "' ORDER BY id DESC;");
+    };
     SQLService.prototype.addCommentWithGeom = function (comment) {
+        console.log(comment.geom['geometry']);
         var ntext = /'/g;
         try {
             comment.comment = comment.comment.replace(ntext, "''");
@@ -218,17 +229,31 @@ var SQLService = (function () {
         return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "','" + comment.featureid + "'," + comment.auto + ") RETURNING id;");
     };
     SQLService.prototype.addAnyCommentWithoutGeom = function (comment) {
-        return db.query("INSERT INTO " + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "','" + comment.featureid + "'," + comment.auto + ") RETURNING id;");
+        if (comment.geom) {
+            console.log(comment.geom['geometry']);
+            var ntext = /'/g;
+            try {
+                comment.comment = comment.comment.replace(ntext, "''");
+            }
+            catch (error) { }
+            console.log("INSERT INTO " + comment.schema + '."' + comment.logTable + '" (userid, comment, geom, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureid + "," + comment.auto + ")");
+            return db.query("INSERT INTO " + comment.schema + '."' + comment.logTable + '" (userid, comment, geom, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureid + "," + comment.auto + ")");
+        }
+        else {
+            return db.query("INSERT INTO " + comment.schema + '."' + comment.logTable + '" (userid, comment, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "','" + comment.featureid + "'," + comment.auto + ") RETURNING id;");
+        }
     };
     SQLService.prototype.addImage = function (comment) {
-        //console.log('In addImage')
-        //console.log(comment.file.originalname)
-        //console.log(comment.file.buffer)
-        return db.query("UPDATE mycube.c" + comment['body']['table'] + " SET file = ?, filename = ? where id ='" + comment['body']['id'] + "'", { replacements: [comment.file.buffer, comment.file.originalname] });
-        //return db.query("INSERT INTO mycube.c92 (userid, comment, featureid, file, auto) VALUES (1,'comment','525', ? ,false)", {replacements: [comment.file.buffer]})
+        return db.query("UPDATE " + comment['body']['schema'] + '."' + comment['body']['table'] + '"' + " SET file = ?, filename = ? where id ='" + comment['body']['id'] + "'", { replacements: [comment.file.buffer, comment.file.originalname] });
+    };
+    SQLService.prototype.addAnyImage = function (comment) {
+        return db.query('UPDATE ' + comment['body']['table'] + " SET file = ?, filename = ? where id ='" + comment['body']['id'] + "'", { replacements: [comment.file.buffer, comment.file.originalname] });
     };
     SQLService.prototype.getImage = function (table, id) {
         return db.query("SELECT filename, file FROM mycube.c" + table + " WHERE id=" + id);
+    };
+    SQLService.prototype.getAnyImage = function (schema, table, id) {
+        return db.query('SELECT filename, file FROM "' + schema + '"."' + table + '" WHERE id=' + id);
     };
     SQLService.prototype.deleteComment = function (table, id) {
         return db.query("DELETE FROM mycube.c" + table + ' WHERE id=' + id + ";");
@@ -254,18 +279,15 @@ var SQLService = (function () {
             }
             case "date": {
                 if (value) {
-                    //console.log('is not null')
                     return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE id='" + id + "';");
                 }
                 else {
-                    //console.log("is null")
                     return db.query("UPDATE mycube.t" + table + ' SET "' + field + '" = ' + "null WHERE id='" + id + "';");
                 }
             }
         }
     };
     SQLService.prototype.updateAnyRecord = function (schema, table, id, field, type, value) {
-        console.log(id, field, type, value);
         switch (type) {
             case "integer": {
                 return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';");
@@ -291,11 +313,9 @@ var SQLService = (function () {
             }
             case "date": {
                 if (value) {
-                    //console.log('is not null')
                     return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + "'" + value + "' WHERE id='" + id + "';");
                 }
                 else {
-                    //console.log("is null")
                     return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + "null WHERE id='" + id + "';");
                 }
             }
