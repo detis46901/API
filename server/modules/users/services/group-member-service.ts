@@ -9,7 +9,6 @@ class GroupMemberService {
     }
 
     getByUser(userID: number): Promise<GroupMemberModel.GroupMemberInstance[]> {
-
         var findOptions: Sequelize.FindOptions = {
             order: [
                 'ID'
@@ -29,7 +28,6 @@ class GroupMemberService {
     }
 
     getByGroup(groupID: number): Promise<GroupMemberModel.GroupMemberInstance[]> {
-        console.log(groupID)
         var findOptions: Sequelize.FindOptions = {
             order: [
                 'ID'

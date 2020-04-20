@@ -5,6 +5,7 @@ var PageModel = require('../../users/models/page-model');
 var LayerModel = require('../models/layers-model');
 var ServerModel = require('../models/servers-model');
 var UserPageInstanceModel = require('../../feature modules/models/user-page-instance-model');
+var ModuleInstanceModel = require('../../../modules/feature modules/models/module-instances-model');
 var UserPageLayerService = (function () {
     function UserPageLayerService() {
     }
@@ -40,7 +41,7 @@ var UserPageLayerService = (function () {
             );
         }
         findOptions.include = [PageModel.Model, LayerModel.Model, UserPageInstanceModel.Model];
-        return UserPageLayerModel.Model.findAll({ order: ['layerOrder'], where: (_b = {}, _b[Sequelize.Op.and] = [{ userPageID: pageID }], _b), include: [{ model: PageModel.Model }, { model: UserPageInstanceModel.Model }, { model: LayerModel.Model, include: [ServerModel.Model] }] });
+        return UserPageLayerModel.Model.findAll({ order: ['layerOrder'], where: (_b = {}, _b[Sequelize.Op.and] = [{ userPageID: pageID }], _b), include: [{ model: PageModel.Model }, { model: UserPageInstanceModel.Model, include: [ModuleInstanceModel.Model] }, { model: LayerModel.Model, include: [ServerModel.Model] }] });
         var _a, _b;
     };
     UserPageLayerService.prototype.getUserLayer = function (userID) {

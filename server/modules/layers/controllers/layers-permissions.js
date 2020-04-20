@@ -11,7 +11,7 @@ var LayerPermissions = (function () {
         var promise = new Promise(function (resolve, reject) {
             _this.groupMemberService.getByUser(userID).then(function (result) {
                 for (var i = 0; i < result.length; i++) {
-                    var gg = new Array();
+                    //   let gg = new Array<number>()
                     _this.groups.push(result[i].groupID);
                 }
                 _this.layerPermissionService.getByUserAndGroup(userID, _this.groups).then(function (final) {
@@ -25,7 +25,6 @@ var LayerPermissions = (function () {
                     });
                     var finalToSend = [];
                     for (var j = 0; j < final.length; j++) {
-                        //console.log(final[j].layerID)
                         if (final[j].layerID != lastLayerID) {
                             lastLayerID = final[j].layerID;
                             finalToSend.push(final[j]);

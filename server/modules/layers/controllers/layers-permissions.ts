@@ -13,7 +13,7 @@ export class LayerPermissions {
         let promise = new Promise((resolve, reject) => {
             this.groupMemberService.getByUser(userID).then((result) => {
                 for (let i=0; i<result.length; i++) {
-                    let gg = new Array<number>()
+                 //   let gg = new Array<number>()
                     this.groups.push(result[i].groupID)
                 }
                 this.layerPermissionService.getByUserAndGroup(userID, this.groups).then((final) => {
@@ -25,7 +25,6 @@ export class LayerPermissions {
                     })
                     let finalToSend: LayerPermissionInstance[] = []
                     for (let j=0; j<final.length; j++) {
-                        //console.log(final[j].layerID)
                         if (final[j].layerID != lastLayerID) {
                             lastLayerID = final[j].layerID
                             finalToSend.push(final[j])

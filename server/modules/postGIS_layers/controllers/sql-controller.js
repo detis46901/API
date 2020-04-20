@@ -307,6 +307,7 @@ router.put('/update', token_auth, function (req, res) {
     });
 });
 router.put('/updateAnyRecord', token_auth, function (req, res) {
+    console.log(req);
     var schema = req.body.schema;
     var table = req.body.table;
     var id = req.body.id;

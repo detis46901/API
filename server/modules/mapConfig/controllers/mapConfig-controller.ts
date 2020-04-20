@@ -43,10 +43,8 @@ router.get('/list', token_auth, (req, res) => {
 });
 
 router.get('/single', token_auth, (req, res) => {
-    console.log(req.query.mapconfig)
     let job:boolean[] = []
     var mapConfig = <App.mapConfig>JSON.parse(req.query.mapconfig);
-
     userPageService.getActiveByUserID(mapConfig.user.ID).then((result) => {
         mapConfig.name = "Current"
         mapConfig.userpages = result
@@ -68,9 +66,9 @@ router.get('/single', token_auth, (req, res) => {
     }).catch((error) => {
         res.send(error);
     });
-    layerPermissions.getPermissions(mapConfig.userID).then((permissions) => {
+    layerPermissions.getPermissions(mapConfig.user.ID).then((permissions) => {
         mapConfig.layerpermission = permissions
-        modulePermissions.getPermissions(mapConfig.userID).then((modulePerm) => {
+        modulePermissions.getPermissions(mapConfig.user.ID).then((modulePerm) => {
             mapConfig.modulepermission = modulePerm
             job.push(true)
             if(job.length == 4) {res.send(JSON.stringify(mapConfig))}

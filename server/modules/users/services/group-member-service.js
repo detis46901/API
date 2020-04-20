@@ -28,7 +28,6 @@ var GroupMemberService = (function () {
         var _a;
     };
     GroupMemberService.prototype.getByGroup = function (groupID) {
-        console.log(groupID);
         var findOptions = {
             order: [
                 'ID'

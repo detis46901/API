@@ -35,7 +35,6 @@ router.get('/list', token_auth, function (req, res) {
     });
 });
 router.get('/single', token_auth, function (req, res) {
-    console.log(req.query.mapconfig);
     var job = [];
     var mapConfig = JSON.parse(req.query.mapconfig);
     userPageService.getActiveByUserID(mapConfig.user.ID).then(function (result) {
@@ -65,9 +64,9 @@ router.get('/single', token_auth, function (req, res) {
     }).catch(function (error) {
         res.send(error);
     });
-    layerPermissions.getPermissions(mapConfig.userID).then(function (permissions) {
+    layerPermissions.getPermissions(mapConfig.user.ID).then(function (permissions) {
         mapConfig.layerpermission = permissions;
-        modulePermissions.getPermissions(mapConfig.userID).then(function (modulePerm) {
+        modulePermissions.getPermissions(mapConfig.user.ID).then(function (modulePerm) {
             mapConfig.modulepermission = modulePerm;
             job.push(true);
             if (job.length == 4) {

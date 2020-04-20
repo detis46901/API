@@ -5,6 +5,8 @@ import LayerModel = require('../models/layers-model')
 import ServerModel = require ('../models/servers-model')
 import UserModel = require('../../users/models/user-model');
 import UserPageInstanceModel = require('../../feature modules/models/user-page-instance-model')
+import ModuleInstanceModel = require ('../../../modules/feature modules/models/module-instances-model');
+
 
 class UserPageLayerService {
 
@@ -47,7 +49,7 @@ class UserPageLayerService {
     
         findOptions.include = [PageModel.Model, LayerModel.Model, UserPageInstanceModel.Model]
 
-        return UserPageLayerModel.Model.findAll({order: ['layerOrder'], where: {[Sequelize.Op.and]: [{ userPageID: pageID}]}, include: [{model: PageModel.Model}, {model: UserPageInstanceModel.Model}, {model: LayerModel.Model, include: [ServerModel.Model]}]})
+        return UserPageLayerModel.Model.findAll({order: ['layerOrder'], where: {[Sequelize.Op.and]: [{ userPageID: pageID}]}, include: [{model: PageModel.Model}, {model: UserPageInstanceModel.Model, include: [ModuleInstanceModel.Model]}, {model: LayerModel.Model, include: [ServerModel.Model]}]})
     }
 
     getUserLayer(userID: number): any {
