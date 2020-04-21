@@ -33,7 +33,6 @@ router.get('/getsheets', token_auth, function (req, res) {
     });
 });
 router.get('/getschema', token_auth, function (req, res) {
-    console.log('getschema');
     var table = req.query.table;
     var schema = req.query.schema;
     service.getschema(schema, table).then(function (result) {
@@ -307,7 +306,6 @@ router.put('/update', token_auth, function (req, res) {
     });
 });
 router.put('/updateAnyRecord', token_auth, function (req, res) {
-    console.log(req);
     var schema = req.body.schema;
     var table = req.body.table;
     var id = req.body.id;
