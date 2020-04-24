@@ -36,7 +36,6 @@ var PageService = (function () {
                 _a
             );
         }
-        console.log(userID);
         return PageModel.Model.findAll(findOptions);
         var _a;
     };

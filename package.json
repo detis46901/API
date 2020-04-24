@@ -19,7 +19,6 @@
   "homepage": "https://github.com/detis46901/API.git",
   "dependencies": {
     "@types/bcrypt": "^3.0.0",
-    "@types/express": "^4.16.1",
     "@types/express-serve-static-core": "^4.16.2",
     "@types/jsonwebtoken": "^8.3.2",
     "bcrypt": "^4.0.1",
@@ -43,7 +42,7 @@
     "pg": "^6.4.1",
     "pg-hstore": "^2.3.2",
     "sequelize": "^5.2.7",
-    "sequelize-typescript": "^0.6.9",
+    "sequelize-typescript": "^0.6.11",
     "ts-md5": "^1.2.4",
     "typescript": "^3.4.1"
   },

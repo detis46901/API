@@ -31,7 +31,6 @@ router.get('/bylayer', token_auth, function (req, res) {
 });
 router.get('/bygroup', token_auth, function (req, res) {
     var groupid = req.query.groupID;
-    //console.log("groupid=" + groupid)
     service.getByGroup(groupid).then(function (result) {
         res.send(result);
     }).catch(function (error) {
@@ -39,7 +38,6 @@ router.get('/bygroup', token_auth, function (req, res) {
     });
 });
 router.get('/byusergroups', token_auth, function (req, res) {
-    var finalResponse = new Array();
     var groups = new Array();
     groupMemberService.getByUser(req.query.userID).then(function (result) {
         for (var i = 0; i < result.length; i++) {
@@ -57,7 +55,6 @@ router.get('/byusergroups', token_auth, function (req, res) {
             });
             var finalToSend = [];
             for (var j = 0; j < final.length; j++) {
-                //console.log(final[j].layerID)
                 if (final[j].layerID != lastLayerID) {
                     lastLayerID = final[j].layerID;
                     finalToSend.push(final[j]);
@@ -103,18 +100,12 @@ router.put('/update', token_auth, function (req, res) {
     });
 });
 router.delete('/delete', token_auth, function (req, res) {
-    //if(req.body.delete) {
     var ID = req.query.ID;
     service.delete(ID).then(function (result) {
         res.send(result);
     }).catch(function (error) {
         res.send(error);
     });
-    // } else {
-    //     res.status(500).json({
-    //         message:"You do not have permission to delete this permission entry."
-    //     })
-    // }
 });
 module.exports = router;
 

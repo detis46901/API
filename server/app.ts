@@ -54,7 +54,6 @@ app.use(errorHandler());
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb'}));
 
-
 // Routes
 //app.use('/api/parent', ParentController);
 app.use('/api/users', UserController);
@@ -75,9 +74,6 @@ app.use('/api/modulepermission', ModulePermissionController)
 app.use('/api/userpageinstance', UserPageInstanceController)
 app.use('/api/mapconfig', MapConfigController)
 app.use('/api/domain', DomainController)
-
-
-
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));

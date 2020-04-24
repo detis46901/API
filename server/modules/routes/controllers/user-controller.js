@@ -9,7 +9,6 @@ var bcrypt = require('bcrypt');
 var router = express.Router();
 var service = new UserService();
 router.get('/test', function (req, res) {
-    console.log('testing');
     res.send('Test Passed');
 });
 router.get('/list', token_auth, function (req, res) {
@@ -27,7 +26,6 @@ router.get('/single', token_auth, function (req, res) {
         res.send(error);
     });
 });
-//1/3/18: Robust way to do /create and /login
 router.post('/single', token_auth, function (req, res) {
     var request = req.body;
     UserModel.Model.findAll({

@@ -55,13 +55,10 @@ var sequalizeModel = db.define('user', {
         }
     }
 });
-//console.log("\n\n"+sequalizeModel+"\n\n")
 sequalizeModel.sync();
 var flag = 0;
 sequalizeModel.findAll({}).then(function (result) {
-    //console.log(result)
     if (!result[0]) {
-        console.log("Creating standard user");
         var pw;
         bcrypt.hash("admin", 10, function (err, hash) {
             pw = hash;

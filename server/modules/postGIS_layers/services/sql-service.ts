@@ -146,7 +146,7 @@ class SQLService {
             this.mC1(table, myCubeField, rnd).then(() => {
                 this.mC2(table, myCubeField, rnd).then(() => {
                     this.mC3(table, myCubeField).then(() => {
-                        this.mc4(table, myCubeField, rnd).then(() => { console.log('completed'); resolve() })
+                        this.mc4(table, myCubeField, rnd).then(() => {resolve()})
                     }
                     )
                 }
@@ -187,14 +187,13 @@ class SQLService {
                     }
                     i = i + 1
                 })
-                console.log('adding constraint if it exists')
                 if (constraint) {
                     this.deleteConstraint(schema, table, myCubeField.field).then((result) => {
                         this.addConstraint(schema, table, myCubeField.field, constraint).then((result) => {
                             resolve()
                         })
                     }).catch((error) => {
-                        this.addConstraint(schema, table, myCubeField.field, constraint).then((result) => { console.log('Complete'); resolve() })
+                        this.addConstraint(schema, table, myCubeField.field, constraint).then((result) => {resolve()})
                     })
                 }
                 else { resolve() }
@@ -263,28 +262,11 @@ class SQLService {
         return db.query('SELECT ' + schema + '."' + table + '".*, users."firstName", users."lastName" FROM ' + schema + '.' + table + "  INNER JOIN users ON " + schema + "." + table + '.userid = users."ID" WHERE ' + schema + '.' + table + ".featureid='" + id + "' ORDER BY id DESC;")
     }
 
-    addCommentWithGeom(comment: App.MyCubeComment): Promise<any> {
-        console.log(comment.geom['geometry'])
-        let ntext: RegExp = /'/g
-        try { comment.comment = comment.comment.replace(ntext, "''") }
-        catch (error) { }
-        return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, geom, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureid + "," + comment.auto + ")")
-    }
-
-    addCommentWithoutGeom(comment: App.MyCubeComment): Promise<any> {
-        let ntext: RegExp = /'/g
-        try { comment.comment = comment.comment.replace(ntext, "''") }
-        catch (error) { }
-        return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "','" + comment.featureid + "'," + comment.auto + ") RETURNING id;")
-    }
-
     addAnyCommentWithoutGeom(comment: App.MyCubeComment): Promise<any> {
         if (comment.geom) {
-            console.log(comment.geom['geometry'])
             let ntext: RegExp = /'/g
             try { comment.comment = comment.comment.replace(ntext, "''") }
             catch (error) { }
-            console.log("INSERT INTO " + comment.schema + '."' + comment.logTable + '" (userid, comment, geom, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureid + "," + comment.auto + ")")
             return db.query("INSERT INTO " + comment.schema + '."' + comment.logTable + '" (userid, comment, geom, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureid + "," + comment.auto + ")")
         }
         else {

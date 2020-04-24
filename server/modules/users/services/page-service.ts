@@ -5,13 +5,11 @@ import PageModel = require('../models/page-model');
 class PageService {
 
     getList(userID: number): Promise<PageModel.PageInstance[]> {
-
         var findOptions: Sequelize.FindOptions = {
             order: [
                 'pageOrder'
             ]
         };
-
         if (userID) {
             findOptions.where = {
                 [Sequelize.Op.and]: [
@@ -19,18 +17,15 @@ class PageService {
                 ]
             }
         }
-        
         return PageModel.Model.findAll(findOptions);
     }
 
     getActiveByUserID(userID: number): Promise<PageModel.PageInstance[]> {
-        
                 var findOptions: Sequelize.FindOptions = {
                     order: [
                         'pageOrder'
                     ]
                 };
-        
                 if (userID) {
                     findOptions.where = {
                         [Sequelize.Op.and]: [
@@ -39,18 +34,15 @@ class PageService {
                         ]
                     }
                 }
-                console.log(userID)
                 return PageModel.Model.findAll(findOptions);
             }
         
     getDefault(userID: number): Promise<PageModel.PageInstance[]> {
-
         var findOptions: Sequelize.FindOptions = {
             order: [
                 'userID'
             ]
         };
-
         if (userID) {
             findOptions.where = {
                 [Sequelize.Op.and]: [
@@ -59,7 +51,6 @@ class PageService {
                 ]
             }
         }
-        
         return PageModel.Model.findAll(findOptions);
     }
 
@@ -72,28 +63,21 @@ class PageService {
     }
 
     update(request: App.UserPage): Promise<PageModel.PageInstance> {
-        
         return <any>(PageModel.Model.findByPk(request.ID).then((PageInstance) => {
-
             PageInstance.userID = request.userID;
             PageInstance.page = request.page;
             PageInstance.pageOrder = request.pageOrder;
             PageInstance.default = request.default;
             PageInstance.active = request.active;
-
             return PageInstance.save();
         }));
     }
 
     delete(ID: number) {
-
         return PageModel.Model.findByPk(ID).then((PageInstance) => {
-
             return PageInstance.destroy();
-
         });
     }
-
 }
 
 export = PageService;

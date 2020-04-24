@@ -29,7 +29,7 @@ function createConnection() {
 
     let config = getDbConfig();
 
-    var sequelize = new Sequelize(config.database, config.username, config.password, <any>{
+    const sequelize = new Sequelize(config.database, config.username, config.password, <any>{
         host: config.host,
         dialect: 'postgres',
         port: config.port,
@@ -41,11 +41,8 @@ function createConnection() {
         dialectOptions: {
             ssl: config.ssl
         },
-        logging:false
-        // SQLite only
-        //storage: '../sqllite'
+        logging:true
     });
-
     return sequelize;
 }
 

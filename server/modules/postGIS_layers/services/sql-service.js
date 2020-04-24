@@ -112,7 +112,7 @@ var SQLService = (function () {
             _this.mC1(table, myCubeField, rnd).then(function () {
                 _this.mC2(table, myCubeField, rnd).then(function () {
                     _this.mC3(table, myCubeField).then(function () {
-                        _this.mc4(table, myCubeField, rnd).then(function () { console.log('completed'); resolve(); });
+                        _this.mc4(table, myCubeField, rnd).then(function () { resolve(); });
                     });
                 });
             });
@@ -150,14 +150,13 @@ var SQLService = (function () {
                     }
                     i = i + 1;
                 });
-                console.log('adding constraint if it exists');
                 if (constraint) {
                     _this.deleteConstraint(schema, table, myCubeField.field).then(function (result) {
                         _this.addConstraint(schema, table, myCubeField.field, constraint).then(function (result) {
                             resolve();
                         });
                     }).catch(function (error) {
-                        _this.addConstraint(schema, table, myCubeField.field, constraint).then(function (result) { console.log('Complete'); resolve(); });
+                        _this.addConstraint(schema, table, myCubeField.field, constraint).then(function (result) { resolve(); });
                     });
                 }
                 else {
@@ -211,32 +210,13 @@ var SQLService = (function () {
     SQLService.prototype.getSingleLog = function (schema, table, id) {
         return db.query('SELECT ' + schema + '."' + table + '".*, users."firstName", users."lastName" FROM ' + schema + '.' + table + "  INNER JOIN users ON " + schema + "." + table + '.userid = users."ID" WHERE ' + schema + '.' + table + ".featureid='" + id + "' ORDER BY id DESC;");
     };
-    SQLService.prototype.addCommentWithGeom = function (comment) {
-        console.log(comment.geom['geometry']);
-        var ntext = /'/g;
-        try {
-            comment.comment = comment.comment.replace(ntext, "''");
-        }
-        catch (error) { }
-        return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, geom, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureid + "," + comment.auto + ")");
-    };
-    SQLService.prototype.addCommentWithoutGeom = function (comment) {
-        var ntext = /'/g;
-        try {
-            comment.comment = comment.comment.replace(ntext, "''");
-        }
-        catch (error) { }
-        return db.query("INSERT INTO mycube.c" + comment.table + '(userid, comment, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "','" + comment.featureid + "'," + comment.auto + ") RETURNING id;");
-    };
     SQLService.prototype.addAnyCommentWithoutGeom = function (comment) {
         if (comment.geom) {
-            console.log(comment.geom['geometry']);
             var ntext = /'/g;
             try {
                 comment.comment = comment.comment.replace(ntext, "''");
             }
             catch (error) { }
-            console.log("INSERT INTO " + comment.schema + '."' + comment.logTable + '" (userid, comment, geom, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureid + "," + comment.auto + ")");
             return db.query("INSERT INTO " + comment.schema + '."' + comment.logTable + '" (userid, comment, geom, featureid, auto) VALUES (' + comment.userid + ",'" + comment.comment + "',(ST_SetSRID(ST_GeomFromGeoJSON('" + JSON.stringify(comment.geom['geometry']) + "'),4326))," + comment.featureid + "," + comment.auto + ")");
         }
         else {

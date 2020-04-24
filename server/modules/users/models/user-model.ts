@@ -69,7 +69,6 @@ sequalizeModel.sync()
 //Should probably update this or at least put it in the documentation.
 sequalizeModel.findAll({
 }).then(function(result) {
-    //console.log(result)
     if (!result[0]){
     console.log("Creating standard user")
     var pw;

@@ -13,7 +13,6 @@ var router = express.Router();
 var service = new UserService();
 
 router.get('/test', (req, res) => {
-    console.log('testing')
     res.send('Test Passed')
 })
 router.get('/list', token_auth, (req, res) => {
@@ -27,16 +26,13 @@ router.get('/list', token_auth, (req, res) => {
 
 router.get('/single', token_auth, (req, res) => {
     var User = <number>req.query.rowid;
-    
     service.get(User).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
-
 });
 
-//1/3/18: Robust way to do /create and /login
 router.post('/single', token_auth, (req, res) => {
     var request = <App.User>req.body;
     UserModel.Model.findAll({
@@ -211,24 +207,20 @@ router.post('/generatekey', token_auth, (req, res) => {
 
 router.put('/update', token_auth, (req, res) => {
     var request = <App.User>req.body;
-
     service.update(request).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
-
 });
 
 router.delete('/delete', token_auth, (req, res) => {
     var ID = <number>req.query.ID;
-
     service.delete(ID).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
-
 });
 
 export = router;

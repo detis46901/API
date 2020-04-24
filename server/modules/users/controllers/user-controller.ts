@@ -13,9 +13,9 @@ var router = express.Router();
 var service = new UserService();
 
 router.get('/test', (req, res) => {
-    console.log('testing')
     res.send('Test Passed')
 })
+
 router.get('/list', token_auth, (req, res) => {
     service.getList(req.query.searchValue).then((result) => {
         res.send(result);
@@ -27,13 +27,11 @@ router.get('/list', token_auth, (req, res) => {
 
 router.get('/single', token_auth, (req, res) => {
     var User = <number>req.query.rowid;
-    
     service.get(User).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
-
 });
 
 //1/3/18: Robust way to do /create and /login

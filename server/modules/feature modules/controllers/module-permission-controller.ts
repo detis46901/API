@@ -36,7 +36,6 @@ router.get('/byinstance', token_auth, (req, res) => {
 
 router.get('/bygroup', token_auth, (req, res) => {
     var groupid = <number>req.query.groupID;
-    //console.log("groupid=" + groupid)
     service.getByGroup(groupid).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -59,42 +58,30 @@ router.get('/byusergroups', token_auth, (req, res) => {
 });
 
 router.post('/single', token_auth, (req, res) => {
-    
     var request = <App.ModulePermission>req.body;
-    
     service.create(request).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
-
 });
 
 router.put('/update', token_auth, (req, res) => {
-    
     var request = <App.ModulePermission>req.body;
-
     service.update(request).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
-
 });
 
 router.delete('/delete', token_auth, (req, res) => {
-    //if(req.body.delete) {
     var ID = <number>req.query.ID;
     service.delete(ID).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
-    // } else {
-    //     res.status(500).json({
-    //         message:"You do not have permission to delete this permission entry."
-    //     })
-    // }
 });
 
 

@@ -172,43 +172,40 @@ router.get('/singlelog', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.post('/addcommentwithgeom', token_auth, function (req, res) {
-    var comment = req.body;
-    var table = comment.table;
-    service.addCommentWithGeom(comment).then(function (result) {
-        res.send(result);
-    }).catch(function (error) {
-        res.send(error);
-    });
-});
-router.post('/addcommentwithoutgeom', token_auth, function (req, res) {
-    var file = req.body.file;
-    var comment = req.body;
-    var table = comment.table;
-    service.addCommentWithoutGeom(comment).then(function (result) {
-        res.send(result);
-    }).catch(function (error) {
-        res.send(error);
-    });
-});
+// router.post('/addcommentwithgeom', token_auth, (req, res) => {
+//     var comment = <App.MyCubeComment>req.body;
+//     var table = <number>comment.table;
+//     service.addCommentWithGeom(comment).then((result) => {
+//         res.send(result);
+//     }).catch((error) => {
+//         res.send(error);
+//     });
+// })
+// router.post('/addcommentwithoutgeom', token_auth, (req, res) => {
+//     var file = <File>req.body.file
+//     var comment = <App.MyCubeComment>req.body;
+//     var table = <number>comment.table;
+//     service.addCommentWithoutGeom(comment).then((result) => {
+//         res.send(result);
+//     }).catch((error) => {
+//         res.send(error);
+//     });
+// })
 router.post('/addanycommentwithoutgeom', token_auth, function (req, res) {
     var file = req.body.file;
     var comment = req.body;
     service.addAnyCommentWithoutGeom(comment).then(function (result) {
-        console.log(result);
         res.send(result);
     }).catch(function (error) {
         res.send(error);
     });
 });
 router.post('/addimage', multer(multerConfig).single('photo'), function (req, res) {
-    console.log('addImage');
     service.addImage(req).then(function (result) {
         res.send(result);
     });
 });
 router.post('/addanyimage', multer(multerConfig).single('photo'), function (req, res) {
-    console.log('addImage');
     service.addAnyImage(req).then(function (result) {
         res.send(result);
     });
@@ -309,9 +306,9 @@ router.put('/updateAnyRecord', token_auth, function (req, res) {
     var schema = req.body.schema;
     var table = req.body.table;
     var id = req.body.id;
-    var field = req.body.mycubefield.field;
-    var type = req.body.mycubefield.type;
-    var value = req.body.mycubefield.value;
+    var field = req.body.datafield.field;
+    var type = req.body.datafield.type;
+    var value = req.body.datafield.value;
     service.updateAnyRecord(schema, table, id, field, type, value).then(function (result) {
         res.send(result);
     }).catch(function (error) {
@@ -326,15 +323,6 @@ router.get('/setSRID', token_auth, function (req, res) {
         res.send(error);
     });
 });
-// router.delete('/delete', (req, res) => {
-//     var ID = <number>req.query.ID;
-//     console.log (ID);
-//     service.delete(ID).then((result) => {
-//         res.send(result);
-//     }).catch((error) => {
-//         res.send(error);
-//     });
-//});
 router.get('/getOID', token_auth, function (req, res) {
     var table = req.query.table;
     service.getOID(table).then(function (result) {

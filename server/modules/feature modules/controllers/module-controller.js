@@ -4,9 +4,7 @@ var token_auth = require('../../JWT_Checker/loginToken.js');
 var express = require('express');
 var router = express.Router();
 var service = new ModuleService();
-console.log("in Module Controller");
 router.get('/list', token_auth, function (req, res) {
-    //console.log("Hit List")
     service.getList(req.query.searchValue).then(function (result) {
         res.send(result);
     }).catch(function (error) {
@@ -45,11 +43,6 @@ router.delete('/delete', token_auth, function (req, res) {
     }).catch(function (error) {
         res.send(error);
     });
-    // } else {
-    //     res.status(500).json({
-    //         message:"You do not have permission to delete this permission entry."
-    //     })
-    // }
 });
 module.exports = router;
 

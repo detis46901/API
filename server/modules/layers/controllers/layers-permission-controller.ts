@@ -38,7 +38,6 @@ router.get('/bylayer', token_auth, (req, res) => {
 
 router.get('/bygroup', token_auth, (req, res) => {
     var groupid = <number>req.query.groupID;
-    //console.log("groupid=" + groupid)
     service.getByGroup(groupid).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -47,7 +46,6 @@ router.get('/bygroup', token_auth, (req, res) => {
 });
 
 router.get('/byusergroups', token_auth, (req, res) => {
-    var finalResponse = new Array<any>();
     let groups = new Array<number>();
     groupMemberService.getByUser(req.query.userID).then((result) => {
         for (let i=0; i<result.length; i++) {
@@ -63,7 +61,6 @@ router.get('/byusergroups', token_auth, (req, res) => {
             })
             let finalToSend: LayerPermissionInstance[] = []
             for (let j=0; j<final.length; j++) {
-                //console.log(final[j].layerID)
                 if (final[j].layerID != lastLayerID) {
                     lastLayerID = final[j].layerID
                     finalToSend.push(final[j])
@@ -86,9 +83,7 @@ router.get('/byusergroups', token_auth, (req, res) => {
 });
 
 router.get('/single', token_auth, (req, res) => {
-
     var LayerID = <number>req.query.rowid;
-    
     service.get(LayerID).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -98,43 +93,30 @@ router.get('/single', token_auth, (req, res) => {
 });
 
 router.post('/single', token_auth, (req, res) => {
-    
-    var request = <App.LayerPermission>req.body;
-    
+    var request = <App.LayerPermission>req.body;    
     service.create(request).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
-
 });
 
 router.put('/update', token_auth, (req, res) => {
-    
     var request = <App.LayerPermission>req.body;
-
     service.update(request).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
-
 });
 
 router.delete('/delete', token_auth, (req, res) => {
-    //if(req.body.delete) {
     var ID = <number>req.query.ID;
     service.delete(ID).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
-    // } else {
-    //     res.status(500).json({
-    //         message:"You do not have permission to delete this permission entry."
-    //     })
-    // }
 });
-
 
 export = router;

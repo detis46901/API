@@ -9,7 +9,6 @@ var bcrypt = require('bcrypt');
 var router = express.Router();
 var service = new UserService();
 router.get('/test', function (req, res) {
-    console.log('testing');
     res.send('Test Passed');
 });
 router.get('/list', token_auth, function (req, res) {

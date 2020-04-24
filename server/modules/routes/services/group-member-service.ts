@@ -9,13 +9,11 @@ class GroupMemberService {
     }
 
     getByUser(userID: number): Promise<GroupMemberModel.GroupMemberInstance[]> {
-
         var findOptions: Sequelize.FindOptions = {
             order: [
                 'ID'
             ]
         };
-
         if (userID) {
             findOptions.where = {
                 [Sequelize.Op.and]: [
@@ -23,19 +21,16 @@ class GroupMemberService {
                 ]
             }
         }
-
         findOptions.include = [GroupModel.Model]
         return GroupMemberModel.Model.findAll(findOptions);
     }
 
     getByGroup(groupID: number): Promise<GroupMemberModel.GroupMemberInstance[]> {
-        console.log(groupID)
         var findOptions: Sequelize.FindOptions = {
             order: [
                 'ID'
             ]
         };
-
         if (groupID) {
             findOptions.where = {
                 [Sequelize.Op.and]: [
@@ -43,7 +38,6 @@ class GroupMemberService {
                 ]
             }
         }
-
         findOptions.include = [UserModel.Model]
         return GroupMemberModel.Model.findAll(findOptions);
     }

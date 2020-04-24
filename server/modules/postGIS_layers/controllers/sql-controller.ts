@@ -95,13 +95,13 @@ router.get('/addColumn', token_auth, (req, res) => {
     var myCubeField = <comment.MyCubeField>JSON.parse(req.query.myCubeField)
     service.addColumn(table, field, type, label, myCubeField).then((result) => {
         var constraint: string = ""
-        var i:number = 0
+        var i: number = 0
         myCubeField.constraints.forEach((x) => {
             constraint = constraint + '"' + myCubeField.field + '"' + "='" + x.name + "'"
             if (i < myCubeField.constraints.length - 1) {
                 constraint = constraint + " OR "
             }
-            i =+1
+            i = +1
         })
         service.addConstraint('mycube', table, myCubeField.field, constraint).then((result) => {
         })
@@ -196,30 +196,29 @@ router.get('/singlelog', token_auth, (req, res) => {
     });
 })
 
-router.post('/addcommentwithgeom', token_auth, (req, res) => {
-    var comment = <App.MyCubeComment>req.body;
-    var table = <number>comment.table;
-    service.addCommentWithGeom(comment).then((result) => {
-        res.send(result);
-    }).catch((error) => {
-        res.send(error);
-    });
-})
-router.post('/addcommentwithoutgeom', token_auth, (req, res) => {
-    var file = <File>req.body.file
-    var comment = <App.MyCubeComment>req.body;
-    var table = <number>comment.table;
-    service.addCommentWithoutGeom(comment).then((result) => {
-        res.send(result);
-    }).catch((error) => {
-        res.send(error);
-    });
-})
+// router.post('/addcommentwithgeom', token_auth, (req, res) => {
+//     var comment = <App.MyCubeComment>req.body;
+//     var table = <number>comment.table;
+//     service.addCommentWithGeom(comment).then((result) => {
+//         res.send(result);
+//     }).catch((error) => {
+//         res.send(error);
+//     });
+// })
+// router.post('/addcommentwithoutgeom', token_auth, (req, res) => {
+//     var file = <File>req.body.file
+//     var comment = <App.MyCubeComment>req.body;
+//     var table = <number>comment.table;
+//     service.addCommentWithoutGeom(comment).then((result) => {
+//         res.send(result);
+//     }).catch((error) => {
+//         res.send(error);
+//     });
+// })
 router.post('/addanycommentwithoutgeom', token_auth, (req, res) => {
     var file = <File>req.body.file
     var comment = <App.MyCubeComment>req.body;
     service.addAnyCommentWithoutGeom(comment).then((result) => {
-        console.log(result)
         res.send(result);
     }).catch((error) => {
         res.send(error);
@@ -227,14 +226,12 @@ router.post('/addanycommentwithoutgeom', token_auth, (req, res) => {
 })
 
 router.post('/addimage', multer(multerConfig).single('photo'), function (req, res) {
-    console.log('addImage')
     service.addImage(req).then((result) => {
-    res.send(result);
+        res.send(result);
     })
 });
 
 router.post('/addanyimage', multer(multerConfig).single('photo'), function (req, res) {
-    console.log('addImage')
     service.addAnyImage(req).then((result) => {
         res.send(result)
     })
@@ -343,16 +340,14 @@ router.put('/updateAnyRecord', token_auth, (req, res) => {
     var schema = <string>req.body.schema
     var table = <string>req.body.table;
     var id = <string>req.body.id;
-    var field = <string>req.body.mycubefield.field;
-    var type = <string>req.body.mycubefield.type;
-    var value = <any>req.body.mycubefield.value;
-
+    var field = <string>req.body.datafield.field;
+    var type = <string>req.body.datafield.type;
+    var value = <any>req.body.datafield.value;
     service.updateAnyRecord(schema, table, id, field, type, value).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
-
 });
 
 router.get('/setSRID', token_auth, (req, res) => {
@@ -364,26 +359,13 @@ router.get('/setSRID', token_auth, (req, res) => {
     })
 })
 
-// router.delete('/delete', (req, res) => {
-
-//     var ID = <number>req.query.ID;
-//     console.log (ID);
-//     service.delete(ID).then((result) => {
-//         res.send(result);
-//     }).catch((error) => {
-//         res.send(error);
-//     });
-
-//});
 router.get('/getOID', token_auth, (req, res) => {
     var table = <string>req.query.table;
-
     service.getOID(table).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.send(error);
     });
-
 });
 
 router.get('/getColumnCount', token_auth, (req, res) => {

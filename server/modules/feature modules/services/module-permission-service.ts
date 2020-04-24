@@ -13,13 +13,11 @@ class ModulePermissionService {
     }
     
     getByInstance(instanceID: number): Promise<ModulePermissionModel.ModulePermissionInstance[]> {
-
         var findOptions: Sequelize.FindOptions = {
             order: [
                 'ID'
             ]
         };
-
         if (instanceID) {
             findOptions.where = {
                 [Sequelize.Op.and]: [
@@ -27,19 +25,16 @@ class ModulePermissionService {
                 ]
             }
         }
-
         findOptions.include = [ModuleInstance.Model, UserModel.Model, GroupModel.Model];
         return ModulePermissionModel.Model.findAll(findOptions);
     }
 
     getByUser(userID: number): Promise<ModulePermissionModel.ModulePermissionInstance[]> {
-
         var findOptions: Sequelize.FindOptions = {
             order: [
                 'ID'
             ]
         };
-
         if (userID) {
             findOptions.where = {
                 [Sequelize.Op.and]: [
@@ -47,19 +42,16 @@ class ModulePermissionService {
                 ]
             }
         }
-
         findOptions.include = [ModuleInstance.Model, UserModel.Model, GroupModel.Model];
         return ModulePermissionModel.Model.findAll({include: [{model: ModuleInstance.Model, include:[ModulesModel.Model]}, {model: UserModel.Model}, {model: GroupModel.Model}]});
     }
 
     getByGroup(groupID: number): Promise<ModulePermissionModel.ModulePermissionInstance[]> {
-        //console.log(groupID)
         var findOptions: Sequelize.FindOptions = {
             order: [
                 'ID'
             ]
         };
-
         if (groupID) {
             findOptions.where = {
                 [Sequelize.Op.and]: [
@@ -67,7 +59,6 @@ class ModulePermissionService {
                 ]
             }
         }
-
         findOptions.include = [ModuleInstance.Model, UserModel.Model, GroupModel.Model];
         return ModulePermissionModel.Model.findAll({include: [{model: ModuleInstance.Model, include:[ModulesModel.Model]}, {model: UserModel.Model}, {model: GroupModel.Model}]});
     }
@@ -79,7 +70,6 @@ class ModulePermissionService {
                 'ID'
             ]
         }
-
         if (userID) {
             findOptions.where = {
                 [Sequelize.Op.or]: [
@@ -87,7 +77,6 @@ class ModulePermissionService {
                 {userID: userID}
         ]}
         }
-
         findOptions.include =[{model: ModuleInstance.Model, include:[ModulesModel.Model]}, {model: UserModel.Model}, {model: GroupModel.Model}];
         return ModulePermissionModel.Model.findAll(findOptions)
     }
@@ -100,29 +89,23 @@ class ModulePermissionService {
         return ModulePermissionModel.Model.create(request);
     }
 
-    update(request: App.ModulePermission): Promise<ModulePermissionModel.ModulePermissionInstance> {
-        
+    update(request: App.ModulePermission): Promise<ModulePermissionModel.ModulePermissionInstance> {     
         return <any>(ModulePermissionModel.Model.findByPk(request.ID).then((ModulePermissionInstance) => {
-
             ModulePermissionInstance.edit = request.edit;
             ModulePermissionInstance.delete = request.delete;
             ModulePermissionInstance.owner = request.owner;
             ModulePermissionInstance.canGrant = request.canGrant;
             ModulePermissionInstance.grantedBy = request.grantedBy;
             ModulePermissionInstance.comments = request.comments;
-
             return ModulePermissionInstance.save();
         }));
     }
 
     delete(ID: number) {
-
         return ModulePermissionModel.Model.findByPk(ID).then((ModulePermissionInstance) => {
             return ModulePermissionInstance.destroy();
-
         });
     }
-
 }
 
 export = ModulePermissionService;
