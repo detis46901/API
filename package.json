@@ -41,7 +41,7 @@
     "node-pre-gyp": "0.6.34",
     "pg": "^6.4.1",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^5.2.7",
+    "sequelize": "^5.15.1",
     "sequelize-typescript": "^0.6.11",
     "ts-md5": "^1.2.4",
     "typescript": "^3.4.1"
