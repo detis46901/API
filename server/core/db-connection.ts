@@ -26,9 +26,7 @@ function getDbConfig() {
 }
 
 function createConnection() {
-
     let config = getDbConfig();
-
     const sequelize = new Sequelize(config.database, config.username, config.password, <any>{
         host: config.host,
         dialect: 'postgres',

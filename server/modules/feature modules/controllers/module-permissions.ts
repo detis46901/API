@@ -5,18 +5,17 @@ import { GroupMemberInstance } from '../../users/models/group-member-model';
 
 export class ModulePermissions {
     public finalResponse = new Array<any>();
-    public groups = new Array<number>();
     public groupMemberService = new GroupMemberService
     public modulePermissionService = new ModulePermissionService
 
     public getPermissions(userID): Promise<any> {
+        let groups = new Array<number>();
         let promise = new Promise((resolve, reject) => {
             this.groupMemberService.getByUser(userID).then((result) => {
                 for (let i=0; i<result.length; i++) {
-                    let gg = new Array<number>()
-                    this.groups.push(result[i].groupID)
+                    groups.push(result[i].groupID)
                 }
-                this.modulePermissionService.getByUserAndGroup(userID, this.groups).then((final) => {
+                this.modulePermissionService.getByUserAndGroup(userID, groups).then((final) => {
                     resolve(final)
                 })
             })
