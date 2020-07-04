@@ -64,7 +64,7 @@ class ModulePermissionService {
     }
 
     getByUserAndGroup(userID: number, groups:number[]): Promise<ModulePermissionModel.ModulePermissionInstance[]> {
-        console.log(groups)
+        console.log("getByUserAndGroups", groups)
         const op = Sequelize.or
         var findOptions: Sequelize.FindOptions = {
             order: [

@@ -161,6 +161,17 @@ router.post('/generatekey', token_auth, function (req, res) {
                 message: 'User not found.'
             });
         }
+        var api_token = jwt.sign({
+            id: user[0].ID,
+        }, environment_1.environment.JWT_SECRET_KEY, {
+            expiresIn: "30 days"
+        });
+        return res.status(200).json({
+            message: "Token granted.",
+            apiKey: api_token,
+            userID: user[0].ID,
+            admin: user[0].administrator
+        });
         bcrypt.compare(req.body.password, user[0].password, function (err, result) {
             if (err) {
                 return res.status(500).json({
@@ -168,7 +179,7 @@ router.post('/generatekey', token_auth, function (req, res) {
                 });
             }
             if (result) {
-                var api_token = jwt.sign({
+                var api_token_1 = jwt.sign({
                     email: user[0].email,
                     firstName: user[0].firstName,
                     lastName: user[0].lastName
@@ -177,7 +188,7 @@ router.post('/generatekey', token_auth, function (req, res) {
                 });
                 return res.status(200).json({
                     message: "Token granted.",
-                    token: api_token,
+                    token: api_token_1,
                     userID: user[0].ID,
                     admin: user[0].administrator
                 });

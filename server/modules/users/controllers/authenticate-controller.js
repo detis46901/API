@@ -30,6 +30,7 @@ router.post('/', function (req, res) {
             res.send({});
         }
         else {
+            console.log("Authentation Passed");
             res.send(JSON.stringify({ token: 'fake-jwt-token2', userid: row, admin: admin }));
         }
     }).catch(function (error) {

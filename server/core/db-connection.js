@@ -21,7 +21,7 @@ function createConnection() {
         port: config.port,
         pool: {
             max: 10,
-            min: 1,
+            min: 0,
             idle: 10000
         },
         dialectOptions: {

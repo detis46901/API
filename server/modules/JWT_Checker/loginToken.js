@@ -16,6 +16,7 @@ module.exports = function (req, res, next) {
             var decoded_token = jwt.verify(token, environment_1.environment.JWT_SECRET_KEY, {
                 ignoreExpiration: false
             });
+            console.log(decoded_token);
             req.loginJsonData = decoded_token;
         }
         next();

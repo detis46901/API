@@ -36,7 +36,9 @@ router.post('/', (req, res) => {
     service.getList(request.email, request.password).then((result) => {
         row = result[0].ID
         admin = result[0].administrator
-       if (result.length==0){res.send({}) } else  {res.send(JSON.stringify({ token: 'fake-jwt-token2', userid: row, admin: admin }));}
+       if (result.length==0){res.send({}) } else  {
+           console.log("Authentation Passed")
+           res.send(JSON.stringify({ token: 'fake-jwt-token2', userid: row, admin: admin }));}
     }).catch((error) => {
         res.send(error);
     });

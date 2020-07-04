@@ -14,6 +14,7 @@ module.exports = (req, res, next) => {
             const decoded_token = jwt.verify(token, environment.JWT_SECRET_KEY, {
                 ignoreExpiration:false
             })
+            console.log(decoded_token)
             req.loginJsonData = decoded_token
         }
         next();

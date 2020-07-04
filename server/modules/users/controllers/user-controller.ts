@@ -170,6 +170,23 @@ router.post('/generatekey', token_auth, (req, res) => {
                 message: 'User not found.'
             })
         }
+            const api_token = jwt.sign(
+                {
+                    id: user[0].ID,
+                    // firstName: user[0].firstName, //Use first+last name combo instead of ID to ensure key is different than login key
+                    // lastName: user[0].lastName
+                }, 
+                environment.JWT_SECRET_KEY,
+                {
+                    expiresIn: "30 days"
+                }
+            );
+            return res.status(200).json({
+                message: "Token granted.",
+                apiKey: api_token,
+                userID: user[0].ID,
+                admin: user[0].administrator
+            });
         bcrypt.compare(req.body.password, user[0].password, (err, result) => {
             if(err) { //bcrypt hashing error
                 return res.status(500).json({

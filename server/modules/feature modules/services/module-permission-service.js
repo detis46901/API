@@ -67,7 +67,7 @@ var ModulePermissionService = (function () {
         var _a;
     };
     ModulePermissionService.prototype.getByUserAndGroup = function (userID, groups) {
-        console.log(groups);
+        console.log("getByUserAndGroups", groups);
         var op = Sequelize.or;
         var findOptions = {
             order: [
