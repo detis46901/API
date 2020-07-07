@@ -1,5 +1,9 @@
 import dbConnection = require('../../../core/db-connection');
 import { MyCubeField } from '../models/postGIS_layers.model';
+import { resolve } from 'bluebird';
+import Sequelize = require('sequelize');
+import UserModel = require('../../users/models/user-model');
+
 var db = dbConnection();
 
 
@@ -34,6 +38,21 @@ class SQLService {
             return db.query("SELECT * from " + schema + "." + table + ' ORDER BY id')
         }
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
+    }
+
+    getUserFromAPIKey(apikey: string): Promise<UserModel.UserInstance[]>   {
+      var findOptions: Sequelize.FindOptions = {
+            order: [
+                'apikey'
+            ]
+        };
+
+        if (apikey) {
+            findOptions.where = {
+                     apikey: { [Sequelize.Op.eq]: `${apikey}` }
+            }
+        }
+        return UserModel.Model.findAll(findOptions);
     }
 
     getsheets(schema: string, table: string): Promise<any> {

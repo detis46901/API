@@ -26,6 +26,7 @@
         email: string;
         administrator: boolean;
         public: boolean;
+        apikey: string;
     }
 
     interface Layer extends IModelBase {
@@ -185,6 +186,11 @@
         changed?: boolean;
         links?: any[]
         constraints?: Array<MyCubeConstraint>
+    }
+    interface APIKey extends IModelBase {
+        ID: number;
+        apikey: string;
+        userID: number;
     }
 }
 

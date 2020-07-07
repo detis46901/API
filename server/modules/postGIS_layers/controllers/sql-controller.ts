@@ -1,5 +1,6 @@
 import SQLService = require('../services/sql-service');
 import token_auth = require('../../JWT_Checker/loginToken.js');
+import api_auth = require('../../JWT_Checker/apiKeyToken')
 import comment = require('../models/postGIS_layers.model')
 import { error } from 'util';
 var stream = require('stream');
@@ -23,19 +24,31 @@ router.get('/all', token_auth, (req, res) => {
 
 });
 
-router.get('/getsheets', token_auth, (req, res) => {
+router.get('/getsheets', api_auth, (req, res) => {
     var schema = <string>req.query.schema
     if (schema == undefined) {
         schema = 'mycube'
     }
     var table = <string>req.query.table;
     //schema = "'" + schema + "'"
-    service.getsheets(schema, table).then((result) => {
-        res.send(result);
-    }).catch((error) => {
-        res.send(error);
-    });
-
+    service.getUserFromAPIKey(req.query.apikey).then((x) => {
+        console.log(x)
+        try {
+            if(x[0]['ID'] > 0) {  //need to fix this so this authorizes the user
+                service.getsheets(schema, table).then((result) => {
+                    res.send(result);
+                }).catch((error) => {
+                    res.send(error);
+                });
+            }
+            else {
+                res.send('Not going to happen')
+            }    
+        }
+        catch(e) {
+            res.send('not going to happen');
+        }
+    })
 });
 
 router.get('/getschema', token_auth, (req, res) => {

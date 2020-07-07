@@ -31,10 +31,19 @@ var UserService = (function () {
         return UserModel.Model.findByPk(rowID, findOptions);
     };
     UserService.prototype.create = function (request) {
+        if (!request.apikey) {
+            request.apikey = this.generateKey();
+        }
         return UserModel.Model.create(request);
     };
     UserService.prototype.update = function (request) {
+        var _this = this;
         return (UserModel.Model.findByPk(request.ID).then(function (UserInstance) {
+            console.log(UserInstance.apikey);
+            console.log(request.apikey);
+            if (!request.apikey) {
+                UserInstance.apikey = _this.generateKey();
+            }
             UserInstance.firstName = request.firstName;
             UserInstance.lastName = request.lastName;
             UserInstance.email = request.email;
@@ -50,6 +59,15 @@ var UserService = (function () {
         return UserModel.Model.findByPk(ID).then(function (UserInstance) {
             return UserInstance.destroy();
         });
+    };
+    UserService.prototype.generateKey = function () {
+        var d = new Date().getTime();
+        var uuid = 'xxxxxxxx-xxxx'.replace(/[xy]/g, function (c) {
+            var r = (d + Math.random() * 16) % 16 | 0;
+            d = Math.floor(d / 16);
+            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+        return uuid;
     };
     return UserService;
 }());

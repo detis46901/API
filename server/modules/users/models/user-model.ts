@@ -9,7 +9,7 @@ var bcrypt = require('bcrypt');
 export interface UserInstance extends Sequelize.Instance<UserInstance, App.User>, App.User { }
 export interface UserModel extends Sequelize.Model<UserInstance, App.User> { }
 
-
+console.log("IN USER MODEL")
 var sequalizeModel = db.define<UserInstance, App.User>('user', <any>{
     ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     firstName: {
@@ -60,7 +60,14 @@ var sequalizeModel = db.define<UserInstance, App.User>('user', <any>{
         validate: {
             is: ["[a-z]",'i'] //1/3/18^^^
         }
-    }
+    },
+    apikey: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+            len: [2, 130]
+        }
+    },
 });
 
 sequalizeModel.belongsTo(DomainModel.Model)

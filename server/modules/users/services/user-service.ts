@@ -33,13 +33,19 @@ class UserService {
         return UserModel.Model.findByPk(rowID, findOptions);
     }
 
-    create(request: App.User): Promise<UserModel.UserInstance> {
+    create(request: App.User): Promise<UserModel.UserInstance> { if (!request.apikey) {
+        request.apikey = this.generateKey()
+    }
         return UserModel.Model.create(request);
     }
 
     update(request: App.User): Promise<UserModel.UserInstance> {
         return <any>(UserModel.Model.findByPk(request.ID).then((UserInstance) => {
-
+            console.log(UserInstance.apikey)
+            console.log(request.apikey)
+            if (!request.apikey) {
+                UserInstance.apikey = this.generateKey()    
+            }
             UserInstance.firstName = request.firstName;
             UserInstance.lastName = request.lastName;
             UserInstance.email = request.email;
@@ -55,12 +61,20 @@ class UserService {
 
     delete(ID: number) {
         return UserModel.Model.findByPk(ID).then((UserInstance) => {
-
             return UserInstance.destroy();
-
         });
     }
 
+    generateKey():string {
+        var d = new Date().getTime();
+        var uuid = 'xxxxxxxx-xxxx'.replace(/[xy]/g, function(c)
+        {
+            var r = (d + Math.random()*16)%16 | 0;
+            d = Math.floor(d/16);
+            return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+        });
+        return uuid
+    }
 }
 
 export = UserService;

@@ -4,11 +4,13 @@ import {environment} from '../../core/environment'
 
 module.exports = (req, res, next) => {
     try {
-        const token = req.headers.authorization.split(" ")[1]; //Remove "Bearer " from auth header in request
-        const decoded_token = jwt.verify(token, environment.JWT_SECRET_KEY, {
-            ignoreExpiration:false
-        }) //jwt.verify() does jwt.decode() and verifies signature afterwards.
-        req.loginToken = decoded_token
+        //this is just passing through right now.  The authorization is actually in the getsheets procedure.
+        // const token = req.query.apikey
+        //     const decoded_token = jwt.verify(token, environment.JWT_SECRET_KEY, {
+        //         ignoreExpiration:false
+        //     })
+        //     req.loginJsonData = decoded_token
+        // console.log(req.query.table)
         next();
     } catch(error) {
         return res.status(401).json({

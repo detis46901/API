@@ -161,17 +161,19 @@ router.post('/generatekey', token_auth, function (req, res) {
                 message: 'User not found.'
             });
         }
-        var api_token = jwt.sign({
-            id: user[0].ID,
-        }, environment_1.environment.JWT_SECRET_KEY, {
-            expiresIn: "30 days"
+        console.log('In Generate Key');
+        var userID = req.body.userID;
+        var d = new Date().getTime();
+        var apikey;
+        var request = req.body;
+        var uuid = 'xxxxxxxx-xxxx'.replace(/[xy]/g, function (c) {
+            var r = (d + Math.random() * 16) % 16 | 0;
+            d = Math.floor(d / 16);
+            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
         });
-        return res.status(200).json({
-            message: "Token granted.",
-            apiKey: api_token,
-            userID: user[0].ID,
-            admin: user[0].administrator
-        });
+        console.log(uuid);
+        request.apikey = uuid;
+        request.userID = req.body.userID;
         bcrypt.compare(req.body.password, user[0].password, function (err, result) {
             if (err) {
                 return res.status(500).json({
@@ -179,7 +181,7 @@ router.post('/generatekey', token_auth, function (req, res) {
                 });
             }
             if (result) {
-                var api_token_1 = jwt.sign({
+                var api_token = jwt.sign({
                     email: user[0].email,
                     firstName: user[0].firstName,
                     lastName: user[0].lastName
@@ -188,7 +190,7 @@ router.post('/generatekey', token_auth, function (req, res) {
                 });
                 return res.status(200).json({
                     message: "Token granted.",
-                    token: api_token_1,
+                    token: api_token,
                     userID: user[0].ID,
                     admin: user[0].administrator
                 });

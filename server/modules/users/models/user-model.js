@@ -4,6 +4,7 @@ var Sequelize = require('sequelize');
 var DomainModel = require('../../domain/models/domain-model');
 var db = dbConnection();
 var bcrypt = require('bcrypt');
+console.log("IN USER MODEL");
 var sequalizeModel = db.define('user', {
     ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     firstName: {
@@ -54,7 +55,14 @@ var sequalizeModel = db.define('user', {
         validate: {
             is: ["[a-z]", 'i'] //1/3/18^^^
         }
-    }
+    },
+    apikey: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+            len: [2, 130]
+        }
+    },
 });
 sequalizeModel.belongsTo(DomainModel.Model);
 sequalizeModel.sync();

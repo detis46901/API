@@ -1,6 +1,7 @@
 "use strict";
 var SQLService = require('../services/sql-service');
 var token_auth = require('../../JWT_Checker/loginToken.js');
+var api_auth = require('../../JWT_Checker/apiKeyToken');
 var stream = require('stream');
 var express = require('express');
 var multer = require('multer');
@@ -19,17 +20,30 @@ router.get('/all', token_auth, function (req, res) {
         res.send(error);
     });
 });
-router.get('/getsheets', token_auth, function (req, res) {
+router.get('/getsheets', api_auth, function (req, res) {
     var schema = req.query.schema;
     if (schema == undefined) {
         schema = 'mycube';
     }
     var table = req.query.table;
     //schema = "'" + schema + "'"
-    service.getsheets(schema, table).then(function (result) {
-        res.send(result);
-    }).catch(function (error) {
-        res.send(error);
+    service.getUserFromAPIKey(req.query.apikey).then(function (x) {
+        console.log(x);
+        try {
+            if (x[0]['ID'] > 0) {
+                service.getsheets(schema, table).then(function (result) {
+                    res.send(result);
+                }).catch(function (error) {
+                    res.send(error);
+                });
+            }
+            else {
+                res.send('Not going to happen');
+            }
+        }
+        catch (e) {
+            res.send('not going to happen');
+        }
     });
 });
 router.get('/getschema', token_auth, function (req, res) {

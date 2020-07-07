@@ -1,5 +1,7 @@
 "use strict";
 var dbConnection = require('../../../core/db-connection');
+var Sequelize = require('sequelize');
+var UserModel = require('../../users/models/user-model');
 var db = dbConnection();
 var SQLService = (function () {
     function SQLService() {
@@ -29,6 +31,20 @@ var SQLService = (function () {
             return db.query("SELECT * from " + schema + "." + table + ' ORDER BY id');
         }
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
+    };
+    SQLService.prototype.getUserFromAPIKey = function (apikey) {
+        var findOptions = {
+            order: [
+                'apikey'
+            ]
+        };
+        if (apikey) {
+            findOptions.where = {
+                apikey: (_a = {}, _a[Sequelize.Op.eq] = "" + apikey, _a)
+            };
+        }
+        return UserModel.Model.findAll(findOptions);
+        var _a;
     };
     SQLService.prototype.getsheets = function (schema, table) {
         var _this = this;
