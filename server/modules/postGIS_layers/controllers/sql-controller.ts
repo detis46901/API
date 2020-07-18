@@ -2,6 +2,10 @@ import SQLService = require('../services/sql-service');
 import token_auth = require('../../JWT_Checker/loginToken.js');
 import api_auth = require('../../JWT_Checker/apiKeyToken')
 import comment = require('../models/postGIS_layers.model')
+import{LayerPermissions} from '../../layers/controllers/layers-permissions'
+import GroupMemberService = require('../../users/services/group-member-service')
+import LayerPermissionService = require('../../layers/services/layers-permission-service')
+
 import { error } from 'util';
 var stream = require('stream');
 
@@ -11,6 +15,9 @@ var multer = require('multer'); const multerConfig = {
 };
 var router = express.Router();
 var service = new SQLService();
+var groupMemberService = new GroupMemberService
+var layerPermissionService = new LayerPermissionService
+let layerPermissions = new LayerPermissions(groupMemberService, layerPermissionService)
 
 router.get('/all', token_auth, (req, res) => {
     var schema = <string>req.query.schema
@@ -34,6 +41,9 @@ router.get('/getsheets', api_auth, (req, res) => {
     service.getUserFromAPIKey(req.query.apikey).then((x) => {
         console.log(x)
         try {
+            layerPermissions.getPermissions(x[0]['ID']).then((y) => {
+               console.log(y[0].group)
+            })
             if(x[0]['ID'] > 0) {  //need to fix this so this authorizes the user
                 service.getsheets(schema, table).then((result) => {
                     res.send(result);

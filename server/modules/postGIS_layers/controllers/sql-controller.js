@@ -2,6 +2,9 @@
 var SQLService = require('../services/sql-service');
 var token_auth = require('../../JWT_Checker/loginToken.js');
 var api_auth = require('../../JWT_Checker/apiKeyToken');
+var layers_permissions_1 = require('../../layers/controllers/layers-permissions');
+var GroupMemberService = require('../../users/services/group-member-service');
+var LayerPermissionService = require('../../layers/services/layers-permission-service');
 var stream = require('stream');
 var express = require('express');
 var multer = require('multer');
@@ -10,6 +13,9 @@ var multerConfig = {
 };
 var router = express.Router();
 var service = new SQLService();
+var groupMemberService = new GroupMemberService;
+var layerPermissionService = new LayerPermissionService;
+var layerPermissions = new layers_permissions_1.LayerPermissions(groupMemberService, layerPermissionService);
 router.get('/all', token_auth, function (req, res) {
     var schema = req.query.schema;
     var table = req.query.table;
@@ -30,6 +36,9 @@ router.get('/getsheets', api_auth, function (req, res) {
     service.getUserFromAPIKey(req.query.apikey).then(function (x) {
         console.log(x);
         try {
+            layerPermissions.getPermissions(x[0]['ID']).then(function (y) {
+                console.log(y[0].group);
+            });
             if (x[0]['ID'] > 0) {
                 service.getsheets(schema, table).then(function (result) {
                     res.send(result);

@@ -152,61 +152,64 @@ router.post('/login', function (req, res) {
     });
 });
 //This request generates an API key (JWT) to be used for Google Earth KML files and such. Not to be confused with login "session" JWT above.
-router.post('/generatekey', token_auth, function (req, res) {
-    UserModel.Model.findAll({
-        where: { email: req.body.email }
-    }).then(function (user) {
-        if (user.length < 1) {
-            return res.status(404).json({
-                message: 'User not found.'
-            });
-        }
-        console.log('In Generate Key');
-        var userID = req.body.userID;
-        var d = new Date().getTime();
-        var apikey;
-        var request = req.body;
-        var uuid = 'xxxxxxxx-xxxx'.replace(/[xy]/g, function (c) {
-            var r = (d + Math.random() * 16) % 16 | 0;
-            d = Math.floor(d / 16);
-            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-        });
-        console.log(uuid);
-        request.apikey = uuid;
-        request.userID = req.body.userID;
-        bcrypt.compare(req.body.password, user[0].password, function (err, result) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'bcrypt hash comparison failed.' //1/11/18 erroring here
-                });
-            }
-            if (result) {
-                var api_token = jwt.sign({
-                    email: user[0].email,
-                    firstName: user[0].firstName,
-                    lastName: user[0].lastName
-                }, environment_1.environment.JWT_SECRET_KEY, {
-                    expiresIn: "30 days"
-                });
-                return res.status(200).json({
-                    message: "Token granted.",
-                    token: api_token,
-                    userID: user[0].ID,
-                    admin: user[0].administrator
-                });
-            }
-            else if (!result) {
-                return res.status(401).json({
-                    message: 'Authorization failed.'
-                });
-            }
-        });
-    }).catch(function (err) {
-        return res.status(500).json({
-            error: err
-        });
-    });
-});
+// router.post('/generatekey', token_auth, (req, res) => {
+//     UserModel.Model.findAll({
+//         where: {email: req.body.email}
+//     }).then(user => {
+//         if(user.length < 1) { //If supplied email is not found as a user in the database
+//             return res.status(404).json({
+//                 message: 'User not found.'
+//             })
+//         }
+//              console.log('In Generate Key')
+//     let userID: number = req.body.userID
+//     var d = new Date().getTime();
+//     var apikey: string
+//     var request = <App.APIKey>req.body;
+//     var uuid = 'xxxxxxxx-xxxx'.replace(/[xy]/g, function(c)
+// 	{
+// 		var r = (d + Math.random()*16)%16 | 0;
+// 		d = Math.floor(d/16);
+// 		return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+//     });
+//     request.apikey = uuid
+//     request.userID = req.body.userID
+//         bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+//             if(err) { //bcrypt hashing error
+//                 return res.status(500).json({
+//                     message: 'bcrypt hash comparison failed.'//1/11/18 erroring here
+//                 })
+//             }
+//             if(result) {
+//                 const api_token = jwt.sign(
+//                     {
+//                         email: user[0].email,
+//                         firstName: user[0].firstName, //Use first+last name combo instead of ID to ensure key is different than login key
+//                         lastName: user[0].lastName
+//                     }, 
+//                     environment.JWT_SECRET_KEY,
+//                     {
+//                         expiresIn: "30 days"
+//                     }
+//                 );
+//                 return res.status(200).json({
+//                     message: "Token granted.",
+//                     token: api_token,
+//                     userID: user[0].ID,
+//                     admin: user[0].administrator
+//                 });
+//             } else if(!result) { //If hash comparison does not match
+//                 return res.status(401).json({
+//                     message: 'Authorization failed.'
+//                 })
+//             }
+//         })   
+//     }).catch(err => {
+//         return res.status(500).json({
+//             error:err
+//         })
+//     });
+// })
 router.put('/update', token_auth, function (req, res) {
     var request = req.body;
     service.update(request).then(function (result) {

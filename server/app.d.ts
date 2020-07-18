@@ -187,11 +187,6 @@
         links?: any[]
         constraints?: Array<MyCubeConstraint>
     }
-    interface APIKey extends IModelBase {
-        ID: number;
-        apikey: string;
-        userID: number;
-    }
 }
 
 declare module 'app' {
