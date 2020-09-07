@@ -4,7 +4,6 @@ var DomainModel = require('../../domain/models/domain-model');
 var sequelize_1 = require("sequelize");
 var db = dbConnection();
 var bcrypt = require('bcrypt');
-console.log("IN USER MODEL");
 var sequalizeModel = db.define('user', {
     ID: { type: sequelize_1.DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     firstName: {

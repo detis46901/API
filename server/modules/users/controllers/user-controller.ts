@@ -37,7 +37,7 @@ router.get('/single', token_auth, (req, res) => {
 //1/3/18: Robust way to do /create and /login
 router.post('/single', token_auth, (req, res) => {
     var request = <App.User>req.body;
-    UserModel.Model.findAll({
+    UserModel.model.findAll({
         where: { email: request.email}
     }).then(user => {
         if(user.length >= 1) {
@@ -115,7 +115,7 @@ router.put('/updatePassword', token_auth, (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-    UserModel.Model.findAll({
+    UserModel.model.findAll({
         where: {email: req.body.email}
     }).then(user => {
         if(user.length < 1) { //If supplied email is not found as a user in the database

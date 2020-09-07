@@ -23,6 +23,7 @@ var ModulePermissionController = require('./modules/feature modules/controllers/
 var UserPageInstanceController = require('./modules/feature modules/controllers/user-page-instance-controller');
 var MapConfigController = require('./modules/mapConfig/controllers/mapConfig-controller');
 var DomainController = require('./modules/domain/controllers/domain-controller');
+var LoginLogController = require('./modules/logs/controllers/loginlog-controller');
 // This portion of code is required to serve as a proxy 
 // Listen on a specific host via the HOST environment variable
 var host = process.env.HOST || '0.0.0.0';
@@ -69,6 +70,7 @@ app.use('/api/modulepermission', ModulePermissionController);
 app.use('/api/userpageinstance', UserPageInstanceController);
 app.use('/api/mapconfig', MapConfigController);
 app.use('/api/domain', DomainController);
+app.use('/api/loginlog', LoginLogController); //may want to make this more generic for other logs (not just login)
 app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
 });

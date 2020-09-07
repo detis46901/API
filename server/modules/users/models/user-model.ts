@@ -8,7 +8,6 @@ var bcrypt = require('bcrypt');
 export interface UserInstance extends Model<UserInstance, App.User>, App.User { }
 export interface UserModel extends Model<UserInstance, App.User> { }
 
-console.log("IN USER MODEL")
 var sequalizeModel = db.define<UserInstance, App.User>('user', <any>{
     ID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     firstName: {

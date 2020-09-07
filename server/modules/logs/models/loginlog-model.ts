@@ -1,20 +1,17 @@
 import dbConnection = require('../../../core/db-connection');
-import GroupMemberModel = require('./group-member-model');
+import userModel = require('../../users/models/user-model')
 import { Model, DataTypes } from "sequelize";
-
 
 var db = dbConnection();
 
 export interface LoginLogInstance extends Model<LoginLogInstance, App.LoginLog>, App.LoginLog { }
+export interface LoginLogModel extends Model<LoginLogInstance, App.LoginLog> { }
 
-var loginLogModel = db.define<LoginLogInstance, App.LoginLog>('loginlog', <any>{
+var sequalizeModel = db.define<LoginLogInstance, App.LoginLog>('loginlog', <any>{
     ID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    userID: {
-        type: DataTypes.INTEGER,
+    username: {
+        type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            len: [0, 100]
-        }
     },
     result: {
         type: DataTypes.STRING,
@@ -25,6 +22,6 @@ var loginLogModel = db.define<LoginLogInstance, App.LoginLog>('loginlog', <any>{
     }
 });
 
-loginLogModel.sync() 
+sequalizeModel.sync() 
 
-export var model = loginLogModel;
+export var model = sequalizeModel;

@@ -29,7 +29,7 @@ router.get('/single', token_auth, function (req, res) {
 //1/3/18: Robust way to do /create and /login
 router.post('/single', token_auth, function (req, res) {
     var request = req.body;
-    UserModel.Model.findAll({
+    UserModel.model.findAll({
         where: { email: request.email }
     }).then(function (user) {
         if (user.length >= 1) {
@@ -109,7 +109,7 @@ router.put('/updatePassword', token_auth, function (req, res) {
     });
 });
 router.post('/login', function (req, res) {
-    UserModel.Model.findAll({
+    UserModel.model.findAll({
         where: { email: req.body.email }
     }).then(function (user) {
         if (user.length < 1) {

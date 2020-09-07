@@ -2,14 +2,11 @@
 var dbConnection = require('../../../core/db-connection');
 var sequelize_1 = require("sequelize");
 var db = dbConnection();
-var loginLogModel = db.define('loginlog', {
+var sequalizeModel = db.define('loginlog', {
     ID: { type: sequelize_1.DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    userID: {
-        type: sequelize_1.DataTypes.INTEGER,
+    username: {
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
-        validate: {
-            len: [0, 100]
-        }
     },
     result: {
         type: sequelize_1.DataTypes.STRING,
@@ -19,7 +16,7 @@ var loginLogModel = db.define('loginlog', {
         }
     }
 });
-loginLogModel.sync();
-exports.model = loginLogModel;
+sequalizeModel.sync();
+exports.model = sequalizeModel;
 
-//# sourceMappingURL=../../../source-maps/modules/routes22/models/loginlog-model.js.map
+//# sourceMappingURL=../../../source-maps/modules/logs/models/loginlog-model.js.map
