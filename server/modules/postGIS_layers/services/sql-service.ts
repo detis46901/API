@@ -40,8 +40,8 @@ class SQLService {
         //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
     }
 
-    getUserFromAPIKey(apikey: string): Promise<UserModel.UserInstance[]>   {
-      var findOptions: Sequelize.FindOptions = {
+    getUserFromAPIKey(apikey: string): Promise<UserModel.UserInstance[]> {
+        var findOptions: Sequelize.FindOptions = {
             order: [
                 'apikey'
             ]
@@ -49,7 +49,7 @@ class SQLService {
 
         if (apikey) {
             findOptions.where = {
-                     apikey: { [Sequelize.Op.eq]: `${apikey}` }
+                apikey: { [Sequelize.Op.eq]: `${apikey}` }
             }
         }
         return UserModel.Model.findAll(findOptions);
@@ -165,7 +165,7 @@ class SQLService {
             this.mC1(table, myCubeField, rnd).then(() => {
                 this.mC2(table, myCubeField, rnd).then(() => {
                     this.mC3(table, myCubeField).then(() => {
-                        this.mc4(table, myCubeField, rnd).then(() => {resolve()})
+                        this.mc4(table, myCubeField, rnd).then(() => { resolve() })
                     }
                     )
                 }
@@ -212,7 +212,7 @@ class SQLService {
                             resolve()
                         })
                     }).catch((error) => {
-                        this.addConstraint(schema, table, myCubeField.field, constraint).then((result) => {resolve()})
+                        this.addConstraint(schema, table, myCubeField.field, constraint).then((result) => { resolve() })
                     })
                 }
                 else { resolve() }
@@ -246,7 +246,42 @@ class SQLService {
         return db.query("INSERT INTO " + schema + "." + table + ' ("' + field + '") VALUES (' + value + ") RETURNING id;")
     }
 
-    fixGeometry(table: string) {
+    fixGeometry(table: string): Promise<any> {
+        let promise = new Promise((resolve, reject) => {
+            this.fG1(table).then((x) => {
+                console.log(x)
+                this.fG2(table).then((y) => {
+                    console.log(y)
+                    this.fG3(table).then((z) => {
+                        console.log(z)
+                        this.fG4(table).then((a) => {
+                            console.log(a)
+                            resolve()
+                        })
+                    })
+                })
+            })
+        })
+        return promise
+    }
+
+    fG1(table: string): Promise<any> {
+        return db.query("ALTER TABLE mycube.t" + table + " ADD geom2d geometry;")
+    }
+
+    fG2(table: string): Promise<any> {
+        return db.query("UPDATE mycube.t" + table + " SET geom2d = ST_Force2D(geom);")
+    }
+
+    fG3(table: string): Promise<any> {
+        return db.query("ALTER TABLE mycube.t" + table + " DROP geom;")
+    }
+
+    fG4(table: string): Promise<any> {
+        return db.query("ALTER TABLE mycube.t" + table + " RENAME geom2d TO geom;")
+    }
+
+    fG5(table: string): Promise<any> {
         return db.query("ALTER TABLE mycube.t" + table + " ALTER COLUMN geom type geometry(Geometry, 4326);")
     }
 
@@ -345,6 +380,7 @@ class SQLService {
             case "double precision": {
                 return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';")
             }
+            case "character varying":
             case "text": {
                 if (value == null) {
                     return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = NULL WHERE "' + "id='" + id + "';")

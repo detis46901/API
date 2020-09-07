@@ -202,6 +202,37 @@ var SQLService = (function () {
         return db.query("INSERT INTO " + schema + "." + table + ' ("' + field + '") VALUES (' + value + ") RETURNING id;");
     };
     SQLService.prototype.fixGeometry = function (table) {
+        var _this = this;
+        var promise = new Promise(function (resolve, reject) {
+            _this.fG1(table).then(function (x) {
+                console.log(x);
+                _this.fG2(table).then(function (y) {
+                    console.log(y);
+                    _this.fG3(table).then(function (z) {
+                        console.log(z);
+                        _this.fG4(table).then(function (a) {
+                            console.log(a);
+                            resolve();
+                        });
+                    });
+                });
+            });
+        });
+        return promise;
+    };
+    SQLService.prototype.fG1 = function (table) {
+        return db.query("ALTER TABLE mycube.t" + table + " ADD geom2d geometry;");
+    };
+    SQLService.prototype.fG2 = function (table) {
+        return db.query("UPDATE mycube.t" + table + " SET geom2d = ST_Force2D(geom);");
+    };
+    SQLService.prototype.fG3 = function (table) {
+        return db.query("ALTER TABLE mycube.t" + table + " DROP geom;");
+    };
+    SQLService.prototype.fG4 = function (table) {
+        return db.query("ALTER TABLE mycube.t" + table + " RENAME geom2d TO geom;");
+    };
+    SQLService.prototype.fG5 = function (table) {
         return db.query("ALTER TABLE mycube.t" + table + " ALTER COLUMN geom type geometry(Geometry, 4326);");
     };
     SQLService.prototype.deleteRecord = function (table, id) {
@@ -291,6 +322,7 @@ var SQLService = (function () {
             case "double precision": {
                 return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = ' + value + " WHERE id='" + id + "';");
             }
+            case "character varying":
             case "text": {
                 if (value == null) {
                     return db.query("UPDATE " + schema + "." + table + ' SET "' + field + '" = NULL WHERE "' + "id='" + id + "';");

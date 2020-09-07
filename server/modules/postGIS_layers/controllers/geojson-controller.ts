@@ -16,9 +16,7 @@ var service = new geoJSONService();
 // });
 
 router.get('/all', token_auth, (req, res) => {
-
     var table = <string>req.query.table;
-    
     service.get(table).then((result) => {
         res.send(result);
     }).catch((error) => {
