@@ -18,7 +18,7 @@ var PageService = (function () {
                 _a
             );
         }
-        return PageModel.Model.findAll(findOptions);
+        return PageModel.model.findAll(findOptions);
         var _a;
     };
     PageService.prototype.getActiveByUserID = function (userID) {
@@ -36,7 +36,7 @@ var PageService = (function () {
                 _a
             );
         }
-        return PageModel.Model.findAll(findOptions);
+        return PageModel.model.findAll(findOptions);
         var _a;
     };
     PageService.prototype.getDefault = function (userID) {
@@ -54,17 +54,17 @@ var PageService = (function () {
                 _a
             );
         }
-        return PageModel.Model.findAll(findOptions);
+        return PageModel.model.findAll(findOptions);
         var _a;
     };
     PageService.prototype.get = function (rowID) {
-        return PageModel.Model.findByPk(rowID);
+        return PageModel.model.findByPk(rowID);
     };
     PageService.prototype.create = function (request) {
-        return PageModel.Model.create(request);
+        return PageModel.model.create(request);
     };
     PageService.prototype.update = function (request) {
-        return (PageModel.Model.findByPk(request.ID).then(function (PageInstance) {
+        return (PageModel.model.findByPk(request.ID).then(function (PageInstance) {
             PageInstance.userID = request.userID;
             PageInstance.page = request.page;
             PageInstance.pageOrder = request.pageOrder;
@@ -74,7 +74,7 @@ var PageService = (function () {
         }));
     };
     PageService.prototype.delete = function (ID) {
-        return PageModel.Model.findByPk(ID).then(function (PageInstance) {
+        return PageModel.model.findByPk(ID).then(function (PageInstance) {
             return PageInstance.destroy();
         });
     };

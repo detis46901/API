@@ -1,52 +1,51 @@
 import dbConnection = require('../../../core/db-connection');
-import Sequelize = require('sequelize');
 import UserModel = require('../../users/models/user-model');
 import GroupModel = require('../../users/models/group-model');
 import LayerModel = require('./layers-model');
+import { Model, DataTypes } from "sequelize";
 
 var db = dbConnection();
 
-export interface LayerPermissionInstance extends Sequelize.Instance<LayerPermissionInstance, App.LayerPermission>, App.LayerPermission { }
-export interface LayerPermissionModel extends Sequelize.Model<LayerPermissionInstance, App.LayerPermission> { }
-
+export interface LayerPermissionInstance extends Model<LayerPermissionInstance, App.LayerPermission>, App.LayerPermission { }
+export interface LayerPermissionModel extends Model<LayerPermissionInstance, App.LayerPermission> { }
 
 var sequalizeModel = db.define<LayerPermissionInstance, App.LayerPermission>('layer_permission', <any>{
     ID: { 
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true 
     },
     edit: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: DataTypes.BOOLEAN
     },
     delete: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: DataTypes.BOOLEAN
     },
     owner: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: DataTypes.BOOLEAN
     },
     canGrant: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: DataTypes.BOOLEAN
     },
     grantedBy: {
         allowNull: true,
-        type: Sequelize.INTEGER
+        type: DataTypes.INTEGER
     },
     comments: {
         allowNull: true,
-        type: Sequelize.STRING
+        type: DataTypes.STRING
     }
 });
 
-sequalizeModel.belongsTo(UserModel.Model);
-sequalizeModel.belongsTo(LayerModel.Model);
-sequalizeModel.belongsTo(GroupModel.Model)
+sequalizeModel.belongsTo(UserModel.model);
+sequalizeModel.belongsTo(LayerModel.model);
+sequalizeModel.belongsTo(GroupModel.model)
 
 //sequalizeModel.sync({force:true});
 sequalizeModel.sync();
 
-export var Model = sequalizeModel;
+export var model = sequalizeModel;

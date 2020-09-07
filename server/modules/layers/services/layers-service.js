@@ -21,18 +21,18 @@ var LayerService = (function () {
                 _a
             );
         }
-        findOptions.include = [ServerModel.Model];
-        return LayerModel.Model.findAll(findOptions);
+        findOptions.include = [ServerModel.model];
+        return LayerModel.model.findAll(findOptions);
         var _a, _b, _c, _d;
     };
     LayerService.prototype.get = function (rowID) {
-        return LayerModel.Model.findByPk(rowID);
+        return LayerModel.model.findByPk(rowID);
     };
     LayerService.prototype.create = function (request) {
-        return LayerModel.Model.create(request);
+        return LayerModel.model.create(request);
     };
     LayerService.prototype.update = function (request) {
-        return (LayerModel.Model.findByPk(request.ID).then(function (LayerInstance) {
+        return (LayerModel.model.findByPk(request.ID).then(function (LayerInstance) {
             LayerInstance.layerName = request.layerName;
             LayerInstance.layerType = request.layerType;
             LayerInstance.serverID = request.serverID;
@@ -46,7 +46,7 @@ var LayerService = (function () {
         }));
     };
     LayerService.prototype.delete = function (ID) {
-        return LayerModel.Model.findByPk(ID).then(function (LayerInstance) {
+        return LayerModel.model.findByPk(ID).then(function (LayerInstance) {
             return LayerInstance.destroy();
         });
     };

@@ -6,23 +6,6 @@ var db = dbConnection();
 var SQLService = (function () {
     function SQLService() {
     }
-    // getList(searchValue: string): Promise<any[]> {
-    //     var findOptions: Sequelize.FindOptions = {
-    //         order: [
-    //             'lastName'
-    //         ]
-    //     };
-    //     if (searchValue) {
-    //         findOptions.where = {
-    //             [Sequelize.Op.or]: [
-    //                 { firstName: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
-    //                 { lastName: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
-    //                 { email: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
-    //             ]
-    //         }
-    //     }
-    //     return UserModel.Model.findAll(findOptions);
-    // }
     SQLService.prototype.get = function (schema, table) {
         if (schema == 'mycube') {
             return db.query("SELECT *,ST_Length(ST_Transform(geom,2965)), ST_Area(ST_Transform(geom,2965)) from " + schema + "." + table + ' ORDER BY id');
@@ -30,7 +13,6 @@ var SQLService = (function () {
         else {
             return db.query("SELECT * from " + schema + "." + table + ' ORDER BY id');
         }
-        //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
     };
     SQLService.prototype.getUserFromAPIKey = function (apikey) {
         var findOptions = {
@@ -43,7 +25,7 @@ var SQLService = (function () {
                 apikey: (_a = {}, _a[Sequelize.Op.eq] = "" + apikey, _a)
             };
         }
-        return UserModel.Model.findAll(findOptions);
+        return UserModel.model.findAll(findOptions);
         var _a;
     };
     SQLService.prototype.getsheets = function (schema, table) {
@@ -93,15 +75,6 @@ var SQLService = (function () {
         return db.query('SELECT ST_Length(ST_Transform(geom,2965)) from mycube.t' + table + ' WHERE id=' + id + ';');
     };
     SQLService.prototype.create = function (table) {
-        //     db.query(`CREATE SEQUENCE public."test3_ID_seq"
-        //     INCREMENT 1
-        //     MINVALUE 1
-        //     MAXVALUE 9223372036854775807
-        //     START 38
-        //     CACHE 1;
-        //   ALTER TABLE public."test3_ID_seq"
-        //     OWNER TO geoadmin;
-        //   `)
         return db.query("CREATE TABLE mycube.t" + table + " (\n                ID    SERIAL PRIMARY KEY,\n                geom   geometry\n            );\n        ");
     };
     SQLService.prototype.getConstraints = function (schema, table) {

@@ -82,7 +82,7 @@ router.get('/single', token_auth, (req, res) => {
 //1/3/18: Robust way to do /create and /login
 router.post('/single', token_auth, (req, res) => {
     var request = <App.User>req.body;
-    UserModel.Model.findAll({
+    UserModel.model.findAll({
         where: { email: request.email }
     }).then(user => {
         if (user.length >= 1) {
@@ -159,7 +159,7 @@ router.put('/updatePassword', token_auth, (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-    UserModel.Model.findAll({
+    UserModel.model.findAll({
         where: { email: req.body.email }
     }).then(user => {
         if (user.length < 1) { //If supplied email is not found as a user in the database
@@ -207,7 +207,7 @@ router.post('/login', (req, res) => {
 
 //This request generates an API key (JWT) to be used for Google Earth KML files and such. Not to be confused with login "session" JWT above.
 router.post('/generatekey', token_auth, (req, res) => {
-    UserModel.Model.findAll({
+    UserModel.model.findAll({
         where: { email: req.body.email }
     }).then(user => {
         if (user.length < 1) { //If supplied email is not found as a user in the database

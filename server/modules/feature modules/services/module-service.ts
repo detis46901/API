@@ -21,20 +21,20 @@ class ModuleService {
             }
         }
         
-        return ModuleModel.Model.findAll(findOptions);
+        return ModuleModel.model.findAll(findOptions);
     }
 
     get(rowID: number): Promise<ModuleModel.ModuleInstance> {
-        return ModuleModel.Model.findByPk(rowID);
+        return ModuleModel.model.findByPk(rowID);
     }
 
     create(request: App.Module): Promise<ModuleModel.ModuleInstance> {
-        return ModuleModel.Model.create(request);
+        return ModuleModel.model.create(request);
     }
 
     update(request: App.Module): Promise<ModuleModel.ModuleInstance> {
         
-        return <any>(ModuleModel.Model.findByPk(request.ID).then((ModuleInstance) => {
+        return <any>(ModuleModel.model.findByPk(request.ID).then((ModuleInstance) => {
 
             ModuleInstance.identity = request.identity;
             ModuleInstance.name = request.name;
@@ -45,7 +45,7 @@ class ModuleService {
 
     delete(ID: number) {
 
-        return ModuleModel.Model.findByPk(ID).then((ModuleInstance) => {
+        return ModuleModel.model.findByPk(ID).then((ModuleInstance) => {
             return ModuleInstance.destroy();
 
         });

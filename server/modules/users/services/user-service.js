@@ -2,7 +2,6 @@
 var Sequelize = require('sequelize');
 var UserModel = require('../models/user-model');
 var DomainModel = require('../../domain/models/domain-model');
-//import ParentService = require('../../parent-service');
 var UserService = (function () {
     function UserService() {
     }
@@ -22,23 +21,23 @@ var UserService = (function () {
                 _a
             );
         }
-        return UserModel.Model.findAll(findOptions);
+        return UserModel.model.findAll(findOptions);
         var _a, _b, _c, _d;
     };
     UserService.prototype.get = function (rowID) {
         var findOptions = {};
-        findOptions.include = [DomainModel.Model];
-        return UserModel.Model.findByPk(rowID, findOptions);
+        findOptions.include = [DomainModel.model];
+        return UserModel.model.findByPk(rowID, findOptions);
     };
     UserService.prototype.create = function (request) {
         if (!request.apikey) {
             request.apikey = this.generateKey();
         }
-        return UserModel.Model.create(request);
+        return UserModel.model.create(request);
     };
     UserService.prototype.update = function (request) {
         var _this = this;
-        return (UserModel.Model.findByPk(request.ID).then(function (UserInstance) {
+        return (UserModel.model.findByPk(request.ID).then(function (UserInstance) {
             console.log(UserInstance.apikey);
             console.log(request.apikey);
             if (!request.apikey) {
@@ -56,7 +55,7 @@ var UserService = (function () {
         }));
     };
     UserService.prototype.delete = function (ID) {
-        return UserModel.Model.findByPk(ID).then(function (UserInstance) {
+        return UserModel.model.findByPk(ID).then(function (UserInstance) {
             return UserInstance.destroy();
         });
     };

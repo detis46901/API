@@ -10,7 +10,7 @@ var LayerPermissionService = (function () {
     function LayerPermissionService() {
     }
     LayerPermissionService.prototype.getList = function () {
-        return LayerPermissionModel.Model.findAll();
+        return LayerPermissionModel.model.findAll();
     };
     LayerPermissionService.prototype.getByLayer = function (layerID) {
         var findOptions = {
@@ -26,8 +26,8 @@ var LayerPermissionService = (function () {
                 _a
             );
         }
-        findOptions.include = [{ model: LayerModel.Model, include: [ServerModel.Model] }, UserModel.Model, GroupModel.Model];
-        return LayerPermissionModel.Model.findAll(findOptions);
+        findOptions.include = [{ model: LayerModel.model, include: [ServerModel.model] }, UserModel.model, GroupModel.model];
+        return LayerPermissionModel.model.findAll(findOptions);
         var _a;
     };
     LayerPermissionService.prototype.getByUser = function (userID) {
@@ -44,8 +44,8 @@ var LayerPermissionService = (function () {
                 _a
             );
         }
-        findOptions.include = [{ model: LayerModel.Model, include: [ServerModel.Model] }, UserModel.Model, GroupModel.Model];
-        return LayerPermissionModel.Model.findAll(findOptions);
+        findOptions.include = [{ model: LayerModel.model, include: [ServerModel.model] }, UserModel.model, GroupModel.model];
+        return LayerPermissionModel.model.findAll(findOptions);
         var _a;
     };
     LayerPermissionService.prototype.getByGroup = function (groupID) {
@@ -62,8 +62,8 @@ var LayerPermissionService = (function () {
                 _a
             );
         }
-        findOptions.include = [{ model: LayerModel.Model, include: [ServerModel.Model] }, UserModel.Model, GroupModel.Model];
-        return LayerPermissionModel.Model.findAll(findOptions);
+        findOptions.include = [{ model: LayerModel.model, include: [ServerModel.model] }, UserModel.model, GroupModel.model];
+        return LayerPermissionModel.model.findAll(findOptions);
         var _a;
     };
     LayerPermissionService.prototype.getByUserAndGroup = function (userID, groups) {
@@ -82,18 +82,18 @@ var LayerPermissionService = (function () {
                 _a
             );
         }
-        findOptions.include = [{ model: LayerModel.Model, include: [ServerModel.Model] }, UserModel.Model, GroupModel.Model];
-        return LayerPermissionModel.Model.findAll(findOptions);
+        findOptions.include = [{ model: LayerModel.model, include: [ServerModel.model] }, UserModel.model, GroupModel.model];
+        return LayerPermissionModel.model.findAll(findOptions);
         var _a, _b;
     };
     LayerPermissionService.prototype.get = function (ID) {
-        return LayerPermissionModel.Model.findByPk(ID);
+        return LayerPermissionModel.model.findByPk(ID);
     };
     LayerPermissionService.prototype.create = function (request) {
-        return LayerPermissionModel.Model.create(request);
+        return LayerPermissionModel.model.create(request);
     };
     LayerPermissionService.prototype.update = function (request) {
-        return (LayerPermissionModel.Model.findByPk(request.ID).then(function (LayerPermissionInstance) {
+        return (LayerPermissionModel.model.findByPk(request.ID).then(function (LayerPermissionInstance) {
             //Probably should disallow foreign key editing. Create new entry if need new user/layer permission.
             //LayerPermissionInstance.layerID = request.layerID;
             //LayerPermissionInstance.userID = request.userID;
@@ -107,7 +107,7 @@ var LayerPermissionService = (function () {
         }));
     };
     LayerPermissionService.prototype.delete = function (ID) {
-        return LayerPermissionModel.Model.findByPk(ID).then(function (LayerPermissionInstance) {
+        return LayerPermissionModel.model.findByPk(ID).then(function (LayerPermissionInstance) {
             return LayerPermissionInstance.destroy();
         });
     };

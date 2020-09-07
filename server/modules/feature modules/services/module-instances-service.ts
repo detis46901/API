@@ -2,10 +2,8 @@ import Sequelize = require('sequelize');
 import ModuleInstancesModel = require('../models/module-instances-model');
 import ModuleModel = require('../models/module-model')
 
-
 class ModuleInstancesService {
     getList(searchValue: string): Promise<ModuleInstancesModel.ModuleInstancesInstance[]> {
-
         var findOptions: Sequelize.FindOptions = {
             order: [
                 'ID'
@@ -21,26 +19,25 @@ class ModuleInstancesService {
                 ]
             }
         }
-        
-        findOptions.include = [ModuleModel.Model];
-        return ModuleInstancesModel.Model.findAll(findOptions);
+
+        findOptions.include = [ModuleModel.model];
+        return ModuleInstancesModel.model.findAll(findOptions);
     }
 
     get(rowID: number): Promise<ModuleInstancesModel.ModuleInstancesInstance> {
         var findOptions: Sequelize.FindOptions = {}
-        findOptions.include = [ModuleModel.Model];
-        return ModuleInstancesModel.Model.findByPk(rowID, findOptions);
+        findOptions.include = [ModuleModel.model];
+        return ModuleInstancesModel.model.findByPk(rowID, findOptions);
     }
 
     create(request: App.ModuleInstances): Promise<ModuleInstancesModel.ModuleInstancesInstance> {
         var findOptions: Sequelize.FindOptions = {}
-        findOptions.include = [ModuleModel.Model];
-        return ModuleInstancesModel.Model.create(request, findOptions);
+        findOptions.include = [ModuleModel.model];
+        return ModuleInstancesModel.model.create(request, findOptions);
     }
 
     update(request: App.ModuleInstances): Promise<ModuleInstancesModel.ModuleInstancesInstance> {
-        
-        return <any>(ModuleInstancesModel.Model.findByPk(request.ID).then((ModuleInstance) => {
+        return <any>(ModuleInstancesModel.model.findByPk(request.ID).then((ModuleInstance) => {
 
             ModuleInstance.name = request.name;
             ModuleInstance.description = request.description;
@@ -50,13 +47,11 @@ class ModuleInstancesService {
     }
 
     delete(ID: number) {
-
-        return ModuleInstancesModel.Model.findByPk(ID).then((ModuleInstance) => {
+        return ModuleInstancesModel.model.findByPk(ID).then((ModuleInstance) => {
             return ModuleInstance.destroy();
 
         });
     }
-
 }
 
 export = ModuleInstancesService;

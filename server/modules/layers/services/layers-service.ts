@@ -22,21 +22,21 @@ class LayerService {
             }
         }
         
-         findOptions.include = [ServerModel.Model]
-        return LayerModel.Model.findAll(findOptions);
+         findOptions.include = [ServerModel.model]
+        return LayerModel.model.findAll(findOptions);
     }
 
     get(rowID: number): Promise<LayerModel.LayerInstance> {
-        return LayerModel.Model.findByPk(rowID);
+        return LayerModel.model.findByPk(rowID);
     }
 
     create(request: App.Layer): Promise<LayerModel.LayerInstance> {
-        return LayerModel.Model.create(request);
+        return LayerModel.model.create(request);
     }
 
     update(request: App.Layer): Promise<LayerModel.LayerInstance> {
         
-        return <any>(LayerModel.Model.findByPk(request.ID).then((LayerInstance) => {
+        return <any>(LayerModel.model.findByPk(request.ID).then((LayerInstance) => {
 
             LayerInstance.layerName = request.layerName;
             LayerInstance.layerType = request.layerType;
@@ -53,7 +53,7 @@ class LayerService {
 
     delete(ID: number) {
 
-        return LayerModel.Model.findByPk(ID).then((LayerInstance) => {
+        return LayerModel.model.findByPk(ID).then((LayerInstance) => {
             return LayerInstance.destroy();
 
         });

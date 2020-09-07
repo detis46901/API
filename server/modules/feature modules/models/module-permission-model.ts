@@ -1,57 +1,53 @@
 import dbConnection = require('../../../core/db-connection');
-import Sequelize = require('sequelize');
 import UserModel = require('../../users/models/user-model');
 import ModuleInstance = require('./module-instances-model')
 import GroupModel = require('../../users/models/group-model');
-
+import { Model, DataTypes } from "sequelize";
 
 var db = dbConnection();
 
-
-export interface ModulePermissionInstance extends Sequelize.Instance<ModulePermissionInstance, App.ModulePermission>, App.ModulePermission { }
-
+export interface ModulePermissionInstance extends Model<ModulePermissionInstance, App.ModulePermission>, App.ModulePermission { }
 
 var sequalizeModel = db.define<ModulePermissionInstance, App.ModulePermission>('module_permission', <any>{
     ID: { 
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true 
     },
     edit: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: DataTypes.BOOLEAN
     },
     delete: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: DataTypes.BOOLEAN
     },
     owner: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: DataTypes.BOOLEAN
     },
     canGrant: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: DataTypes.BOOLEAN
     },
     grantedBy: {
         allowNull: true,
-        type: Sequelize.INTEGER
+        type: DataTypes.INTEGER
     },
     comments: {
         allowNull: true,
-        type: Sequelize.STRING
+        type: DataTypes.STRING
     },
     settings: {
         allowNull: true,
-        type: Sequelize.JSON
+        type: DataTypes.JSON
     }
 });
 
-sequalizeModel.belongsTo(UserModel.Model);
-sequalizeModel.belongsTo(ModuleInstance.Model)
-sequalizeModel.belongsTo(GroupModel.Model)
-
+sequalizeModel.belongsTo(UserModel.model);
+sequalizeModel.belongsTo(ModuleInstance.model)
+sequalizeModel.belongsTo(GroupModel.model)
 
 sequalizeModel.sync()
 
-export var Model = sequalizeModel;
+export var model = sequalizeModel;

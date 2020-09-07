@@ -5,7 +5,7 @@ import GroupModel = require('../models/group-model');
 
 class GroupMemberService { 
     getList(searchValue: string): Promise<GroupMemberModel.GroupMemberInstance[]> {
-        return GroupMemberModel.Model.findAll();
+        return GroupMemberModel.model.findAll();
     }
 
     getByUser(userID: number): Promise<GroupMemberModel.GroupMemberInstance[]> {
@@ -23,8 +23,8 @@ class GroupMemberService {
             }
         }
 
-        findOptions.include = [GroupModel.Model]
-        return GroupMemberModel.Model.findAll(findOptions);
+        findOptions.include = [GroupModel.model]
+        return GroupMemberModel.model.findAll(findOptions);
     }
 
     getByGroup(groupID: number): Promise<GroupMemberModel.GroupMemberInstance[]> {
@@ -42,20 +42,20 @@ class GroupMemberService {
             }
         }
 
-        findOptions.include = [UserModel.Model]
-        return GroupMemberModel.Model.findAll(findOptions);
+        findOptions.include = [UserModel.model]
+        return GroupMemberModel.model.findAll(findOptions);
     }
 
     get(rowID: number): Promise<GroupMemberModel.GroupMemberInstance> {
-        return GroupMemberModel.Model.findByPk(rowID);
+        return GroupMemberModel.model.findByPk(rowID);
     }
 
     create(request: App.GroupMember): Promise<GroupMemberModel.GroupMemberInstance> {
-        return GroupMemberModel.Model.create(request);
+        return GroupMemberModel.model.create(request);
     }
 
     delete(ID: number) {
-        return GroupMemberModel.Model.findByPk(ID).then((GroupMemberInstance) => {
+        return GroupMemberModel.model.findByPk(ID).then((GroupMemberInstance) => {
             return GroupMemberInstance.destroy();
         });
     }

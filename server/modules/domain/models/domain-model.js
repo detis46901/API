@@ -1,64 +1,64 @@
 "use strict";
 var dbConnection = require('../../../core/db-connection');
-var Sequelize = require('sequelize');
+var sequelize_1 = require("sequelize");
 var db = dbConnection();
 var sequelizeModel = db.define('domain', {
-    ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+    ID: { type: sequelize_1.DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     title: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [2, 30]
         }
     },
     url: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [2, 30]
         }
     },
     centerlong: {
-        type: Sequelize.DOUBLE,
+        type: sequelize_1.DataTypes.DOUBLE,
         allowNull: false,
     },
     centerlat: {
-        type: Sequelize.DOUBLE,
+        type: sequelize_1.DataTypes.DOUBLE,
         allowNull: false,
     },
     centerzoom: {
-        type: Sequelize.DOUBLE,
+        type: sequelize_1.DataTypes.DOUBLE,
         allowNull: false,
         default: 13
     },
     bingmapskey: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [2, 30]
         }
     },
     mapboxbasemapurl: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [2, 30]
         }
     },
     localz: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [2, 30]
         }
     },
     cacheSize: {
-        type: Sequelize.INTEGER,
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
         default: 13
     }
 });
 sequelizeModel.sync();
-exports.Model = sequelizeModel;
+exports.model = sequelizeModel;
 
 //# sourceMappingURL=../../../source-maps/modules/domain/models/domain-model.js.map

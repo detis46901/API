@@ -1,67 +1,66 @@
 "use strict";
 var dbConnection = require('../../../core/db-connection');
-var Sequelize = require('sequelize');
-var sequelize = require('sequelize');
 var ServerModel = require('./servers-model');
 var DomainModel = require('../../domain/models/domain-model');
+var sequelize_1 = require("sequelize");
 var db = dbConnection();
 var sequalizeModel = db.define('layer', {
-    ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+    ID: { type: sequelize_1.DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     layerName: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [1, 30]
         }
     },
     layerType: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [1, 30]
         }
     },
     layerService: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [1, 200]
         }
     },
     layerIdent: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [1, 200]
         }
     },
     layerFormat: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [1, 200]
         }
     },
     layerDescription: {
-        type: sequelize.TEXT,
+        type: sequelize_1.DataTypes.TEXT,
         allowNull: true
     },
     layerGeom: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: true,
         validate: {
             len: [1, 200]
         }
     },
     defaultStyle: {
-        type: Sequelize.JSON,
+        type: sequelize_1.DataTypes.JSON,
         allowNull: true,
         defaultValue: '{"load":{"color":"#000000","width":2},"current":{"color":"#000000","width":4}}'
     }
 });
-sequalizeModel.belongsTo(ServerModel.Model);
-sequalizeModel.belongsTo(DomainModel.Model);
+sequalizeModel.belongsTo(ServerModel.model);
+sequalizeModel.belongsTo(DomainModel.model);
 sequalizeModel.sync();
-exports.Model = sequalizeModel;
+exports.model = sequalizeModel;
 
 //# sourceMappingURL=../../../source-maps/modules/layers/models/layers-model.js.map

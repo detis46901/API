@@ -20,24 +20,24 @@ var GroupService = (function () {
                 _a
             );
         }
-        return GroupModel.Model.findAll(findOptions);
+        return GroupModel.model.findAll(findOptions);
         var _a, _b, _c, _d;
     };
     GroupService.prototype.get = function (rowID) {
-        return GroupModel.Model.findByPk(rowID);
+        return GroupModel.model.findByPk(rowID);
     };
     GroupService.prototype.create = function (request) {
-        return GroupModel.Model.create(request);
+        return GroupModel.model.create(request);
     };
     GroupService.prototype.update = function (request) {
-        return (GroupModel.Model.findByPk(request.ID).then(function (GroupInstance) {
+        return (GroupModel.model.findByPk(request.ID).then(function (GroupInstance) {
             GroupInstance.name = request.name;
             GroupInstance.description = request.description;
             return GroupInstance.save();
         }));
     };
     GroupService.prototype.delete = function (rowID) {
-        return GroupModel.Model.findByPk(rowID).then(function (GroupInstance) {
+        return GroupModel.model.findByPk(rowID).then(function (GroupInstance) {
             return GroupInstance.destroy();
         });
     };

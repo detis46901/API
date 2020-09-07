@@ -1,49 +1,49 @@
 "use strict";
 var dbConnection = require('../../../core/db-connection');
-var Sequelize = require('sequelize');
 var UserModel = require('../../users/models/user-model');
 var ModuleInstance = require('./module-instances-model');
 var GroupModel = require('../../users/models/group-model');
+var sequelize_1 = require("sequelize");
 var db = dbConnection();
 var sequalizeModel = db.define('module_permission', {
     ID: {
-        type: Sequelize.INTEGER,
+        type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
     edit: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: sequelize_1.DataTypes.BOOLEAN
     },
     delete: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: sequelize_1.DataTypes.BOOLEAN
     },
     owner: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: sequelize_1.DataTypes.BOOLEAN
     },
     canGrant: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: sequelize_1.DataTypes.BOOLEAN
     },
     grantedBy: {
         allowNull: true,
-        type: Sequelize.INTEGER
+        type: sequelize_1.DataTypes.INTEGER
     },
     comments: {
         allowNull: true,
-        type: Sequelize.STRING
+        type: sequelize_1.DataTypes.STRING
     },
     settings: {
         allowNull: true,
-        type: Sequelize.JSON
+        type: sequelize_1.DataTypes.JSON
     }
 });
-sequalizeModel.belongsTo(UserModel.Model);
-sequalizeModel.belongsTo(ModuleInstance.Model);
-sequalizeModel.belongsTo(GroupModel.Model);
+sequalizeModel.belongsTo(UserModel.model);
+sequalizeModel.belongsTo(ModuleInstance.model);
+sequalizeModel.belongsTo(GroupModel.model);
 sequalizeModel.sync();
-exports.Model = sequalizeModel;
+exports.model = sequalizeModel;
 
 //# sourceMappingURL=../../../source-maps/modules/feature modules/models/module-permission-model.js.map

@@ -1,46 +1,44 @@
 import dbConnection = require('../../../core/db-connection');
-import Sequelize = require('sequelize');
 import UserModel = require('./user-model');
+import { Model, DataTypes } from "sequelize";
 
 var db = dbConnection();
 
-
-export interface NotificationInstance extends Sequelize.Instance<NotificationInstance, App.Notification>, App.Notification { }
-export interface NotificationModel extends Sequelize.Model<NotificationInstance, App.Notification> { }
-
+export interface NotificationInstance extends Model<NotificationInstance, App.Notification>, App.Notification { }
+export interface NotificationModel extends Model<NotificationInstance, App.Notification> { }
 
 var sequalizeModel = db.define<NotificationInstance, App.Notification>('notification', <any>{
-    ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+    ID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false
     },
     description: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: true
     },
     link: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: true
     }, 
     priority: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     read: {
-        type: Sequelize.BOOLEAN,
+        type: DataTypes.BOOLEAN,
         required: true
     },
     objectType: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: true
     },
     sourceID: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: true
     }
 });
 
-sequalizeModel.belongsTo(UserModel.Model)
+sequalizeModel.belongsTo(UserModel.model)
 sequalizeModel.sync() 
-export var Model = sequalizeModel;
+export var model = sequalizeModel;

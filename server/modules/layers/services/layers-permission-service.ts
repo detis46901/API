@@ -9,7 +9,7 @@ const Op = Sequelize.or
 
 class LayerPermissionService {
     getList(): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
-        return LayerPermissionModel.Model.findAll();
+        return LayerPermissionModel.model.findAll();
     }
 
     getByLayer(layerID: number): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
@@ -26,8 +26,8 @@ class LayerPermissionService {
                 ]
             }
         }
-        findOptions.include = [{ model: LayerModel.Model, include: [ServerModel.Model] }, UserModel.Model, GroupModel.Model];
-        return LayerPermissionModel.Model.findAll(findOptions);
+        findOptions.include = [{ model: LayerModel.model, include: [ServerModel.model] }, UserModel.model, GroupModel.model];
+        return LayerPermissionModel.model.findAll(findOptions);
     }
 
     getByUser(userID: number): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
@@ -43,8 +43,8 @@ class LayerPermissionService {
                 ]
             }
         }
-        findOptions.include = [{ model: LayerModel.Model, include: [ServerModel.Model] }, UserModel.Model, GroupModel.Model];
-        return LayerPermissionModel.Model.findAll(findOptions);
+        findOptions.include = [{ model: LayerModel.model, include: [ServerModel.model] }, UserModel.model, GroupModel.model];
+        return LayerPermissionModel.model.findAll(findOptions);
     }
 
     getByGroup(groupID: number): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
@@ -60,8 +60,8 @@ class LayerPermissionService {
                 ]
             }
         }
-        findOptions.include = [{ model: LayerModel.Model, include: [ServerModel.Model] }, UserModel.Model, GroupModel.Model];
-        return LayerPermissionModel.Model.findAll(findOptions);
+        findOptions.include = [{ model: LayerModel.model, include: [ServerModel.model] }, UserModel.model, GroupModel.model];
+        return LayerPermissionModel.model.findAll(findOptions);
     }
 
     getByUserAndGroup(userID: number, groups: number[]): Promise<LayerPermissionModel.LayerPermissionInstance[]> {
@@ -79,20 +79,20 @@ class LayerPermissionService {
                 ]
             }
         }
-        findOptions.include = [{ model: LayerModel.Model, include: [ServerModel.Model] }, UserModel.Model, GroupModel.Model];
-        return LayerPermissionModel.Model.findAll(findOptions)
+        findOptions.include = [{ model: LayerModel.model, include: [ServerModel.model] }, UserModel.model, GroupModel.model];
+        return LayerPermissionModel.model.findAll(findOptions)
     }
 
     get(ID: number): Promise<LayerPermissionModel.LayerPermissionInstance> {
-        return LayerPermissionModel.Model.findByPk(ID);
+        return LayerPermissionModel.model.findByPk(ID);
     }
 
     create(request: App.LayerPermission): Promise<LayerPermissionModel.LayerPermissionInstance> {
-        return LayerPermissionModel.Model.create(request);
+        return LayerPermissionModel.model.create(request);
     }
 
     update(request: App.LayerPermission): Promise<LayerPermissionModel.LayerPermissionInstance> {
-        return <any>(LayerPermissionModel.Model.findByPk(request.ID).then((LayerPermissionInstance) => {
+        return <any>(LayerPermissionModel.model.findByPk(request.ID).then((LayerPermissionInstance) => {
             //Probably should disallow foreign key editing. Create new entry if need new user/layer permission.
             //LayerPermissionInstance.layerID = request.layerID;
             //LayerPermissionInstance.userID = request.userID;
@@ -107,7 +107,7 @@ class LayerPermissionService {
     }
 
     delete(ID: number) {
-        return LayerPermissionModel.Model.findByPk(ID).then((LayerPermissionInstance) => {
+        return LayerPermissionModel.model.findByPk(ID).then((LayerPermissionInstance) => {
             return LayerPermissionInstance.destroy();
         });
     }

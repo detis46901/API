@@ -1,32 +1,32 @@
 import dbConnection = require('../../../core/db-connection');
-import Sequelize = require('sequelize');
+import { Model, DataTypes } from "sequelize";
 
 var db = dbConnection();
-export interface ServerInstance extends Sequelize.Instance<ServerInstance, App.Server>, App.Server { }
-export interface ServerModel extends Sequelize.Model<ServerInstance, App.Server> { }
+export interface ServerInstance extends Model<ServerInstance, App.Server>, App.Server { }
+export interface ServerModel extends Model<ServerInstance, App.Server> { }
 
 var sequalizeModel = db.define<ServerInstance, App.Server>('server', <any> {
     ID: { 
-        type: Sequelize.INTEGER, 
+        type: DataTypes.INTEGER, 
         primaryKey: true, 
         autoIncrement: true 
     },
     serverName: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [2, 30]
         }
     },
     serverType: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [2, 30]
         }
     },
     serverURL: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [1, 200]
@@ -57,4 +57,4 @@ else {
 }
 });
 
-export var Model = sequalizeModel;
+export var model = sequalizeModel;

@@ -1,44 +1,43 @@
 import dbConnection = require('../../../core/db-connection');
-import Sequelize = require('sequelize');
 import UserModel = require('../../users/models/user-model');
+import { Model, DataTypes } from "sequelize";
 
 var db = dbConnection();
 
-
-export interface PageInstance extends Sequelize.Instance<PageInstance, App.UserPage>, App.UserPage { }
-export interface PageModel extends Sequelize.Model<PageInstance, App.UserPage> { }
+export interface PageInstance extends Model<PageInstance, App.UserPage>, App.UserPage { }
+export interface PageModel extends Model<PageInstance, App.UserPage> { }
 
 
 var sequalizeModel = db.define<PageInstance, App.UserPage>('user_page', <any>{
-    ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+    ID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     page: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [1, 200]
         }
     },
     pageOrder: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         validate: {
             min: 0
         }
     },
     default: {
-        type: Sequelize.BOOLEAN,
+        type: DataTypes.BOOLEAN,
         validate: {
             is: ["[a-z]",'i'] //only allow letters
         }
     },
     active: {
-        type: Sequelize.BOOLEAN,
+        type: DataTypes.BOOLEAN,
         validate: {
             is: ["[a-z]",'i'] //only allow letters
         }
     },
 });
 
-sequalizeModel.belongsTo(UserModel.Model);
+sequalizeModel.belongsTo(UserModel.model);
 sequalizeModel.sync()    
 
-export var Model = sequalizeModel;
+export var model = sequalizeModel;

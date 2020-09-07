@@ -3,25 +3,25 @@ import Sequelize = require('sequelize');
 import PageModel = require('../../users/models/page-model');
 import ModuleInstanceModel = require ('./module-instances-model');
 import UserModel = require('../../users/models/user-model');
+import { Model, DataTypes } from "sequelize";
 
 var db = dbConnection();
 
-
-export interface UserPageInstanceInstance extends Sequelize.Instance<UserPageInstanceInstance, App.UserPageInstance>, App.UserPageInstance { }
-export interface UserPageInstanceModel extends Sequelize.Model<UserPageInstanceInstance, App.UserPageInstance> { }
+export interface UserPageInstanceInstance extends Model<UserPageInstanceInstance, App.UserPageInstance>, App.UserPageInstance { }
+export interface UserPageInstanceModel extends Model<UserPageInstanceInstance, App.UserPageInstance> { }
 
 
 var sequalizeModel = db.define<UserPageInstanceInstance, App.UserPageInstance>('user_page_instance', <any>{
-    ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+    ID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     defaultON: {
-        type: Sequelize.BOOLEAN},
+        type: DataTypes.BOOLEAN},
     instanceOrder: {
-        type: Sequelize.INTEGER}
+        type: DataTypes.INTEGER}
 });
 
-sequalizeModel.belongsTo(UserModel.Model)
-sequalizeModel.belongsTo(PageModel.Model)
-sequalizeModel.belongsTo(ModuleInstanceModel.Model)
+sequalizeModel.belongsTo(UserModel.model)
+sequalizeModel.belongsTo(PageModel.model)
+sequalizeModel.belongsTo(ModuleInstanceModel.model)
 sequalizeModel.sync(); 
 
-export var Model = sequalizeModel;
+export var model = sequalizeModel;

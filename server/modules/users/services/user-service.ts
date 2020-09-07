@@ -1,8 +1,6 @@
 import Sequelize = require('sequelize');
 import UserModel = require('../models/user-model');
 import DomainModel = require('../../domain/models/domain-model')
-import bcrypt = require('bcrypt');
-//import ParentService = require('../../parent-service');
 
 class UserService {
 
@@ -24,23 +22,23 @@ class UserService {
             }
         }
         
-        return UserModel.Model.findAll(findOptions);
+        return UserModel.model.findAll(findOptions);
     }
 
     get(rowID: number): Promise<UserModel.UserInstance> {
         var findOptions: Sequelize.FindOptions = { };
-        findOptions.include = [DomainModel.Model]
-        return UserModel.Model.findByPk(rowID, findOptions);
+        findOptions.include = [DomainModel.model]
+        return UserModel.model.findByPk(rowID, findOptions);
     }
 
     create(request: App.User): Promise<UserModel.UserInstance> { if (!request.apikey) {
         request.apikey = this.generateKey()
     }
-        return UserModel.Model.create(request);
+        return UserModel.model.create(request);
     }
 
     update(request: App.User): Promise<UserModel.UserInstance> {
-        return <any>(UserModel.Model.findByPk(request.ID).then((UserInstance) => {
+        return <any>(UserModel.model.findByPk(request.ID).then((UserInstance) => {
             console.log(UserInstance.apikey)
             console.log(request.apikey)
             if (!request.apikey) {
@@ -60,7 +58,7 @@ class UserService {
     }
 
     delete(ID: number) {
-        return UserModel.Model.findByPk(ID).then((UserInstance) => {
+        return UserModel.model.findByPk(ID).then((UserInstance) => {
             return UserInstance.destroy();
         });
     }

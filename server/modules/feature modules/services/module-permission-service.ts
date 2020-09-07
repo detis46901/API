@@ -6,10 +6,9 @@ import GroupModel = require('../../users/models/group-model')
 import ModulesModel = require('../models/module-model')
 const Op = Sequelize.or
 
-
 class ModulePermissionService {
     getList(): Promise<ModulePermissionModel.ModulePermissionInstance[]> {
-        return ModulePermissionModel.Model.findAll();
+        return ModulePermissionModel.model.findAll();
     }
     
     getByInstance(instanceID: number): Promise<ModulePermissionModel.ModulePermissionInstance[]> {
@@ -25,8 +24,8 @@ class ModulePermissionService {
                 ]
             }
         }
-        findOptions.include = [ModuleInstance.Model, UserModel.Model, GroupModel.Model];
-        return ModulePermissionModel.Model.findAll(findOptions);
+        findOptions.include = [ModuleInstance.model, UserModel.model, GroupModel.model];
+        return ModulePermissionModel.model.findAll(findOptions);
     }
 
     getByUser(userID: number): Promise<ModulePermissionModel.ModulePermissionInstance[]> {
@@ -42,8 +41,8 @@ class ModulePermissionService {
                 ]
             }
         }
-        findOptions.include = [ModuleInstance.Model, UserModel.Model, GroupModel.Model];
-        return ModulePermissionModel.Model.findAll({include: [{model: ModuleInstance.Model, include:[ModulesModel.Model]}, {model: UserModel.Model}, {model: GroupModel.Model}]});
+        findOptions.include = [ModuleInstance.model, UserModel.model, GroupModel.model];
+        return ModulePermissionModel.model.findAll({include: [{model: ModuleInstance.model, include:[ModulesModel.model]}, {model: UserModel.model}, {model: GroupModel.model}]});
     }
 
     getByGroup(groupID: number): Promise<ModulePermissionModel.ModulePermissionInstance[]> {
@@ -59,8 +58,8 @@ class ModulePermissionService {
                 ]
             }
         }
-        findOptions.include = [ModuleInstance.Model, UserModel.Model, GroupModel.Model];
-        return ModulePermissionModel.Model.findAll({include: [{model: ModuleInstance.Model, include:[ModulesModel.Model]}, {model: UserModel.Model}, {model: GroupModel.Model}]});
+        findOptions.include = [ModuleInstance.model, UserModel.model, GroupModel.model];
+        return ModulePermissionModel.model.findAll({include: [{model: ModuleInstance.model, include:[ModulesModel.model]}, {model: UserModel.model}, {model: GroupModel.model}]});
     }
 
     getByUserAndGroup(userID: number, groups:number[]): Promise<ModulePermissionModel.ModulePermissionInstance[]> {
@@ -78,20 +77,20 @@ class ModulePermissionService {
                 {userID: userID}
         ]}
         }
-        findOptions.include =[{model: ModuleInstance.Model, include:[ModulesModel.Model]}, {model: UserModel.Model}, {model: GroupModel.Model}];
-        return ModulePermissionModel.Model.findAll(findOptions)
+        findOptions.include =[{model: ModuleInstance.model, include:[ModulesModel.model]}, {model: UserModel.model}, {model: GroupModel.model}];
+        return ModulePermissionModel.model.findAll(findOptions)
     }
 
     get(ID: number): Promise<ModulePermissionModel.ModulePermissionInstance> {
-        return ModulePermissionModel.Model.findByPk(ID);
+        return ModulePermissionModel.model.findByPk(ID);
     }
 
     create(request: App.ModulePermission): Promise<ModulePermissionModel.ModulePermissionInstance> {
-        return ModulePermissionModel.Model.create(request);
+        return ModulePermissionModel.model.create(request);
     }
 
     update(request: App.ModulePermission): Promise<ModulePermissionModel.ModulePermissionInstance> {     
-        return <any>(ModulePermissionModel.Model.findByPk(request.ID).then((ModulePermissionInstance) => {
+        return <any>(ModulePermissionModel.model.findByPk(request.ID).then((ModulePermissionInstance) => {
             ModulePermissionInstance.edit = request.edit;
             ModulePermissionInstance.delete = request.delete;
             ModulePermissionInstance.owner = request.owner;
@@ -103,7 +102,7 @@ class ModulePermissionService {
     }
 
     delete(ID: number) {
-        return ModulePermissionModel.Model.findByPk(ID).then((ModulePermissionInstance) => {
+        return ModulePermissionModel.model.findByPk(ID).then((ModulePermissionInstance) => {
             return ModulePermissionInstance.destroy();
         });
     }

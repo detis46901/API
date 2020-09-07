@@ -1,29 +1,29 @@
 "use strict";
 var dbConnection = require('../../../core/db-connection');
-var Sequelize = require('sequelize');
+var sequelize_1 = require("sequelize");
 var db = dbConnection();
 var sequalizeModel = db.define('server', {
     ID: {
-        type: Sequelize.INTEGER,
+        type: sequelize_1.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
     serverName: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [2, 30]
         }
     },
     serverType: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [2, 30]
         }
     },
     serverURL: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [1, 200]
@@ -50,6 +50,6 @@ sequalizeModel.findAll({}).then(function (result) {
         console.log('Users already exist');
     }
 });
-exports.Model = sequalizeModel;
+exports.model = sequalizeModel;
 
 //# sourceMappingURL=../../../source-maps/modules/layers/models/servers-model.js.map

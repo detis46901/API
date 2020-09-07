@@ -8,28 +8,6 @@ var db = dbConnection();
 
 
 class SQLService {
-
-    // getList(searchValue: string): Promise<any[]> {
-
-    //     var findOptions: Sequelize.FindOptions = {
-    //         order: [
-    //             'lastName'
-    //         ]
-    //     };
-
-    //     if (searchValue) {
-    //         findOptions.where = {
-    //             [Sequelize.Op.or]: [
-    //                 { firstName: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
-    //                 { lastName: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
-    //                 { email: { [Sequelize.Op.iLike]: `%${searchValue}%` } },
-    //             ]
-    //         }
-    //     }
-
-    //     return UserModel.Model.findAll(findOptions);
-    // }
-
     get(schema: string, table: string): Promise<any> {
         if (schema == 'mycube') {
             return db.query("SELECT *,ST_Length(ST_Transform(geom,2965)), ST_Area(ST_Transform(geom,2965)) from " + schema + "." + table + ' ORDER BY id')
@@ -37,7 +15,6 @@ class SQLService {
         else {
             return db.query("SELECT * from " + schema + "." + table + ' ORDER BY id')
         }
-        //return db.query('SELECT * FROM $1', { bind: [table], type: sequelize.queryTypes.SELECT})
     }
 
     getUserFromAPIKey(apikey: string): Promise<UserModel.UserInstance[]> {
@@ -52,7 +29,7 @@ class SQLService {
                 apikey: { [Sequelize.Op.eq]: `${apikey}` }
             }
         }
-        return UserModel.Model.findAll(findOptions);
+        return UserModel.model.findAll(findOptions);
     }
 
     getsheets(schema: string, table: string): Promise<any> {
@@ -102,15 +79,6 @@ class SQLService {
     }
 
     create(table: string): Promise<any> {
-        //     db.query(`CREATE SEQUENCE public."test3_ID_seq"
-        //     INCREMENT 1
-        //     MINVALUE 1
-        //     MAXVALUE 9223372036854775807
-        //     START 38
-        //     CACHE 1;
-        //   ALTER TABLE public."test3_ID_seq"
-        //     OWNER TO geoadmin;
-        //   `)
         return db.query(`CREATE TABLE mycube.t` + table + ` (
                 ID    SERIAL PRIMARY KEY,
                 geom   geometry

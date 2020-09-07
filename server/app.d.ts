@@ -29,6 +29,12 @@
         apikey: string;
     }
 
+    interface LoginLog extends IModelBase {
+        ID?: number;
+        userID: number;
+        result: string;
+    }
+
     interface Layer extends IModelBase {
         ID?: number;
         layerName?: string;

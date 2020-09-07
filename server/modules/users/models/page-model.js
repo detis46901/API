@@ -1,38 +1,38 @@
 "use strict";
 var dbConnection = require('../../../core/db-connection');
-var Sequelize = require('sequelize');
 var UserModel = require('../../users/models/user-model');
+var sequelize_1 = require("sequelize");
 var db = dbConnection();
 var sequalizeModel = db.define('user_page', {
-    ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+    ID: { type: sequelize_1.DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     page: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [1, 200]
         }
     },
     pageOrder: {
-        type: Sequelize.INTEGER,
+        type: sequelize_1.DataTypes.INTEGER,
         validate: {
             min: 0
         }
     },
     default: {
-        type: Sequelize.BOOLEAN,
+        type: sequelize_1.DataTypes.BOOLEAN,
         validate: {
             is: ["[a-z]", 'i'] //only allow letters
         }
     },
     active: {
-        type: Sequelize.BOOLEAN,
+        type: sequelize_1.DataTypes.BOOLEAN,
         validate: {
             is: ["[a-z]", 'i'] //only allow letters
         }
     },
 });
-sequalizeModel.belongsTo(UserModel.Model);
+sequalizeModel.belongsTo(UserModel.model);
 sequalizeModel.sync();
-exports.Model = sequalizeModel;
+exports.model = sequalizeModel;
 
 //# sourceMappingURL=../../../source-maps/modules/users/models/page-model.js.map

@@ -1,41 +1,41 @@
 "use strict";
 var dbConnection = require('../../../core/db-connection');
-var Sequelize = require('sequelize');
 var DomainModel = require('../../domain/models/domain-model');
+var sequelize_1 = require("sequelize");
 var db = dbConnection();
 var bcrypt = require('bcrypt');
 console.log("IN USER MODEL");
 var sequalizeModel = db.define('user', {
-    ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+    ID: { type: sequelize_1.DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     firstName: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [2, 30]
         }
     },
     lastName: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [2, 30]
         }
     },
     password: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [1, 200]
         }
     },
     active: {
-        type: Sequelize.BOOLEAN,
+        type: sequelize_1.DataTypes.BOOLEAN,
         validate: {
             is: ["[a-z]", 'i'] //only allow letters //1/3/18 why is this here? letter validation for a boolean type?
         }
     },
     email: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         required: true,
         unique: true,
@@ -45,26 +45,26 @@ var sequalizeModel = db.define('user', {
         }
     },
     administrator: {
-        type: Sequelize.BOOLEAN,
+        type: sequelize_1.DataTypes.BOOLEAN,
         validate: {
             is: ["[a-z]", 'i'] //1/3/18^^^
         }
     },
     public: {
-        type: Sequelize.BOOLEAN,
+        type: sequelize_1.DataTypes.BOOLEAN,
         validate: {
             is: ["[a-z]", 'i'] //1/3/18^^^
         }
     },
     apikey: {
-        type: Sequelize.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
             len: [2, 130]
         }
     },
 });
-sequalizeModel.belongsTo(DomainModel.Model);
+sequalizeModel.belongsTo(DomainModel.model);
 sequalizeModel.sync();
 //Should probably update this or at least put it in the documentation.
 sequalizeModel.findAll({}).then(function (result) {
@@ -84,6 +84,6 @@ sequalizeModel.findAll({}).then(function (result) {
         });
     }
 });
-exports.Model = sequalizeModel;
+exports.model = sequalizeModel;
 
 //# sourceMappingURL=../../../source-maps/modules/users/models/user-model.js.map

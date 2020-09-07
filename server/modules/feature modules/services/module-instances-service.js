@@ -21,22 +21,22 @@ var ModuleInstancesService = (function () {
                 _a
             );
         }
-        findOptions.include = [ModuleModel.Model];
-        return ModuleInstancesModel.Model.findAll(findOptions);
+        findOptions.include = [ModuleModel.model];
+        return ModuleInstancesModel.model.findAll(findOptions);
         var _a, _b, _c, _d;
     };
     ModuleInstancesService.prototype.get = function (rowID) {
         var findOptions = {};
-        findOptions.include = [ModuleModel.Model];
-        return ModuleInstancesModel.Model.findByPk(rowID, findOptions);
+        findOptions.include = [ModuleModel.model];
+        return ModuleInstancesModel.model.findByPk(rowID, findOptions);
     };
     ModuleInstancesService.prototype.create = function (request) {
         var findOptions = {};
-        findOptions.include = [ModuleModel.Model];
-        return ModuleInstancesModel.Model.create(request, findOptions);
+        findOptions.include = [ModuleModel.model];
+        return ModuleInstancesModel.model.create(request, findOptions);
     };
     ModuleInstancesService.prototype.update = function (request) {
-        return (ModuleInstancesModel.Model.findByPk(request.ID).then(function (ModuleInstance) {
+        return (ModuleInstancesModel.model.findByPk(request.ID).then(function (ModuleInstance) {
             ModuleInstance.name = request.name;
             ModuleInstance.description = request.description;
             ModuleInstance.settings = request.settings;
@@ -44,7 +44,7 @@ var ModuleInstancesService = (function () {
         }));
     };
     ModuleInstancesService.prototype.delete = function (ID) {
-        return ModuleInstancesModel.Model.findByPk(ID).then(function (ModuleInstance) {
+        return ModuleInstancesModel.model.findByPk(ID).then(function (ModuleInstance) {
             return ModuleInstance.destroy();
         });
     };

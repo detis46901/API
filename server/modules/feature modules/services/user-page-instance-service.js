@@ -21,7 +21,7 @@ var UserPageInstanceService = (function () {
                 _a
             );
         }
-        return UserPageInstanceModel.Model.findAll(findOptions);
+        return UserPageInstanceModel.model.findAll(findOptions);
         var _a;
     };
     UserPageInstanceService.prototype.getPageInstances = function (pageID) {
@@ -38,8 +38,8 @@ var UserPageInstanceService = (function () {
                 _a
             );
         }
-        findOptions.include = [PageModel.Model, InstanceModel.Model];
-        return UserPageInstanceModel.Model.findAll({ order: ['ID'], where: (_b = {}, _b[Sequelize.Op.and] = [{ userPageID: pageID }], _b), include: [{ model: PageModel.Model }, { model: InstanceModel.Model, include: [ModuleModel.Model] }] });
+        findOptions.include = [PageModel.model, InstanceModel.model];
+        return UserPageInstanceModel.model.findAll({ order: ['ID'], where: (_b = {}, _b[Sequelize.Op.and] = [{ userPageID: pageID }], _b), include: [{ model: PageModel.model }, { model: InstanceModel.model, include: [ModuleModel.model] }] });
         var _a, _b;
     };
     UserPageInstanceService.prototype.getUserInstance = function (userID) {
@@ -56,8 +56,8 @@ var UserPageInstanceService = (function () {
                 _a
             );
         }
-        //return UserPageLayerModel.Model.findAll({order: ['ID'], where: {[Sequelize.Op.and]: [{ userID: userID}]}, include: [{model: UserModel.Model}, {model: LayerModel.Model}, {model: PageModel.Model}]});
-        return UserPageInstanceModel.Model.findAll(findOptions);
+        //return UserPageLayerModel.model.findAll({order: ['ID'], where: {[Sequelize.Op.and]: [{ userID: userID}]}, include: [{model: UserModel.model}, {model: LayerModel.model}, {model: PageModel.model}]});
+        return UserPageInstanceModel.model.findAll(findOptions);
         var _a;
     };
     UserPageInstanceService.prototype.getByInstance = function (instanceID) {
@@ -74,17 +74,17 @@ var UserPageInstanceService = (function () {
                 _a
             );
         }
-        return UserPageInstanceModel.Model.findAll(findOptions);
+        return UserPageInstanceModel.model.findAll(findOptions);
         var _a;
     };
     UserPageInstanceService.prototype.get = function (rowID) {
-        return UserPageInstanceModel.Model.findByPk(rowID);
+        return UserPageInstanceModel.model.findByPk(rowID);
     };
     UserPageInstanceService.prototype.create = function (request) {
-        return UserPageInstanceModel.Model.create(request);
+        return UserPageInstanceModel.model.create(request);
     };
     UserPageInstanceService.prototype.update = function (request) {
-        return (UserPageInstanceModel.Model.findByPk(request.ID).then(function (UserPageInstanceInstance) {
+        return (UserPageInstanceModel.model.findByPk(request.ID).then(function (UserPageInstanceInstance) {
             UserPageInstanceInstance.moduleInstanceID = request.moduleInstanceID;
             UserPageInstanceInstance.userID = request.userID;
             UserPageInstanceInstance.defaultON = request.defaultON;
@@ -92,7 +92,7 @@ var UserPageInstanceService = (function () {
         }));
     };
     UserPageInstanceService.prototype.delete = function (ID) {
-        return UserPageInstanceModel.Model.findByPk(ID).then(function (UserPageInstanceInstance) {
+        return UserPageInstanceModel.model.findByPk(ID).then(function (UserPageInstanceInstance) {
             return UserPageInstanceInstance.destroy();
         });
     };

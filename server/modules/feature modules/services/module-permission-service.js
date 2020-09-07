@@ -10,7 +10,7 @@ var ModulePermissionService = (function () {
     function ModulePermissionService() {
     }
     ModulePermissionService.prototype.getList = function () {
-        return ModulePermissionModel.Model.findAll();
+        return ModulePermissionModel.model.findAll();
     };
     ModulePermissionService.prototype.getByInstance = function (instanceID) {
         var findOptions = {
@@ -26,8 +26,8 @@ var ModulePermissionService = (function () {
                 _a
             );
         }
-        findOptions.include = [ModuleInstance.Model, UserModel.Model, GroupModel.Model];
-        return ModulePermissionModel.Model.findAll(findOptions);
+        findOptions.include = [ModuleInstance.model, UserModel.model, GroupModel.model];
+        return ModulePermissionModel.model.findAll(findOptions);
         var _a;
     };
     ModulePermissionService.prototype.getByUser = function (userID) {
@@ -44,8 +44,8 @@ var ModulePermissionService = (function () {
                 _a
             );
         }
-        findOptions.include = [ModuleInstance.Model, UserModel.Model, GroupModel.Model];
-        return ModulePermissionModel.Model.findAll({ include: [{ model: ModuleInstance.Model, include: [ModulesModel.Model] }, { model: UserModel.Model }, { model: GroupModel.Model }] });
+        findOptions.include = [ModuleInstance.model, UserModel.model, GroupModel.model];
+        return ModulePermissionModel.model.findAll({ include: [{ model: ModuleInstance.model, include: [ModulesModel.model] }, { model: UserModel.model }, { model: GroupModel.model }] });
         var _a;
     };
     ModulePermissionService.prototype.getByGroup = function (groupID) {
@@ -62,8 +62,8 @@ var ModulePermissionService = (function () {
                 _a
             );
         }
-        findOptions.include = [ModuleInstance.Model, UserModel.Model, GroupModel.Model];
-        return ModulePermissionModel.Model.findAll({ include: [{ model: ModuleInstance.Model, include: [ModulesModel.Model] }, { model: UserModel.Model }, { model: GroupModel.Model }] });
+        findOptions.include = [ModuleInstance.model, UserModel.model, GroupModel.model];
+        return ModulePermissionModel.model.findAll({ include: [{ model: ModuleInstance.model, include: [ModulesModel.model] }, { model: UserModel.model }, { model: GroupModel.model }] });
         var _a;
     };
     ModulePermissionService.prototype.getByUserAndGroup = function (userID, groups) {
@@ -83,18 +83,18 @@ var ModulePermissionService = (function () {
                 _a
             );
         }
-        findOptions.include = [{ model: ModuleInstance.Model, include: [ModulesModel.Model] }, { model: UserModel.Model }, { model: GroupModel.Model }];
-        return ModulePermissionModel.Model.findAll(findOptions);
+        findOptions.include = [{ model: ModuleInstance.model, include: [ModulesModel.model] }, { model: UserModel.model }, { model: GroupModel.model }];
+        return ModulePermissionModel.model.findAll(findOptions);
         var _a, _b;
     };
     ModulePermissionService.prototype.get = function (ID) {
-        return ModulePermissionModel.Model.findByPk(ID);
+        return ModulePermissionModel.model.findByPk(ID);
     };
     ModulePermissionService.prototype.create = function (request) {
-        return ModulePermissionModel.Model.create(request);
+        return ModulePermissionModel.model.create(request);
     };
     ModulePermissionService.prototype.update = function (request) {
-        return (ModulePermissionModel.Model.findByPk(request.ID).then(function (ModulePermissionInstance) {
+        return (ModulePermissionModel.model.findByPk(request.ID).then(function (ModulePermissionInstance) {
             ModulePermissionInstance.edit = request.edit;
             ModulePermissionInstance.delete = request.delete;
             ModulePermissionInstance.owner = request.owner;
@@ -105,7 +105,7 @@ var ModulePermissionService = (function () {
         }));
     };
     ModulePermissionService.prototype.delete = function (ID) {
-        return ModulePermissionModel.Model.findByPk(ID).then(function (ModulePermissionInstance) {
+        return ModulePermissionModel.model.findByPk(ID).then(function (ModulePermissionInstance) {
             return ModulePermissionInstance.destroy();
         });
     };

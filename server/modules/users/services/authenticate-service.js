@@ -19,27 +19,27 @@ var AuthService = (function () {
                 _a
             );
         }
-        return UserModel.Model.findAll(findOptions);
+        return UserModel.model.findAll(findOptions);
         var _a;
     };
     AuthService.prototype.get = function (rowID) {
-        return UserModel.Model.findByPk(rowID);
+        return UserModel.model.findByPk(rowID);
     };
     AuthService.prototype.getemail = function (email) {
-        return UserModel.Model.findByPk(email);
+        return UserModel.model.findByPk(email);
     };
     AuthService.prototype.create = function (request) {
-        return UserModel.Model.create(request);
+        return UserModel.model.create(request);
     };
     AuthService.prototype.update = function (request) {
-        return (UserModel.Model.findByPk(request.ID).then(function (UserInstance) {
+        return (UserModel.model.findByPk(request.ID).then(function (UserInstance) {
             UserInstance.firstName = request.firstName;
             UserInstance.lastName = request.lastName;
             return UserInstance.save();
         }));
     };
     AuthService.prototype.delete = function (rowID) {
-        return UserModel.Model.findByPk(rowID).then(function (UserInstance) {
+        return UserModel.model.findByPk(rowID).then(function (UserInstance) {
             return UserInstance.destroy();
         });
     };

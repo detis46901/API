@@ -20,17 +20,17 @@ var ModuleService = (function () {
                 _a
             );
         }
-        return ModuleModel.Model.findAll(findOptions);
+        return ModuleModel.model.findAll(findOptions);
         var _a, _b, _c, _d;
     };
     ModuleService.prototype.get = function (rowID) {
-        return ModuleModel.Model.findByPk(rowID);
+        return ModuleModel.model.findByPk(rowID);
     };
     ModuleService.prototype.create = function (request) {
-        return ModuleModel.Model.create(request);
+        return ModuleModel.model.create(request);
     };
     ModuleService.prototype.update = function (request) {
-        return (ModuleModel.Model.findByPk(request.ID).then(function (ModuleInstance) {
+        return (ModuleModel.model.findByPk(request.ID).then(function (ModuleInstance) {
             ModuleInstance.identity = request.identity;
             ModuleInstance.name = request.name;
             ModuleInstance.description = request.description;
@@ -38,7 +38,7 @@ var ModuleService = (function () {
         }));
     };
     ModuleService.prototype.delete = function (ID) {
-        return ModuleModel.Model.findByPk(ID).then(function (ModuleInstance) {
+        return ModuleModel.model.findByPk(ID).then(function (ModuleInstance) {
             return ModuleInstance.destroy();
         });
     };

@@ -7,7 +7,7 @@ var GroupMemberService = (function () {
     function GroupMemberService() {
     }
     GroupMemberService.prototype.getList = function (searchValue) {
-        return GroupMemberModel.Model.findAll();
+        return GroupMemberModel.model.findAll();
     };
     GroupMemberService.prototype.getByUser = function (userID) {
         var findOptions = {
@@ -23,8 +23,8 @@ var GroupMemberService = (function () {
                 _a
             );
         }
-        findOptions.include = [GroupModel.Model];
-        return GroupMemberModel.Model.findAll(findOptions);
+        findOptions.include = [GroupModel.model];
+        return GroupMemberModel.model.findAll(findOptions);
         var _a;
     };
     GroupMemberService.prototype.getByGroup = function (groupID) {
@@ -41,18 +41,18 @@ var GroupMemberService = (function () {
                 _a
             );
         }
-        findOptions.include = [UserModel.Model];
-        return GroupMemberModel.Model.findAll(findOptions);
+        findOptions.include = [UserModel.model];
+        return GroupMemberModel.model.findAll(findOptions);
         var _a;
     };
     GroupMemberService.prototype.get = function (rowID) {
-        return GroupMemberModel.Model.findByPk(rowID);
+        return GroupMemberModel.model.findByPk(rowID);
     };
     GroupMemberService.prototype.create = function (request) {
-        return GroupMemberModel.Model.create(request);
+        return GroupMemberModel.model.create(request);
     };
     GroupMemberService.prototype.delete = function (ID) {
-        return GroupMemberModel.Model.findByPk(ID).then(function (GroupMemberInstance) {
+        return GroupMemberModel.model.findByPk(ID).then(function (GroupMemberInstance) {
             return GroupMemberInstance.destroy();
         });
     };

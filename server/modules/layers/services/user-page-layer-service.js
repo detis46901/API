@@ -23,7 +23,7 @@ var UserPageLayerService = (function () {
                 _a
             );
         }
-        return UserPageLayerModel.Model.findAll(findOptions);
+        return UserPageLayerModel.model.findAll(findOptions);
         var _a;
     };
     UserPageLayerService.prototype.getPageLayers = function (pageID) {
@@ -40,8 +40,8 @@ var UserPageLayerService = (function () {
                 _a
             );
         }
-        findOptions.include = [PageModel.Model, LayerModel.Model, UserPageInstanceModel.Model];
-        return UserPageLayerModel.Model.findAll({ order: ['layerOrder'], where: (_b = {}, _b[Sequelize.Op.and] = [{ userPageID: pageID }], _b), include: [{ model: PageModel.Model }, { model: UserPageInstanceModel.Model, include: [ModuleInstanceModel.Model] }, { model: LayerModel.Model, include: [ServerModel.Model] }] });
+        findOptions.include = [PageModel.model, LayerModel.model, UserPageInstanceModel.model];
+        return UserPageLayerModel.model.findAll({ order: ['layerOrder'], where: (_b = {}, _b[Sequelize.Op.and] = [{ userPageID: pageID }], _b), include: [{ model: PageModel.model }, { model: UserPageInstanceModel.model, include: [ModuleInstanceModel.model] }, { model: LayerModel.model, include: [ServerModel.model] }] });
         var _a, _b;
     };
     UserPageLayerService.prototype.getUserLayer = function (userID) {
@@ -58,8 +58,8 @@ var UserPageLayerService = (function () {
                 _a
             );
         }
-        //return UserPageLayerModel.Model.findAll({order: ['ID'], where: {[Sequelize.Op.and]: [{ userID: userID}]}, include: [{model: UserModel.Model}, {model: LayerModel.Model}, {model: PageModel.Model}]});
-        return UserPageLayerModel.Model.findAll(findOptions);
+        //return UserPageLayerModel.model.findAll({order: ['ID'], where: {[Sequelize.Op.and]: [{ userID: userID}]}, include: [{model: UserModel.model}, {model: LayerModel.model}, {model: PageModel.model}]});
+        return UserPageLayerModel.model.findAll(findOptions);
         var _a;
     };
     UserPageLayerService.prototype.getByLayer = function (layerID) {
@@ -76,17 +76,17 @@ var UserPageLayerService = (function () {
                 _a
             );
         }
-        return UserPageLayerModel.Model.findAll(findOptions);
+        return UserPageLayerModel.model.findAll(findOptions);
         var _a;
     };
     UserPageLayerService.prototype.get = function (rowID) {
-        return UserPageLayerModel.Model.findByPk(rowID);
+        return UserPageLayerModel.model.findByPk(rowID);
     };
     UserPageLayerService.prototype.create = function (request) {
-        return UserPageLayerModel.Model.create(request);
+        return UserPageLayerModel.model.create(request);
     };
     UserPageLayerService.prototype.update = function (request) {
-        return (UserPageLayerModel.Model.findByPk(request.ID).then(function (UserPageLayerInstance) {
+        return (UserPageLayerModel.model.findByPk(request.ID).then(function (UserPageLayerInstance) {
             UserPageLayerInstance.layerID = request.layerID;
             UserPageLayerInstance.userID = request.userID;
             UserPageLayerInstance.defaultON = request.defaultON;
@@ -96,7 +96,7 @@ var UserPageLayerService = (function () {
         }));
     };
     UserPageLayerService.prototype.delete = function (ID) {
-        return UserPageLayerModel.Model.findByPk(ID).then(function (UserPageLayerInstance) {
+        return UserPageLayerModel.model.findByPk(ID).then(function (UserPageLayerInstance) {
             return UserPageLayerInstance.destroy();
         });
     };

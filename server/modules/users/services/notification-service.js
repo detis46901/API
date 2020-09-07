@@ -19,7 +19,7 @@ var NotificationService = (function () {
                 _a
             );
         }
-        return NotificationModel.Model.findAll(findOptions);
+        return NotificationModel.model.findAll(findOptions);
         var _a, _b;
     };
     NotificationService.prototype.getByUser = function (userID) {
@@ -36,7 +36,7 @@ var NotificationService = (function () {
                 _a
             );
         }
-        return NotificationModel.Model.findAll(findOptions);
+        return NotificationModel.model.findAll(findOptions);
         var _a;
     };
     NotificationService.prototype.getByType = function (objectType) {
@@ -53,7 +53,7 @@ var NotificationService = (function () {
                 _a
             );
         }
-        return NotificationModel.Model.findAll(findOptions);
+        return NotificationModel.model.findAll(findOptions);
         var _a;
     };
     NotificationService.prototype.getBySource = function (sourceID) {
@@ -70,17 +70,17 @@ var NotificationService = (function () {
                 _a
             );
         }
-        return NotificationModel.Model.findAll(findOptions);
+        return NotificationModel.model.findAll(findOptions);
         var _a;
     };
     NotificationService.prototype.get = function (rowID) {
-        return NotificationModel.Model.findByPk(rowID);
+        return NotificationModel.model.findByPk(rowID);
     };
     NotificationService.prototype.create = function (request) {
-        return NotificationModel.Model.create(request);
+        return NotificationModel.model.create(request);
     };
     NotificationService.prototype.update = function (request) {
-        return (NotificationModel.Model.findByPk(request.ID).then(function (NotificationInstance) {
+        return (NotificationModel.model.findByPk(request.ID).then(function (NotificationInstance) {
             NotificationInstance.userID = request.userID;
             NotificationInstance.name = request.name;
             NotificationInstance.description = request.description;
@@ -91,7 +91,7 @@ var NotificationService = (function () {
         }));
     };
     NotificationService.prototype.delete = function (ID) {
-        return NotificationModel.Model.findByPk(ID).then(function (NotificationInstance) {
+        return NotificationModel.model.findByPk(ID).then(function (NotificationInstance) {
             return NotificationInstance.destroy();
         });
     };

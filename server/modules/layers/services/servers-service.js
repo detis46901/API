@@ -9,24 +9,16 @@ var ServerService = (function () {
                 'ID'
             ]
         };
-        // if (ServerID) {
-        //     findOptions.where = {
-        //         [Sequelize.Op.and]: [
-        //             { ServerID: ServerID}
-        //         ]
-        //     }
-        // }
-        //findOptions.include = [ServerModel.Model]
-        return ServerModel.Model.findAll(findOptions);
+        return ServerModel.model.findAll(findOptions);
     };
     ServerService.prototype.get = function (rowID) {
-        return ServerModel.Model.findByPk(rowID);
+        return ServerModel.model.findByPk(rowID);
     };
     ServerService.prototype.create = function (request) {
-        return ServerModel.Model.create(request);
+        return ServerModel.model.create(request);
     };
     ServerService.prototype.update = function (request) {
-        return (ServerModel.Model.findByPk(request.ID).then(function (ServerInstance) {
+        return (ServerModel.model.findByPk(request.ID).then(function (ServerInstance) {
             ServerInstance.serverName = request.serverName;
             ServerInstance.serverType = request.serverType;
             ServerInstance.serverURL = request.serverURL;
@@ -34,7 +26,7 @@ var ServerService = (function () {
         }));
     };
     ServerService.prototype.delete = function (ID) {
-        return ServerModel.Model.findByPk(ID).then(function (ServerInstance) {
+        return ServerModel.model.findByPk(ID).then(function (ServerInstance) {
             return ServerInstance.destroy();
         });
     };

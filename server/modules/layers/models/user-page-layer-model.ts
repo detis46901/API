@@ -1,31 +1,29 @@
 import dbConnection = require('../../../core/db-connection');
-import Sequelize = require('sequelize');
 import PageModel = require('../../users/models/page-model');
 import LayerModel = require ('./layers-model');
 import UserModel = require('../../users/models/user-model');
 import UserPageInstanceModel = require('../../feature modules/models/user-page-instance-model')
+import { Model, DataTypes } from "sequelize";
 
 var db = dbConnection();
 
-
-export interface UserPageLayerInstance extends Sequelize.Instance<UserPageLayerInstance, App.UserPageLayer>, App.UserPageLayer { }
-export interface UserPageLayerModel extends Sequelize.Model<UserPageLayerInstance, App.UserPageLayer> { }
-
+export interface UserPageLayerInstance extends Model<UserPageLayerInstance, App.UserPageLayer>, App.UserPageLayer { }
+export interface UserPageLayerModel extends Model<UserPageLayerInstance, App.UserPageLayer> { }
 
 var sequalizeModel = db.define<UserPageLayerInstance, App.UserPageLayer>('user_page_layer', <any>{
-    ID: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+    ID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     defaultON: {
-        type: Sequelize.BOOLEAN},
+        type: DataTypes.BOOLEAN},
     layerOrder: {
-        type: Sequelize.INTEGER},
+        type: DataTypes.INTEGER},
     style: {
-        type: Sequelize.JSON}
+        type: DataTypes.JSON}
 });
 
-sequalizeModel.belongsTo(UserModel.Model)
-sequalizeModel.belongsTo(PageModel.Model)
-sequalizeModel.belongsTo(LayerModel.Model)
-sequalizeModel.belongsTo(UserPageInstanceModel.Model)
+sequalizeModel.belongsTo(UserModel.model)
+sequalizeModel.belongsTo(PageModel.model)
+sequalizeModel.belongsTo(LayerModel.model)
+sequalizeModel.belongsTo(UserPageInstanceModel.model)
 sequalizeModel.sync(); 
 
-export var Model = sequalizeModel;
+export var model = sequalizeModel;

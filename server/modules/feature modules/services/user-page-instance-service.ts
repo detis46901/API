@@ -3,7 +3,6 @@ import UserPageInstanceModel = require('../models/user-page-instance-model');
 import PageModel = require('../../users/models/page-model')
 import InstanceModel = require('../models/module-instances-model')
 import ModuleModel = require ('../models/module-model')
-import UserModel = require('../../users/models/user-model');
 
 class UserPageInstanceService {
 
@@ -23,7 +22,7 @@ class UserPageInstanceService {
             }
         }
 
-        return UserPageInstanceModel.Model.findAll(findOptions);
+        return UserPageInstanceModel.model.findAll(findOptions);
     }
 
     
@@ -44,9 +43,9 @@ class UserPageInstanceService {
 
 
     
-        findOptions.include = [PageModel.Model, InstanceModel.Model]
+        findOptions.include = [PageModel.model, InstanceModel.model]
 
-        return UserPageInstanceModel.Model.findAll({order: ['ID'], where: {[Sequelize.Op.and]: [{ userPageID: pageID}]}, include: [{model: PageModel.Model}, {model: InstanceModel.Model, include: [ModuleModel.Model]}]})
+        return UserPageInstanceModel.model.findAll({order: ['ID'], where: {[Sequelize.Op.and]: [{ userPageID: pageID}]}, include: [{model: PageModel.model}, {model: InstanceModel.model, include: [ModuleModel.model]}]})
     }
 
     getUserInstance(userID: number): any {
@@ -64,8 +63,8 @@ class UserPageInstanceService {
             }
         }
 
-        //return UserPageLayerModel.Model.findAll({order: ['ID'], where: {[Sequelize.Op.and]: [{ userID: userID}]}, include: [{model: UserModel.Model}, {model: LayerModel.Model}, {model: PageModel.Model}]});
-        return UserPageInstanceModel.Model.findAll(findOptions);
+        //return UserPageLayerModel.model.findAll({order: ['ID'], where: {[Sequelize.Op.and]: [{ userID: userID}]}, include: [{model: UserModel.model}, {model: LayerModel.model}, {model: PageModel.model}]});
+        return UserPageInstanceModel.model.findAll(findOptions);
     }
 
     getByInstance(instanceID: number): any {
@@ -83,20 +82,20 @@ class UserPageInstanceService {
             }
         }
 
-        return UserPageInstanceModel.Model.findAll(findOptions);
+        return UserPageInstanceModel.model.findAll(findOptions);
     }
 
     get(rowID: number): Promise<UserPageInstanceModel.UserPageInstanceInstance> {
-        return UserPageInstanceModel.Model.findByPk(rowID);
+        return UserPageInstanceModel.model.findByPk(rowID);
     }
 
     create(request: App.UserPageInstance): Promise<UserPageInstanceModel.UserPageInstanceInstance> {
-        return UserPageInstanceModel.Model.create(request);
+        return UserPageInstanceModel.model.create(request);
     }
 
     update(request: App.UserPageInstance): Promise<UserPageInstanceModel.UserPageInstanceInstance> {
         
-        return <any>(UserPageInstanceModel.Model.findByPk(request.ID).then((UserPageInstanceInstance) => {
+        return <any>(UserPageInstanceModel.model.findByPk(request.ID).then((UserPageInstanceInstance) => {
 
             UserPageInstanceInstance.moduleInstanceID = request.moduleInstanceID;
             UserPageInstanceInstance.userID = request.userID;
@@ -107,7 +106,7 @@ class UserPageInstanceService {
     }
 
     delete(ID: number) {
-        return UserPageInstanceModel.Model.findByPk(ID).then((UserPageInstanceInstance) => {
+        return UserPageInstanceModel.model.findByPk(ID).then((UserPageInstanceInstance) => {
 
             return UserPageInstanceInstance.destroy();
 
