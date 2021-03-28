@@ -27,19 +27,15 @@ var tsPublicProject = ts.createProject({
 });
 
 //main task for dev
-gulp.task('start-server', ['compile-server'], startServer);
-gulp.task('start-client',['compile-client', 'start-client-nodemon'],  browserSyncTask);
 
-gulp.task('start-client-nodemon', startClient);
+// gulp.task('start-client-nodemon', startClient);
 
-gulp.task('compile-all', ['compile-server', 'compile-public']);
-gulp.task('compile-server', compileServer);
-gulp.task('compile-client', compilePublic);
+// gulp.task('compile-all', ['compile-server', 'compile-public']);
+// gulp.task('compile-client', compilePublic);
 
-gulp.task('watch-server', ['compile-server'], watchServer);
-gulp.task('watch-public', ['compile-public'], watchPublic);
+// gulp.task('watch-public', ['compile-public'], watchPublic);
 
-gulp.task('clean-server-js', cleanServerJs);
+// gulp.task('clean-server-js', cleanServerJs);
 
 
 var browserSync = null;
@@ -165,3 +161,10 @@ gulp.task('compress', function () {
       }))
       .pipe(gulp.dest('dist'))
 });
+
+// gulp.task('watch-server', gulp.series('compile-server'), watchServer);
+
+gulp.task('compile-server', compileServer);
+// gulp.task('start-server', gulp.series('compile-server'), startServer);
+gulp.task('start-server', startServer);
+// gulp.task('start-client',['compile-client', 'start-client-nodemon'],  browserSyncTask);
