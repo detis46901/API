@@ -85,7 +85,8 @@ sequalizeModel.findAll({
             password: pw,
             active: false,
             email: 'administrator@gmail.com',
-            administrator: true
+            administrator: true,
+            apikey: 'something'
         })
     })
 }

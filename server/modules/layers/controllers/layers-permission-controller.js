@@ -54,6 +54,7 @@ router.get('/byusergroups', token_auth, function (req, res) {
                 return 0;
             });
             var finalToSend = [];
+            console.log(final)
             for (var j = 0; j < final.length; j++) {
                 if (final[j].layerID != lastLayerID) {
                     lastLayerID = final[j].layerID;

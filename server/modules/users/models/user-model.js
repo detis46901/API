@@ -78,7 +78,8 @@ sequalizeModel.findAll({}).then(function (result) {
                 password: pw,
                 active: false,
                 email: 'administrator@gmail.com',
-                administrator: true
+                administrator: true,
+                apikey: 'something'
             });
         });
     }
